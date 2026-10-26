@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-25",
+  "runtime": "macos-metal",
+  "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+  "modelSize": "4b",
+  "contextWindow": 8192,
+  "cases": 50,
+  "uniqueProducts": 50,
+  "passed": 50,
+  "failed": 0,
+  "firstAttemptValidRate": 1,
+  "medianMs": 2465,
+  "p95Ms": 6913,
+  "maximumMs": 7960,
+  "totalElapsedMs": 159781,
+  "categoryCounts": {
+    "FreeSip": 11,
+    "Sway": 4,
+    "Crossbody": 2,
+    "Tote": 3,
+    "Color Drop": 1,
+    "Twist": 2,
+    "Bundle": 7,
+    "Special Edition": 7,
+    "SmoothSip": 4,
+    "FreeSip Tumbler": 2,
+    "Stickers": 1,
+    "Ecobrite": 1,
+    "Towel": 1,
+    "Pet Bowl": 1,
+    "Bottle Boot": 1,
+    "Straws": 1,
+    "Lids": 1
+  },
+  "catalog": {
+    "source": "https://checkout.owalalife.com/products.json?limit=250",
+    "sha256": "e0ed8b4d1d1faaac3deb1312abc40947f19eb983be84648958145a9ea16d77bd",
+    "observedProducts": 51,
+    "selectedFirstProducts": 50,
+    "emptyDescriptionCases": 7
+  },
+  "platformGroups": [
+    [
+      "youtube"
+    ],
+    [
+      "tiktok"
+    ],
+    [
+      "instagram"
+    ],
+    [
+      "twitter"
+    ],
+    [
+      "youtube",
+      "tiktok",
+      "instagram",
+      "twitter"
+    ]
+  ],
+  "casesPerPlatformGroup": 10,
+  "targetCountPreserved": true,
+  "thresholds": {
+    "firstAttemptValidRate": 0.98,
+    "keywordP95Ms": 60000
+  },
+  "extraRetries": 0,
+  "sourceFile": "$ONECREW_CLOUD/.scratch/keyword-batch-20261025/results-1792992755157.jsonl",
+  "sourceSha256": "a64d2fa8c7549c300212c41961163d35cf9a0a3bcf0d9be860cd8114d2a820d8",
+  "limitations": {
+    "singleBrandCatalog": true,
+    "humanKeywordQualityVerified": false,
+    "humanScoringQualityVerified": false,
+    "shopifyNetworkIdentityVerified": false,
+    "platformSearchVerified": false,
+    "productionHardwareVerified": false
+  },
+  "modelLogSha256": "f6037cee16da7518d980e2ba16e8a94e57ed40a28fffec077b771fa50eb5944c",
+  "modelProcessClosedNormally": true
+}

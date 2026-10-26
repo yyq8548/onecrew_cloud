@@ -1,54 +1,46 @@
-# Cloud Gmail 接入修改范围
+# 公司 Gmail 改动统一清单
 
-状态：Cloud 接口与页面已接入。用户已批准按最新主分支进行隔离本地适配与验证，Access 十一个文件、Sync 六个文件已完成该批准范围，类型检查、构建、合同、本地迁移与五项匿名入口检查通过。确认页的 Cloud 表单跳转仍有 CSP 缺口，补充修改尚待审批。公司服务没有推送、MR、合并或部署，没有发送邮件。
+2026-10-25。用户要求 CSP 暂不修改，先汇总全部必要改动后统一审阅。本轮只读核对公司代码，未增加任何公司源码修改，也未推送、创建 MR、合并、配置生产变量或部署。
 
-用户最新安排：先完成本地功能，允许查看和核对公司 Git；公司代码改动前提交具体范围审批，获批后在独立目录实施验证，之后由 River 合并。
+已获批并完成验证的本地范围是 Access 11 份文件、Sync 6 份文件。CSP 补充尚未实施，涉及其中已有的 `src/routes/pairing.ts` 和新增范围 `src/security/access-boundary.ts`；全部实施后的公司源码清单共 **18 份不同文件**。配置与生产数据库操作另列，不包含在原本地授权中。
 
-本次适配基准：Access `onecrew@91c4f9826a5f6736c43275a8a8ff765c36a5483a`，Sync `onecrew@d7f70460e176dc94bef3a60370e3f2493e7940b4`。保留了最新安装来源登记、发布变量、产品列和管理端改动。Sync 使用新的 `0011_linux_installations.sql`，旧草稿不可直接应用。
+本轮再次只读核对远端 `onecrew`，基准未变化：Access `91c4f9826a5f6736c43275a8a8ff765c36a5483a`，Sync `d7f70460e176dc94bef3a60370e3f2493e7940b4`。
 
-当前私有交付入口位于 `.scratch/company-gmail/CURRENT-DELIVERY.md`，批准范围见 `LATEST-REVIEW.md`，待审批补充见 `CSP-CLOUD-APPROVAL.md`。新补丁为 `access-current-cloud-gmail.patch`、`sync-current-linux-installations.patch`，摘要位于 `current-patch-sha256.txt`。旧 `APPROVAL.md` 与旧 patch 仅保留为历史记录。公司源码和补丁不上传公开 GitHub，跨电脑时须私下携带；公共仓库只保存验证摘要和文件哈希。发布流程位于 `docs/release/合并与部署流程.md`。
+## onecrew-access：12 份文件
 
-## onecrew-access：增加 Cloud 登录配对回调
+| 文件 | 修改内容 | 当前状态 |
+| --- | --- | --- |
+| `src/pairing/contracts.ts`、`src/routes/pairing.ts` | `callback_url` 与原 `callback_port` 二选一；仅接受配置中完整一致的 HTTPS Cloud 回调；保留最新安装来源登记。 | 基础改动已本地完成 |
+| `src/pairing/crypto.ts`、`src/pairing/service.ts` | 完整回调地址参与原签名；批准时复查允许地址；原 PKCE、state、一次性 code、有效期及桌面回调保留。 | 已本地完成 |
+| `src/config/env.ts`、`src/types/bindings.ts` | 增加可选 `CLOUD_PAIRING_CALLBACK_URL` 及格式检查，保留同事新增的发布变量。 | 已本地完成 |
+| `web/src/lib/access-api.ts`、`web/src/features/pairing/pairing-authorization-page.tsx` | 同步输入合同，确认页显示 Cloud 回调地址。 | 已本地完成 |
+| `test/pairing.test.ts`、`test/cloud-pairing-contract.test.ts`、`vitest.unit.config.mts` | 同步两种回调输入，核对真实参数签名与合同。 | 已本地完成并检查 |
+| `src/security/access-boundary.ts`、已有的 `src/routes/pairing.ts` | 仅给配对确认页的 CSP `form-action` 追加已校验 Cloud 回调的 origin；原授权仍精确核对完整 URL，其他页面及 CSP 指令保留。 | 用户暂不修改，待统一审阅 |
 
-Gmail 的 Google OAuth 回调已是 HTTPS `/integrations/gmail/callback`。需要扩展的是 OneCrew 登录配对：现有 `/pairing/authorize` 接收 `callback_port`，完成授权后固定返回本机 `127.0.0.1`。
+确认页仍通过 HTML 表单提交，服务器以 303 跳转；原 CSP 只允许自身和本机目标。表单重定向可能被浏览器阻断，见 [MDN 原始说明](https://github.com/mdn/content/blob/main/files/en-us/web/http/reference/headers/content-security-policy/form-action/index.md?plain=1)。CSP 补充尚未写入公司代码，真实浏览器授权跳转尚未验收。
 
-- 在 `src/routes/pairing.ts`、`src/pairing/contracts.ts` 增加 `callback_url`，与原 `callback_port` 二选一；只接受配置中精确允许的 Cloud HTTPS 地址。
-- 在 `src/pairing/crypto.ts` 中把回调类型和目标纳入原授权参数签名，在 `src/pairing/service.ts` 中按已验证类型完成跳转。
-- `src/config/env.ts`、`src/types/bindings.ts` 增加可选 `CLOUD_PAIRING_CALLBACK_URL`，值为实际 Cloud origin 加 `/mail/pairing/callback`；批准时复查当前允许地址。
-- 同步 `web/src/lib/access-api.ts`、配对确认页及合同检查。保留用户确认、PKCE S256、state、一次性授权码、有效期、Lite/Pro 产品字段及现有桌面回调。
-- 复用 `src/integrations/providers/mail/` 中已有 Gmail 授权、令牌加密保存、刷新和撤销能力。
+## onecrew-admin / Sync：6 份文件
 
-## onecrew-admin / Sync：允许登记 Linux 安装
+| 文件 | 修改内容 | 当前状态 |
+| --- | --- | --- |
+| `src/contracts/installations.ts` | 安装登记接受 `linux`，保留现有产品字段和公共回读合同。 | 已本地完成 |
+| `src/repositories/admin-installations.ts`、`admin/src/lib/api.ts` | 安装记录的平台类型接受 Linux。 | 已本地完成 |
+| `admin/src/features/installations.tsx` | 在最新安装管理界面显示 Linux 标签，保留产品字段和同事界面改动。 | 已本地完成 |
+| `migrations/0011_linux_installations.sql` | 更新两张表的平台约束；明确列名复制，保留 `product`、`system_info_json`、外键、唯一约束和索引；保存并恢复引用安装表的变更记录。旧迁移不变。 | 已本地完成，仅空库验证 |
+| `test/schema.test.ts` | 在最新迁移链中追加 0011。 | 已本地完成 |
 
-本地适配已在公司原有 `macos/windows` 合同和数据库基础上增加 Linux：
+## 配置、迁移与复用边界
 
-- 增加 `linux` 平台值，同步安装登记、读取和管理端筛选合同。
-- 最新已有 `0009_admin_user_operations.sql` 和 `0010_installation_product.sql`。已新增 `0011_linux_installations.sql`，更新平台约束，明确列名复制并保留 `product`、`system_info_json` 及原约束和索引；引用安装表的变更记录在同一迁移中保存、重建和恢复，旧迁移不变。
-- 在最新 `src/repositories/admin-installations.ts`、`admin/src/lib/api.ts` 同步平台类型，在最新界面的 `platformLabel` 增加 Linux 标签；保留同事新增的产品字段和用户管理界面，同步迁移链检查。
+- Access 后续需要设置 `CLOUD_PAIRING_CALLBACK_URL`，值为真实 Cloud HTTPS origin 加 `/mail/pairing/callback`，须与 Cloud 的 `SHOPIFY_APPLICATION_URL` 一致。实际域名尚未确定，本轮未修改生产配置。
+- Sync 后续需要执行 0011。当前只验证了新库 D1 和独立空 SQLite 十到十一升级；存量数据库迁移、生产执行与部署必须另行审批。
+- Gmail 的 Google 回调继续使用 Access 原 `/integrations/gmail/callback`；沿用现有 Google 权限、令牌加密、刷新、撤销及短期 token 接口。Cloud 从服务器调用这些接口，不需要扩大公司浏览器 CORS。
+- 配对页原登录过程在同一页面保留查询参数，无需另外放宽通用登录 `returnTo`。原设备限额及产品枚举保留，Cloud 配对当前沿用 `onecrew_lite` 产品值。
+- Cloud 中的店铺成员绑定、独立邮件数据库、预览确认、发送、暂停/继续、取消、回执和卸载清理已经接入。refresh token 留在 Access，Cloud 保留加密安装凭据及实际 Access 用户归属。Lite 原目录保持只读，不购买服务。
 
-## onecrew_cloud：绑定店铺、成员和邮箱，装配原邮件能力
+## 已有检查与剩余验收
 
-Cloud 本地已完成以下接入，真实授权与发送仍依赖公司补丁发布：
+Access worker/web 类型、WebCrypto 合同和页面构建通过；Sync runtime types、worker/admin 类型及管理端构建通过。实际本地 D1 分别应用 22/11 个迁移，Sync 空库升级后的列、外键和索引一致、完整性正常。实际 Worker 五项匿名入口检查通过；没有伪造用户或服务响应。见[验证摘要](../handoff/evidence/company-local-20261025/summary.json)和[十七份文件哈希](../handoff/evidence/company-local-20261025/source-sha256.txt)。
 
-- 在 Cloud HTTP 入口增加配对发起与完成回调，保存加密的一次性 PKCE 配对状态及已验证的店铺、成员归属。
-- 在本仓库的 `identity/access-enrollment.ts` 和 `identity/legacy-access-credential.ts` 中支持 Linux 登记，复用原凭据验证和加密保存。
-- 建立 Shopify 店铺/授权成员、Access 用户、安装凭据、邮箱连接之间的映射；成员使用独立邮件数据库，账号 ID 仍为真实 Access user ID。保留 `mail/gmail-access.ts` 原账号相等校验，店铺搜索数据库继续使用 Shopify tenant ID。
-- 装配已有连接和短期令牌接口、GmailBulkRepository、GmailBulkWorker 与实际 Gmail 传输/回执，替换原状态和发送空接口。页面提供连接、收件人、主题正文、预览确认、发送状态、暂停/继续、取消和回执查询。发送协议沿用 [Gmail 官方发送接口](https://developers.google.com/workspace/gmail/api/guides/sending)。
-- 本应用断开与卸载停用绑定并排空，店铺数据删除覆盖成员邮件数据库；Access 撤销授权后原验证链拒绝发送。断开本应用不撤销 Lite/Pro 共用的 Gmail 连接。
+CSP 修改与检查、存量数据迁移、真实 Cloud/桌面配对、Linux 远端登记、Shopify 成员身份、Gmail 授权/撤销及确认后的真实发送回执仍未验收。实际发送需明确账号、收件人、内容及用户授权。
 
-## 保留的权限和数据边界
-
-- Gmail refresh token 继续由 Access 加密保存；Cloud 只取得所需短期 access token，令牌不进入网页或日志。
-- 回调目标使用固定允许列表，邮箱连接始终绑定当前店铺及有权操作的成员。
-- 发送前保留人工确认；发送结果未知时不自动重发，回执来自实际 Gmail 操作。
-- Lite 保持只读。实施不购买付费服务；发布和生产配置另按工作区流程执行。
-
-## 必要验证
-
-Cloud Linux 类型检查、相关检查、页面类型检查和构建通过，见[验收证据](../handoff/EVIDENCE.md)。最新公司本地适配的[验证摘要](../handoff/evidence/company-local-20261025/summary.json)与[源码哈希](../handoff/evidence/company-local-20261025/source-sha256.txt)已保存。
-
-Access worker/web 类型检查、真实 WebCrypto 合同及页面构建通过；Sync runtime types、worker/admin 类型检查及管理端构建通过。本地 D1 已应用 Access 全部 22 个迁移、Sync 全部 11 个迁移；Sync 原生 SQLite 十到十一升级前后的列、外键、索引及空库记录一致，实际 D1 完整性正常，外键违规为零。使用实际 Access 和 Sync Worker，经原生 service binding 验证五项匿名入口：合法 Cloud 和桌面输入要求登录，未允许地址、两种回调同时出现及 HTTP 回调均被拒绝。该检查没有伪造用户或服务响应。
-
-确认页仍使用原 HTML 表单，而 CSP 的 `form-action` 只允许自身和本机回调，尚未加入 Cloud。表单重定向存在浏览器差异，见 [MDN 原始说明](https://github.com/mdn/content/blob/main/files/en-us/web/http/reference/headers/content-security-policy/form-action/index.md?plain=1)。申请仅在配对确认页追加配置中的 Cloud origin，涉及 `src/security/access-boundary.ts` 和 `src/routes/pairing.ts`，公司源码尚未实施该补充。
-
-D1 使用空数据库，尚未验证公司存量数据迁移。真实桌面配对兼容、Cloud 批准与回调、Linux 远端登记、Shopify 成员归属、Gmail 授权/撤销、确认后真实发送与回执、重启与卸载集成验收仍待完成。实际邮箱测试需使用经用户授权的账号、明确收件人和发送内容。
+公司源码、补丁及详细交付在私有 `.scratch/company-gmail/CURRENT-DELIVERY.md`，CSP 分析见同目录 `CSP-CLOUD-APPROVAL.md`。当前两份新 patch 只含已经批准的本地范围，**不含 CSP 补充**；旧 patch 不可直接应用。公司代码和补丁不上传公开 GitHub，跨电脑须私下携带。用户审阅后再决定统一批准范围，由 River 按 [合并与部署流程](../../docs/release/合并与部署流程.md) 合并。
