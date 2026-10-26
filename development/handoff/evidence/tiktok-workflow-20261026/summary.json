@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-26",
+  "platform": "tiktok",
+  "campaign": "8ec63b2a-eb88-40a0-b79f-b47eec9f8b6a",
+  "product": {
+    "id": "gid://shopify/Product/5541111988383",
+    "title": "FreeSip®",
+    "url": "https://checkout.owalalife.com/products/freesip"
+  },
+  "target": 10,
+  "hits": 48,
+  "candidates": 16,
+  "counts": {
+    "qualified": 2,
+    "pending": 1,
+    "rejected": 13
+  },
+  "reasons": {
+    "selection_mismatch": 13,
+    "below_min_subscribers": 13,
+    "requirement_unverified": 13,
+    "selection_unverified": 1
+  },
+  "completed": true,
+  "failureCode": null,
+  "persistedAfterReopen": true,
+  "realSearchAndModel": true,
+  "model": "Qwen3-4B Q4_K_M / Metal / 8192",
+  "shopifyNetworkVerified": false
+}

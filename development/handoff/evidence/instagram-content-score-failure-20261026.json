@@ -1,0 +1,21 @@
+{
+  "campaign": "4f8c3376-e46e-4c68-b0d3-3b352b9edd50",
+  "hits": 9,
+  "candidates": 8,
+  "counts": { "qualified": 1, "pending": 2, "rejected": 5 },
+  "state": "failed",
+  "failurePhase": "score",
+  "failureCode": "execution_failed",
+  "deferredScores": 1,
+  "diagnosticMaterialSource": "https://www.instagram.com/koalastraw/",
+  "availableParagraphs": 0,
+  "diagnosticModelResponse": {
+    "relation": "related_product_use_case",
+    "paragraph_id": "",
+    "creator": "unknown"
+  },
+  "diagnosticError": "cloud.score_source_excerpt_required",
+  "savedDiagnosticResponseReplayReproduced": true,
+  "diagnosticReviewCommitted": false,
+  "fullWorkflowVerified": false
+}

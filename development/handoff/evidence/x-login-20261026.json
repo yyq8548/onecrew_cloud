@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-26",
+  "platform": "twitter",
+  "operation": "Visible Use password button click in existing Cloud browser",
+  "responseHost": "jf.x.com",
+  "responsePath": "/onboarding/web/actions/begin_login",
+  "httpStatus": 200,
+  "responseContentType": "text/plain",
+  "observedError": "We’ve temporarily limited your login. Please try again later.",
+  "errorVisibleInPage": false,
+  "loginVerified": false,
+  "retriesStoppedAfterExplicitLimit": true,
+  "restrictionCause": "not disclosed",
+  "restrictionExpiry": "not disclosed",
+  "containsCredentials": false
+}

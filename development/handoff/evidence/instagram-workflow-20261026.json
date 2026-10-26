@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-26",
+  "campaign": "b52240d3-2eaf-414f-820f-0e3f974400d2",
+  "platform": "instagram",
+  "product": "FreeSip®",
+  "productUrl": "https://checkout.owalalife.com/products/freesip",
+  "followers": { "minimum": 10000, "maximum": 1000000 },
+  "target": 10,
+  "hits": 1,
+  "candidates": 1,
+  "qualified": 0,
+  "rejected": 1,
+  "observedFollowers": 205,
+  "executionFailureCode": null,
+  "endReason": "search_exhausted",
+  "acceptancePassed": false,
+  "failedAssertion": "必须实际完成评分",
+  "limitation": "English queries currently search account suggestions; no scored creator returned",
+  "shopifyNetworkVerified": false
+}

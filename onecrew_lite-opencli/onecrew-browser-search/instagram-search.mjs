@@ -49,19 +49,6 @@ export function observeInstagramVisibleSearch(query) {
   return {ready:profiles.length>0||empty,profiles};
 }
 
-async function searchState(owned,query) {
-  let opened=false;
-  for(let poll=0;poll<40;poll++) {
-    const raw=await owned.evaluate(`(${observeInstagramVisibleSearch.toString()})(${JSON.stringify(query)})`);
-    const state=raw&&'session' in Object(raw)&&'data' in Object(raw)?raw.data:raw;
-    if(state?.stop) throw new Error('ONECREW_INSTAGRAM_SEARCH_'+state.stop.toUpperCase());
-    if(state?.ready) return state;
-    if(query===null&&state?.entry&&!opened) { await owned.click(state.entry); opened=true; continue; }
-    if(poll<39) await owned.sleep(0.25);
-  }
-  throw new Error('ONECREW_INSTAGRAM_SEARCH_TIMEOUT');
-}
-
 export async function observeInstagramKeywordPosts(query) {
   for(let poll=0;poll<32;poll++) {
     if(/^\/accounts\/login/.test(location.pathname)) return {stop:'auth'};
@@ -122,14 +109,6 @@ export async function readInstagramKeywordSearch(owned,query,limit) {
 export async function readInstagramSearch(page,args,ownPage) {
   const query=args.query,limit=args.limit??20;
   if(typeof query!=='string'||!query.trim()||query.length>1000||query.includes('\0')||!Number.isInteger(limit)||limit<1||limit>20) throw new Error('ONECREW_INSTAGRAM_SEARCH_INPUT');
-  return ownPage(page,async owned=>{
-    // 中文词组在账号建议区可能被拼音模糊匹配成熟人；使用正式内容结果再核实发布者。
-    if(/\p{Script=Han}/u.test(query)) return readInstagramKeywordSearch(owned,query,limit);
-    await owned.goto('https://www.instagram.com/explore/',{settleMs:0});
-    await searchState(owned,null);
-    const input='input[aria-label="Search input"],input[aria-label="搜索输入"]';
-    await owned.fillText(input,query);
-    const state=await searchState(owned,query);
-    return projectInstagramVisibleSearch(state.profiles,limit);
-  });
+  // 商品关键词从内容中发现创作者，沿用现有帖子发布者核验。
+  return ownPage(page,owned=>readInstagramKeywordSearch(owned,query,limit));
 }
