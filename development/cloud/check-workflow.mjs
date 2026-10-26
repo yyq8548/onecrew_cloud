@@ -5,6 +5,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { setTimeout } from 'node:timers/promises';
+import { parseArgs } from 'node:util';
 import { openCloudStorage } from '../../onecrew_lite-app/src/cloud/storage.ts';
 import { ShopRuntimeRegistry } from '../../onecrew_lite-app/src/cloud/shop-runtime-registry.ts';
 import { ShopDataService } from '../../onecrew_lite-app/src/cloud/shop-data.ts';
@@ -15,10 +16,14 @@ import { shopifyProductSnapshot } from '../../onecrew_lite-app/src/cloud/campaig
 import { parseApplicationJson, stringifyApplicationJson } from '../../onecrew_lite-contracts/src/json.ts';
 import { campaignResults } from '../../onecrew_lite-web/src/cloud/result-contracts.ts';
 import { createCheckModel } from './model/check-client.mjs';
+import { cloudConditionsFromPlan } from '../../onecrew_lite-app/src/cloud/campaign-parameters.ts';
 
 const require = createRequire(new URL('../../onecrew_lite-app/package.json', import.meta.url));
 const { load } = require('cheerio');
-const [dataDirectory, productFile, productUrl, platform = 'youtube', minimum = '10000', maximum = '1000000', resumeCampaign] = process.argv.slice(2);
+const arguments_ = parseArgs({ options: { 'template-id': { type: 'string' } }, allowPositionals: true, strict: true });
+const [dataDirectory, productFile, productUrl, platform = 'youtube', minimum = '10000', maximum = '1000000', resumeCampaign] = arguments_.positionals;
+const sourceTemplateId = arguments_.values['template-id'];
+assert.ok(!sourceTemplateId || !resumeCampaign, '模板新任务与续跑原任务不能同时使用');
 assert.ok(dataDirectory && productFile && productUrl, '用法：node development/cloud/check-workflow.mjs <独立本地数据目录> <真实公开商品JSON> <商品页面URL> [平台] [最少粉丝] [最多粉丝]');
 const directory = resolve(dataDirectory), origin = 'https://cloud.example.com';
 const captured = await readFile(resolve(productFile), 'utf8');
@@ -47,12 +52,19 @@ const data = new ShopDataService(storage.lease, storage.installations, runtimes)
 const library = new ShopLibraryService(tables, data, origin), failures = [], fatal = [];
 const service = new CloudCampaignService({ data, installations: storage.installations, jobs: storage.campaignJobs, templates: storage.campaignTemplates, browsers, library, model: createCheckModel(), reportFailure: failure => { failures.push(failure); console.error(JSON.stringify({ event: 'cloud.workflow_failure', ...failure })); }, onFatal: error => { fatal.push(error); console.error(error); } });
 const loadProduct = async productId => { assert.equal(productId, product.id); return product; };
-console.info(JSON.stringify({ event: 'cloud.workflow_started', id, product: { id: product.id, title: product.title, source: productUrl }, input, evidenceFile, shopifyNetworkVerified: false }));
+const sourceTemplate = sourceTemplateId ? await service.template(shop, sourceTemplateId) : null;
+const templateInput = { id, product_id: product.id };
+if (sourceTemplate) {
+  assert.deepEqual(sourceTemplate.conditions, { platforms: [platform], min_followers: Number(minimum), max_followers: Number(maximum), target_count: 10 });
+  assert.notEqual(storage.campaignJobs.product(shop, sourceTemplate.campaign_id).id, product.id, '模板验证必须更换为不同真实商品');
+}
+console.info(JSON.stringify({ event: 'cloud.workflow_started', id, product: { id: product.id, title: product.title, source: productUrl }, input, sourceTemplateId, evidenceFile, shopifyNetworkVerified: false }));
 if (resumeCampaign) {
   const plan = await data.campaign(shop, id);
   const job = await service.start(shop, id, { id: randomUUID(), expected_revision: plan.revision });
   jobId = job.id;
-} else await service.create(shop, input, loadProduct);
+} else if (sourceTemplate) await service.createFromTemplate(shop, sourceTemplate.id, templateInput, loadProduct);
+else await service.create(shop, input, loadProduct);
 const stop = () => { void service.cancelDraft(shop, jobId).then(() => undefined, error => { fatal.push(error); console.error(error); }); };
 process.once('SIGINT', stop);
 ownership.defer(() => process.removeListener('SIGINT', stop));
@@ -80,9 +92,14 @@ assert.ok(result.library.table);
 assert.ok(result.library.creators.recommendations.some(creator => creator.values.score), '评分必须发布到 Library');
 assert.deepEqual(failures, []);
 assert.deepEqual(fatal, []);
+if (sourceTemplate) {
+  assert.deepEqual(cloudConditionsFromPlan(await data.campaign(shop, id)), sourceTemplate.conditions);
+  assert.deepEqual(storage.campaignJobs.product(shop, id), product);
+}
 const template = await service.saveTemplate(shop, { id: randomUUID(), name: `本地完整流程 ${product.title}`, campaign_id: id, expected_revision: result.campaign.revision });
 assert.equal((await service.template(shop, template.id)).conditions.target_count, 10);
-assert.equal((await service.create(shop, input, () => assert.fail('重复请求不能再次读取商品'))).id, id);
+const duplicate = sourceTemplate ? await service.createFromTemplate(shop, sourceTemplate.id, templateInput, () => assert.fail('重复模板请求不能再次读取商品')) : await service.create(shop, input, () => assert.fail('重复请求不能再次读取商品'));
+assert.equal(duplicate.id, id);
 const counts = result.counts, tableId = result.library.table.id;
 await ownership.disposeAsync();
 await using persisted = new AsyncDisposableStack();
@@ -98,4 +115,4 @@ assert.equal(reopened.campaignJobs.get(shop, jobId).state, 'completed');
 assert.ok(reopened.campaignTemplates.get(shop, template.id));
 const reopenedLibrary = new ShopLibraryService(reopenedTables, reopenedData, origin);
 assert.deepEqual(await reopenedLibrary.campaignResults(shop, id), savedLibrary);
-console.info(stringifyApplicationJson({ event: 'cloud.workflow_verified', id, counts, tableId, templateId: template.id, evidenceFile, persistedAfterReopen: true, realSearchAndModel: true, shopifyNetworkVerified: false }));
+console.info(stringifyApplicationJson({ event: 'cloud.workflow_verified', id, counts, tableId, templateId: template.id, sourceTemplateId, evidenceFile, persistedAfterReopen: true, realSearchAndModel: true, shopifyNetworkVerified: false }));

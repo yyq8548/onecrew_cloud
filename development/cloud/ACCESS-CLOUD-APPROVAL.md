@@ -1,12 +1,12 @@
 # Cloud Gmail 接入修改范围
 
-状态：用户已授权本地实现 Gmail。Cloud 接口与页面已接入；公司补丁已在隔离目录准备并完成当前本地检查，等待用户审批后交 River 合并。公司原工作目录和 Lite 未修改，没有推送、创建 MR、合并或部署公司服务，目前没有发送邮件。
+状态：Cloud 接口与页面已接入。公司网络已恢复，本轮只读核对了最新主分支；原本地草稿尚未按最新代码适配。用户要求任何后续公司源码修改都先审批，包括本地修改；当前不推送、创建 MR、合并或部署公司服务，没有发送邮件。
 
-用户最新安排：先完成本地；等用户连接公司 Git 后，由本代理更新公司基准并验证补丁，再提交最终审批，之后由 River 合并。当前继续保留所有公司发布边界。
+用户最新安排：先完成本地功能，允许查看和核对公司 Git；公司代码改动前提交具体范围审批，获批后在独立目录实施验证，之后由 River 合并。
 
-公司 GitLab SSH 连接超时，Access 基准为本机缓存 `onecrew@a2d3e64814384602847bbfc421b600b9565faaf4`，Sync 为 `onecrew@a1ced58d41c2c0920e8bbe1bf13bc8b0651468a5`。River 合并前须取得最新主分支、检查差异及迁移编号，并重跑受影响检查。
+已成功 fetch：Access 最新 `onecrew@91c4f9826a5f6736c43275a8a8ff765c36a5483a`，Sync 最新 `onecrew@d7f70460e176dc94bef3a60370e3f2493e7940b4`。旧草稿分别基于 `a2d3e64` 和 `a1ced58`，不能当作最新适配结果。Sync 旧迁移在最新 schema 上实际报列数错误，须经审批后重新适配。
 
-本地私有补丁和详细审批文件位于 `.scratch/company-gmail/`：`APPROVAL.md`、`access-cloud-gmail.patch`、`sync-linux-installations.patch` 和 `patch-sha256.txt`。这些包含公司代码，不上传公开 GitHub，跨电脑时须单独私下携带。发布流程位于 `docs/release/合并与部署流程.md`。
+当前详细审批入口位于 `.scratch/company-gmail/LATEST-REVIEW.md`。原 `APPROVAL.md` 与两份 patch 仅保留为旧基准记录，不能直接应用；公司代码不上传公开 GitHub，跨电脑时须私下携带。发布流程位于 `docs/release/合并与部署流程.md`。
 
 ## onecrew-access：增加 Cloud 登录配对回调
 
@@ -20,11 +20,11 @@ Gmail 的 Google OAuth 回调已是 HTTPS `/integrations/gmail/callback`。需�
 
 ## onecrew-admin / Sync：允许登记 Linux 安装
 
-原平台合同和数据库只接受 `macos/windows`，本地补丁已增加 Linux：
+最新公司平台合同和数据库仍只接受 `macos/windows`，拟获批后增加 Linux：
 
 - 增加 `linux` 平台值，同步安装登记、读取和管理端筛选合同。
-- 新增 `0009_linux_installations.sql`，更新安装表和登记操作表的平台约束。变更记录表以 RESTRICT 引用安装表，因此在同一迁移内复制、重建并恢复该表，保留原约束与索引；旧迁移不变。
-- 同步 `src/repositories/admin-installations.ts`、`admin/src/lib/api.ts`、`admin/src/features/installations.tsx` 和迁移链检查。
+- 最新已有 `0009_admin_user_operations.sql` 和 `0010_installation_product.sql`。拟新增 `0011_linux_installations.sql`，更新平台约束，明确列名复制并保留 `product`、`system_info_json` 及原约束和索引；引用安装表的变更记录在同一迁移中完整保留、重建和恢复，旧迁移不变。
+- 在最新 `src/repositories/admin-installations.ts`、`admin/src/lib/api.ts` 同步平台类型，在最新界面的 `platformLabel` 增加 Linux 标签；保留同事新增的产品字段和用户管理界面，同步迁移链检查。
 
 ## onecrew_cloud：绑定店铺、成员和邮箱，装配原邮件能力
 
@@ -45,6 +45,8 @@ Cloud 本地已完成以下接入，真实授权与发送仍依赖公司补丁�
 
 ## 必要验证
 
-Cloud Linux 类型检查及相关检查通过，无跳过，当前记录见[验收证据](../handoff/EVIDENCE.md)；Cloud 页面类型检查和构建、Access Worker/网页类型检查、Cloud 配对合同检查及 Access 页面构建、Sync Worker/管理端类型检查通过。九个 Sync 迁移在隔离本地 D1 执行成功，完整性检查正常，外键违规为零。
+Cloud Linux 类型检查、相关检查、页面类型检查和构建通过，见[验收证据](../handoff/EVIDENCE.md)。公司旧基准的类型、合同、构建与九个迁移的新库 D1 检查已有历史记录；最新公司适配尚未实施或验证。
+
+本轮将 Sync 最新十个真实迁移应用到独立空 Node SQLite，验证旧 Linux 草稿实际报错 `table creator_sync_installations_linux has 8 columns but 9 values were supplied`；诊断事务已回滚，完整性和外键检查正常。这证明旧草稿需要适配，不代表最新 D1 或存量数据迁移通过。Access 新增配对完成后的安装来源登记和发布变量，也必须在适配时保留。现有公共安装回读和 Gmail 合同可继续复用，Cloud 不需要放宽原严格解析。
 
 D1 使用空数据库，尚未验证公司存量数据迁移。真实桌面配对兼容、Cloud 批准与回调、Linux 远端登记、Shopify 成员归属、Gmail 授权/撤销、确认后真实发送与回执、重启与卸载集成验收仍待完成。实际邮箱测试需使用经用户授权的账号、明确收件人和发送内容。

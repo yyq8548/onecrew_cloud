@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-25",
+  "operation": "successful fetch and read-only source comparison",
+  "access": { "branch": "onecrew", "latest": "91c4f9826a5f6736c43275a8a8ff765c36a5483a", "draft_base": "a2d3e64814384602847bbfc421b600b9565faaf4" },
+  "sync": { "branch": "onecrew", "latest": "d7f70460e176dc94bef3a60370e3f2493e7940b4", "draft_base": "a1ced58d41c2c0920e8bbe1bf13bc8b0651468a5" },
+  "company_source_modified_this_review": false,
+  "drafts_adapted_to_latest": false,
+  "new_company_modifications_require_prior_approval": true,
+  "pushed": false,
+  "merged": false,
+  "deployed": false
+}

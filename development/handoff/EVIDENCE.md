@@ -2,6 +2,20 @@
 
 本目录携带模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## 模板更换商品完整运行 2026-10-25
+
+[派生摘要](evidence/template-product-20261025/summary.json)、[实际进度字段](evidence/template-product-20261025/progress.jsonl)、[验证脚本 SHA-256](evidence/template-product-20261025/source-sha256.txt)。原 FreeSip 模板用于新的真实保温托特包，继承 YouTube、10,000–1,000,000 粉丝及目标 10 位，重新生成三条保温包关键词。
+
+任务从新建开始正常结束，60 条来源、15 位候选、1 位匹配、0 待核验、14 位排除；70 分结果实际发布 Library，30 次平台调用，无延期评分或执行失败。脚本核对新商品快照、原条件、重复请求不重读商品，并在关闭重开后比较完整结果和 Library，任务与新模板保留。未找满 10 位。
+
+模型为原免费 4B Metal、8,192 窗口，生产代码及评分规则未改。原数据在独占锁保护下复制到独立验证目录；原始材料、密钥及浏览器快照留在受忽略目录，摘要仅携带公开商品、结果字段和原文理由哈希。Shopify 网络身份仍未验证；小样本评分不等于全面质量通过。本轮模型与浏览器已正常关闭。
+
+## 公司最新代码只读核对 2026-10-25
+
+[已 fetch 的主分支](evidence/company-review-20261025/heads.json)、[实际 schema 诊断](evidence/company-review-20261025/sync-schema-check.json)。公司网络恢复，读取 Access `91c4f98` 与 Sync `d7f7046`。Sync 已有 0009、0010 和产品列；原 Linux 草稿在最新真实迁移构建的空 SQLite 上实际报 8 列/9 值错误，诊断事务已回滚，完整性和外键检查正常。
+
+这证明旧草稿需要适配，不代表最新 D1 或存量数据迁移通过。本轮没有修改公司源码或旧补丁。任何后续公司修改须先审批；当前私有审批入口为 `.scratch/company-gmail/LATEST-REVIEW.md`，旧 patch 不可直接应用。
+
 ## Gmail 输入错误修复 2026-10-25
 
 [验证摘要](evidence/gmail-input-20261025/checks.json)、[Linux 检查](evidence/gmail-input-20261025/linux-check.log)、[网页构建](evidence/gmail-input-20261025/web-build.log)、[源码 SHA-256](evidence/gmail-input-20261025/source-sha256.txt)。当前 Linux 类型检查、52 项 Cloud 检查和 8 项原邮件规则检查全部通过，无跳过；网页类型检查和构建通过。

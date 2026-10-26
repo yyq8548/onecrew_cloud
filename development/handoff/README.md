@@ -2,7 +2,7 @@
 
 更新日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，尚未上架或部署生产。用户已批准[精简输入并验证](../cloud/model/CONTEXT-WINDOW-APPROVAL.md)，保持免费 4B 和 8,192 窗口；本地真实任务已正常结束并通过数据重开检查，最终找到 5 位匹配候选，目标 10 位。本轮先处理基础功能，线上环境暂缓；完整上架目标尚未完成。
 
-用户已新增 Gmail 发送要求。本地接口、页面和公司所需补丁已完成当前检查，Linux 类型检查与相关检查通过，记录见 [验收证据](EVIDENCE.md)；真实配对和实发仍待公司服务发布及账号验收。公司补丁位于原电脑受忽略的 `.scratch/company-gmail/`，须经用户审批后交 River 合并；因包含公司代码，没有上传公开 GitHub，换电脑须私下携带。具体范围与基准见 [Gmail 接入](../cloud/ACCESS-CLOUD-APPROVAL.md)。
+用户已新增 Gmail 发送要求，Cloud 本地接口、页面、Linux 类型与相关检查通过，模板更换商品也已完整实跑，见 [验收证据](EVIDENCE.md)。公司网络已恢复，只读取得最新主分支后发现旧 Linux 迁移不兼容；后续公司源码改动先审批。私有目录 `.scratch/company-gmail/LATEST-REVIEW.md` 是当前核对与审批入口，旧 patch 不可直接应用。公司代码未上传公开 GitHub，换电脑须私下携带。具体范围与基准见 [Gmail 接入](../cloud/ACCESS-CLOUD-APPROVAL.md)，真实授权和实发仍待验收。
 
 ## 先读这几份文件
 

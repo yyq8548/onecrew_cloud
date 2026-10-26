@@ -1,0 +1,27 @@
+{"event":"cloud.workflow_started","id":"8c440724-956d-4c80-b4fc-e5f7433c0a38","product":{"id":"gid://shopify/Product/10910081482911","title":"The Puffer Mini Insulated Tote","source":"https://checkout.owalalife.com/products/puffer-mini"},"sourceTemplateId":"0880ba06-570a-45aa-8458-1645f3cf71ec"}
+{"state":"running","phase":"checking_connection","counts":null,"stage":null,"used":null,"failure_code":null}
+{"event":"cloud.keyword_usage","campaign_id":"8c440724-956d-4c80-b4fc-e5f7433c0a38","usage":{"input":236,"cached_input":0,"output":37,"reasoning_output":0}}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":0,"pending":0,"rejected":0},"stage":null,"used":null,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":0,"pending":0,"rejected":0},"stage":"searching","used":0,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":0,"pending":0,"rejected":0},"stage":"searching","used":1,"failure_code":null}
+{"state":"running","phase":"verifying","counts":{"public_page_errors":0,"qualified":0,"pending":1,"rejected":0},"stage":"verifying","used":2,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":0},"stage":"searching","used":2,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":1},"stage":"searching","used":3,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":2},"stage":"searching","used":4,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":3},"stage":"searching","used":5,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":4},"stage":"searching","used":6,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":4},"stage":"searching","used":7,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":5},"stage":"searching","used":8,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":6},"stage":"searching","used":9,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":7},"stage":"searching","used":10,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":8},"stage":"searching","used":11,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":9},"stage":"searching","used":12,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":9},"stage":"searching","used":13,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":10},"stage":"searching","used":14,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":11},"stage":"searching","used":15,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":12},"stage":"searching","used":16,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":13},"stage":"searching","used":17,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":14},"stage":"searching","used":22,"failure_code":null}
+{"state":"running","phase":"searching","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":14},"stage":"searching","used":27,"failure_code":null}
+{"state":"completed","phase":"needs_evidence","counts":{"public_page_errors":0,"qualified":1,"pending":0,"rejected":14},"stage":"needs_evidence","used":30,"failure_code":null}
+{"event":"cloud.workflow_verified","id":"8c440724-956d-4c80-b4fc-e5f7433c0a38","counts":{"qualified":1,"pending":0,"rejected":14},"persistedAfterReopen":true,"realSearchAndModel":true,"shopifyNetworkVerified":false}

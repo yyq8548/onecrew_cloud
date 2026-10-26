@@ -10,7 +10,15 @@
 
 当前 Linux 类型检查和相关检查通过，Cloud 页面构建通过，记录见[验收证据](../handoff/EVIDENCE.md)。邮件主题、正文、收件人和发件邮箱沿用原规则；无效输入返回 HTTP 400，页面提示检查后重新预览，人数只在原邮件规则中校验。
 
-Access/Sync 本地补丁、检查和待审批范围见 [Gmail 接入](ACCESS-CLOUD-APPROVAL.md)。公司网络连接超时，补丁基于本机缓存主分支；实际 Shopify 成员、Access 批准、Linux 远端登记和真实 Gmail 发送尚未验收，目前没有发送邮件。
+公司最新代码核对和待审批范围见 [Gmail 接入](ACCESS-CLOUD-APPROVAL.md)。公司网络已恢复；旧 Linux 迁移与最新产品字段不兼容，后续公司修改须先审批。实际 Shopify 成员、Access 批准、Linux 远端登记和真实 Gmail 发送尚未验收，目前没有发送邮件。
+
+## 模板更换商品的真实完整运行
+
+2026-10-25：在持有原数据独占锁时制作独立副本，将原 FreeSip 商品模板用于官方公开的 [The Puffer Mini Insulated Tote](https://checkout.owalalife.com/products/puffer-mini)，商品 ID 为 `10910081482911`。保持原 YouTube、10,000–1,000,000 粉丝和总目标 10 位，真实 4B 重新生成保温包关键词并执行搜索、读取和评分。
+
+本次保存 60 条来源、15 位候选：匹配 1 位、待核验 0 位、排除 14 位，实际发布 70 分结果到 Library。任务正常结束，`failure_code` 为 null，延期评分为零，平台调用计数 30；未找满 10 位。已逐项核对新商品快照和模板条件，重复同一模板请求没有再次读取商品；完整结果、Library、任务和新保存模板关闭重开后保留。该轮从新建任务开始完成，没有中断续跑。
+
+模型保持免费 4B Metal 和 8,192 窗口，生产代码和评分标准未改变。本地归属使用已有测试数据副本，Shopify 成员网络身份仍未验收；单个匹配结果不能作为全面质量通过。证据见 [模板换商品记录](../handoff/EVIDENCE.md)。本轮浏览器和模型已正常关闭。
 
 ## 2026-10-25 真实运行结果
 
@@ -48,6 +56,8 @@ ONECREW_MODEL_RUNTIME=macos-metal ONECREW_MODEL_SIZE=4b node development/cloud/c
 商品 JSON 是实际公开 `/products/<handle>.json` 的响应，必须含真实 `product.id`、`title`、`body_html`、`updated_at`，不能填写占位商品。脚本使用已有本地安装记录作为存储归属，不提供产品的身份绕过；不创建虚构平台响应。
 
 脚本默认完整执行，检查有评分的 Library 推荐、模板和关闭重开；未满足时明确失败并保存实际状态。最后一个可选参数为已有 Campaign ID，可恢复同一任务而保留材料。Ctrl+C 会请求停止并等待当前工作排空。
+
+验证已有模板更换商品时，在上述命令末尾追加 `--template-id <真实已保存模板ID>`，使用不同的真实商品 JSON 和页面 URL；平台与粉丝范围必须与模板一致。该选项与续跑 Campaign ID 互斥，额外核对新商品快照、条件继承和模板请求幂等。
 
 取消的真实最小检查无需模型：
 
