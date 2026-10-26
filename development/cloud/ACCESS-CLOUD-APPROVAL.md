@@ -2,6 +2,8 @@
 
 状态：用户已授权本地实现 Gmail。Cloud 接口与页面已接入；公司补丁已在隔离目录准备并完成当前本地检查，等待用户审批后交 River 合并。公司原工作目录和 Lite 未修改，没有推送、创建 MR、合并或部署公司服务，目前没有发送邮件。
 
+用户最新安排：先完成本地；等用户连接公司 Git 后，由本代理更新公司基准并验证补丁，再提交最终审批，之后由 River 合并。当前继续保留所有公司发布边界。
+
 公司 GitLab SSH 连接超时，Access 基准为本机缓存 `onecrew@a2d3e64814384602847bbfc421b600b9565faaf4`，Sync 为 `onecrew@a1ced58d41c2c0920e8bbe1bf13bc8b0651468a5`。River 合并前须取得最新主分支、检查差异及迁移编号，并重跑受影响检查。
 
 本地私有补丁和详细审批文件位于 `.scratch/company-gmail/`：`APPROVAL.md`、`access-cloud-gmail.patch`、`sync-linux-installations.patch` 和 `patch-sha256.txt`。这些包含公司代码，不上传公开 GitHub，跨电脑时须单独私下携带。发布流程位于 `docs/release/合并与部署流程.md`。
