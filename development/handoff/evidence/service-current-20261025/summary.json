@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-25",
+  "image": "onecrew-cloud-service:linux-v16-gmail",
+  "imageId": "sha256:9174e7cd0184fe587ae96c1655a8dbc63eb3ff70b48fa422afe3118b6cf34b9a",
+  "architecture": "arm64",
+  "user": "node",
+  "defaultLocalTag": "onecrew-cloud-service:linux-check",
+  "previousImage": "f18a613c2af1",
+  "build": {
+    "dockerfile": "development/cloud/service/Dockerfile",
+    "completeRepositoryBuild": true,
+    "privateIncrementalBaseRequired": false,
+    "status": "passed",
+    "logSha256": "db5090fc55665a142a146ff036e1a19156ed7df46d83108a22fb875ced118b74",
+    "validation": [
+      "frozen lockfile dependencies",
+      "Library builds",
+      "Cloud web build",
+      "application typecheck"
+    ]
+  },
+  "artifactCheck": {
+    "kind": "actual_current_linux_image_artifact_check",
+    "sourceFilesMatched": 196,
+    "node": "v26.7.0",
+    "pnpm": "10.32.1",
+    "uid": 1000,
+    "compactScoringVersion": 16,
+    "cloudWebArtifactPresent": true,
+    "gmailSourceMatched": true,
+    "cliStorageInitialized": true,
+    "productionServerStarted": false,
+    "realShopifyIdentityVerified": false,
+    "gmailOAuthAndSendVerified": false
+  },
+  "artifactLogSha256": "75c8f99d25f7d1754f4b5ad7bab1d890fd2148948201d5c2e5b404abde36b561",
+  "cleanedOldImages": [
+    "f9175d539c69",
+    "9eed979e5829"
+  ],
+  "oldImageContainerReferencesBeforeCleanup": 0,
+  "sharedDependencyLayersPreserved": true,
+  "modelAndBrowserImagesAndUserDataPreserved": true,
+  "existingRelevantChecksReused": "development/handoff/evidence/gmail-input-20261025/checks.json",
+  "externalDeployment": false,
+  "companySourceIncluded": false
+}

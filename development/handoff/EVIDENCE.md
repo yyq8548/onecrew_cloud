@@ -2,11 +2,21 @@
 
 本目录携带模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## 当前完整 Linux 镜像 2026-10-25
+
+[构建与验证摘要](evidence/service-current-20261025/summary.json)、[196 份镜像文件哈希](evidence/service-current-20261025/image-sources.sha256)、[实际产物与初始化检查](evidence/service-current-20261025/artifact-check.log)、[清理后实际镜像](evidence/service-current-20261025/images-after-cleanup.log)。
+
+从仓库完整 Dockerfile 构建 v16/Gmail 成功，包含按锁文件安装依赖、Library 与 Cloud 网页构建、应用类型检查；不依赖私有旧增量镜像。镜像内相关源码与当前仓库一致，非 root Node 26.7.0、pnpm 10.32.1 及真实 CLI 私有存储初始化通过。复用源码仍一致的 52 项 Cloud 与 8 项原邮件规则检查，没有再次调用模型或平台。
+
+当前镜像 `9174e7cd0184`，上一版 `f18a613c2af1`；已确认无容器引用并移除旧 `f9175d539c69`、`9eed979e5829`。共享依赖层、模型、浏览器及用户数据保留。没有启动生产服务、对外部署或验证真实 Shopify/Gmail 授权。
+
 ## 模板更换商品完整运行 2026-10-25
 
 [派生摘要](evidence/template-product-20261025/summary.json)、[实际进度字段](evidence/template-product-20261025/progress.jsonl)、[验证脚本 SHA-256](evidence/template-product-20261025/source-sha256.txt)。原 FreeSip 模板用于新的真实保温托特包，继承 YouTube、10,000–1,000,000 粉丝及目标 10 位，重新生成三条保温包关键词。
 
 任务从新建开始正常结束，60 条来源、15 位候选、1 位匹配、0 待核验、14 位排除；70 分结果实际发布 Library，30 次平台调用，无延期评分或执行失败。脚本核对新商品快照、原条件、重复请求不重读商品，并在关闭重开后比较完整结果和 Library，任务与新模板保留。未找满 10 位。
+
+[排除原因核对](evidence/template-product-20261025/rejection-audit.json)逐项检查原保存结果：14 位排除候选均有已验证的 `below_min_subscribers` 记录，原生粉丝规范化数量为 27–9,750，商品评分为空。该轮数量不足主要受搜索覆盖和粉丝条件限制，不能据此认定发生 14 次相关性错判。核对没有新增模型或平台调用，未改变原条件或评分政策。
 
 模型为原免费 4B Metal、8,192 窗口，生产代码及评分规则未改。原数据在独占锁保护下复制到独立验证目录；原始材料、密钥及浏览器快照留在受忽略目录，摘要仅携带公开商品、结果字段和原文理由哈希。Shopify 网络身份仍未验证；小样本评分不等于全面质量通过。本轮模型与浏览器已正常关闭。
 
@@ -75,17 +85,17 @@ Access/Sync 本地类型检查、Access 配对合同与构建、九个 Sync 迁�
 
 正式可用检查入口在 `development/cloud/check-workflow.mjs` 和 `development/cloud/browser/check-read-cancel.mjs`。归档日志只替换旧电脑工作区路径，没有删除或改写业务结果；数据库、密钥、快照仍不进入 Git。
 
-## 当前有效记录
+## 其他版本记录
 
 | 证据 | 路径与用途 |
 | --- | --- |
 | v15 五次实际 4B 评分与零模型粉丝预筛选 | [v15-live](evidence/v15-live/)、[状态汇总](evidence/current/v15-live-20261024-a-status.log) |
 | 可直接审阅的真实输出及原文 | [v15-score-cases.json](evidence/current/v15-score-cases.json)；来自上述真实日志，不是人工批量标注 |
 | Linux 类型检查与 49 项 Cloud 检查 | [检查日志](evidence/current/cloud-promo-linux-check.log) |
-| 当前 v15 镜像构建、依赖层与实际初始化 | [构建](evidence/current/service-v15-build.log)、[层记录](evidence/current/service-v15-layer-check.jsonl)、[CLI 初始化](evidence/current/service-v15-artifact-check.log) |
+| 上一版 v15 镜像构建、依赖层与实际初始化 | [构建](evidence/current/service-v15-build.log)、[层记录](evidence/current/service-v15-layer-check.jsonl)、[CLI 初始化](evidence/current/service-v15-artifact-check.log) |
 | 已验证的三个核心源码哈希 | [SHA256](evidence/current/service-v15-validated.sha256)；路径以 onecrew_lite-app 为基准 |
 | 旧验证镜像清理 | [清理日志](evidence/current/service-v15-old-images-cleanup.log) |
-| 每份导出记录的来源、大小与 SHA256 | [manifest.json](evidence/manifest.json) |
+| 首次交接导出记录的来源、大小与 SHA256 | [manifest.json](evidence/manifest.json) |
 
 当前结果及其适用边界仍以 [模型记录](../cloud/model/README.md#当前评分验证)、[服务记录](../cloud/SERVICE.md#linux-本地验收) 为准。实际评分只有三位独立作者，不能从五次成功推断人工一致率、完整促销覆盖或批量 P95。
 

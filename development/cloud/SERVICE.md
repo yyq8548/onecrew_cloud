@@ -4,7 +4,7 @@
 
 Gmail 已完成本地接口和页面接入，替换原 501 空接口。复用原 Access 授权、发送确认与回执，使用店铺成员到 Access 用户的映射及成员独立邮件数据库。当前 Linux 类型检查和相关检查通过，见[验收证据](../handoff/EVIDENCE.md)。原邮件规则拒绝的无效输入返回 HTTP 400 与 `gmail_bulk_invalid_input`，其他错误继续按原错误类型返回；实际授权、Linux 登记和发信待公司补丁审批、发布及真实账号验收，见 [Gmail 接入范围](ACCESS-CLOUD-APPROVAL.md)。
 
-2026-10-25：当前为[最简单版本的本地基础流程](BASIC-WORKFLOW.md)。用户批准 v16 精简输入，保持免费 4B 和 8,192 窗口，完整材料留库；实际任务保存 60 条 YouTube 来源、20 位候选、5 位匹配、2 位待核验、13 位排除。已修复关闭自动扩词后仍发送长请求的问题，原任务恢复正常结束，Library、模板与完整结果关闭重开一致。Linux 类型检查和 50 项 Cloud 检查通过，两个原超长材料输入缩减至 1,002、1,322 token。默认 10 位未找满，宽泛品类仍有漏判；旧 v15 镜像仅作为依赖基准，不包含本轮源码，当前检查以只读挂载最终源码的记录为准。
+2026-10-25：当前为[最简单版本的本地基础流程](BASIC-WORKFLOW.md)。用户批准 v16 精简输入，保持免费 4B 和 8,192 窗口，完整材料留库；实际任务保存 60 条 YouTube 来源、20 位候选、5 位匹配、2 位待核验、13 位排除。原任务恢复正常结束，Library、模板与完整结果关闭重开一致；另一个真实商品的模板任务也已完成。Gmail 后续改动的 52 项 Cloud 检查和 8 项原邮件规则检查通过，两个原超长材料输入缩减至 1,002、1,322 token。默认 10 位未找满，宽泛品类仍有漏判。当前完整 Linux 镜像已包含 v16 与 Gmail，从仓库 Dockerfile 构建通过，见下文产物验证。
 
 ## Shopify 应用配置
 
@@ -169,7 +169,7 @@ Discovery 执行器通过公开 Reader 接口复用原实现。云端依赖工�
 
 ## Linux 本地验收
 
-当前 v16 使用既有 Linux 依赖镜像，只读挂载最终 `src` 和 `tests` 后完成类型检查及 50 项 Cloud 检查，无跳过，耗时 31,970 毫秒，日志为 `.scratch/compact-linux-accepted.log`。没有新增镜像或生产部署。以下镜像和源码哈希记录属于 v15 历史基线；新电脑须从仓库完整 Dockerfile 构建当前源码。
+当前完整镜像为 `onecrew-cloud-service:linux-check` / `linux-v16-gmail`，ID `9174e7cd0184`，Linux arm64。实际从仓库 `development/cloud/service/Dockerfile` 构建，按锁文件安装依赖，完成 Library 构建、Cloud 网页构建和后端类型检查，不依赖私有增量基准。镜像包含 v16 精简评分与 Gmail 本地实现。
 
 在仓库根目录构建并运行专用验收镜像：
 
@@ -178,21 +178,17 @@ docker build -f development/cloud/service/Dockerfile -t onecrew-cloud-service:li
 docker run --rm --network none onecrew-cloud-service:linux-check
 ```
 
-当前源码使用 paragraph classification v15，复用任务关键词、选择段落编号并由代码复制原文，命中已批准合作或优惠表达时先待核验。本次以已验证的 `onecrew-cloud-service:linux-quoted-client`（`9eed979e5829`）为依赖环境，只读挂载当前 `campaign-scoring.ts` 和 `campaign-service.ts`，Linux 类型检查与全部 49 项 Cloud 检查通过，30,726 毫秒、无跳过，日志为 `.scratch/cloud-promo-linux-check.log`。两份当前源码 SHA256 分别为 `00ad2048ebaac249276766480698371ef2321bf8958e285f9574041d1e465fcf`、`5a809b8b18616d7e5d303b7a2447f46215fc0e2dbc4996eb4dc33692745e5f57`。
+实际产物验证逐一核对 196 份相关源码、合同输入和锁文件的 SHA256，与当前仓库一致；确认 `dist-cloud/cloud.html` 存在，以镜像原 `node` 用户执行真实 CLI 私有存储初始化成功，Node 为 26.7.0，pnpm 为 10.32.1。容器未联网，没有使用 Shopify/Gmail 假凭据或用户数据，没有启动生产 HTTP 服务。证据见[镜像摘要](../handoff/evidence/service-current-20261025/summary.json)、[源码哈希](../handoff/evidence/service-current-20261025/image-sources.sha256)、[实际初始化](../handoff/evidence/service-current-20261025/artifact-check.log)。
 
-本地默认验证镜像现为 `onecrew-cloud-service:linux-check` / `linux-score-v15`，ID 为 `f18a613c2af1`。它在上述已验证依赖环境中仅新增两份 Cloud 源码层；层前缀核对通过，镜像内两份源码及模型客户端的 SHA256 与已验证文件一致，因此复用上述 49 项检查证据。镜像内实际 CLI 已成功执行独立数据初始化，目录权限为 0700、密钥及 SQLite 为 0600，实际网页入口 `dist-cloud/cloud.html` 存在。验收没有提供虚构 Shopify 凭据，不代表真实安装或 HTTP 业务验收。
+当前源文件的 Linux 52 项 Cloud 检查和 8 项原邮件规则检查已有有效证据，见 [Gmail 输入检查](../handoff/evidence/gmail-input-20261025/checks.json)。本次源码与依赖清单未变化，复用该记录；新增验证针对完整构建和镜像产物，不将初始化或文件哈希当作真实店铺、平台账号、Gmail 授权与发送验收。
 
-构建和产物记录分别为 `.scratch/service-v15-build.log`、`.scratch/service-v15-layer-check.jsonl`、`.scratch/service-v15-artifact-check.log`；构建入口为 `.scratch/Dockerfile-service-v15`。验收容器以原 `node` 用户运行并自动删除，没有挂载用户数据。此次只更新本地验证镜像，没有部署或对外发布。
+上一版 `f18a613c2af1` 保留为 `linux-check-previous` / `linux-score-v15`。确认没有容器引用后，已删除旧 v12 `f9175d539c69` 和旧增量基准 `9eed979e5829`；当前、上一版以及仍共享的依赖层、模型、浏览器和用户数据保留。清理后镜像见[实际列表](../handoff/evidence/service-current-20261025/images-after-cleanup.log)。本次仅完成本地产物，没有部署或对外发布。
 
-上一版 `f9175d539c69` 保留为 `linux-check-previous` / `linux-score-v12`，`9eed979e5829` 保留为增量构建基准。确认没有容器引用后，已移除旧 `linux-classification-v4`（`85bb19d07276`）和 `linux-score-v3`（`c9897920e7f0`）；清理日志为 `.scratch/service-v15-old-images-cleanup.log`。当前镜像复用的依赖共享层继续保留，不将共享层计为已回收空间。
-
-广告、水杯、防晒、无关商品及粉丝预筛选的保存响应回放通过，回放不调用模型。当前 v15 的五项真实 4B 评分及零模型粉丝预筛选也已通过：耗时 12.7–18.8 秒，每项评分一次调用，模型已正常停止。原材料和原任务不变；仅三位独立作者的小样本，不能替代批量质量、P95 或完整业务验收，详见[当前评分验证](model/README.md#当前评分验证)。
-
-镜像使用 Linux Node 26.7.0 与 pnpm 10.32.1，按原锁文件安装依赖，从源码构建 Library 和 Cloud 网页并执行后端类型检查。容器以非 root 用户运行现有 `cloud-*.test.ts`，使用本地回环 HTTP、真实 SQLite/PGlite 与独立临时数据目录，覆盖身份拒绝、店铺隔离、任务恢复、隐私处理和冷备份恢复。固定测试数据库仅用于验证存储与投影合同；真实 Shopify、四平台账号和模型质量仍分别验收。
+Dockerfile 的默认命令用于本地 Cloud 检查，真实 Shopify、四平台账号和模型质量分别验收，见[基础流程](BASIC-WORKFLOW.md)与[当前评分验证](model/README.md#当前评分验证)。
 
 ## 已有验证
 
-- Linux arm64 的 v12 基线：评分规则、证据优先顺序及条件数量约束对应的 44 项检查通过，无跳过，耗时 33,358 毫秒；日志为 `.scratch/service-linux-score-v12-build.log`、`.scratch/service-linux-score-v12-check.log`。该镜像 `f9175d539c69` 现为上一版，当前默认镜像与验证以本节 v15 记录为准。此前已移除旧镜像 `7e648365e68f` 及 13 条独有缓存，回收 925 MB，日志为 `.scratch/cleanup-score-v12-cache.log`。
+- Linux arm64 的 v12 历史基线：44 项检查通过，无跳过，耗时 33,358 毫秒；日志为 `.scratch/service-linux-score-v12-build.log`、`.scratch/service-linux-score-v12-check.log`。该旧镜像已清理，当前默认镜像与验证以上文 v16/Gmail 记录为准。
 - 本机 9 项相关检查通过；同一免费 4B 的 Metal 真实评分约 19–23 秒。相关防晒样本为 95 分、引用说明和标题，无关工业钻床不推荐，粉丝超限由代码排除；三项通过原审核且未写回原任务。记录见 [当前评分验证](model/README.md#当前评分验证)。批量质量、性能与完整业务仍待验收，允许的纠正错误、范围和次数保持不变。
 - Docker 已恢复运行。按精确缓存 ID 清理已确认属于旧 Cloud 构建、非共享且不在保留构建链中的记录，分别回收 2.712 GB 与 2.628 GB。镜像、容器、卷、账号数据和模型权重保留。证据为 `.scratch/cleanup-old-service-cache.log`、`.scratch/cleanup-replaced-service-cache.log`。后续每次新版验证后按同一清理边界处理。
 - 本次服务镜像升级后，删除已被替换且无容器引用的 `7a4f1638c86c`，并按精确 ID 清理其 13 项私有缓存，另回收 925 MB。当前与上一版保留；证据为 `.scratch/cleanup-evidence-service-cache.log`。

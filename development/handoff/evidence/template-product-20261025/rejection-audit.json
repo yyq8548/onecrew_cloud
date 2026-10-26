@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-25",
+  "kind": "audit_of_saved_actual_template_workflow",
+  "campaignId": "8c440724-956d-4c80-b4fc-e5f7433c0a38",
+  "sourceSha256": "631e47732a4003b5fca4302864f9357698a9e7e6ac78771d3ee6110e04849042",
+  "candidateCount": 15,
+  "qualifiedCount": 1,
+  "rejectedCount": 14,
+  "allRejectedHaveVerifiedBelowMinimumFinding": true,
+  "configuredMinimum": 10000,
+  "configuredMaximum": 1000000,
+  "targetCount": 10,
+  "rejectedNativeNormalizedRange": {
+    "minimum": 27,
+    "maximum": 9750
+  },
+  "rejectionReasonCounts": {
+    "selection_mismatch": 14,
+    "below_min_subscribers": 14,
+    "requirement_unverified": 14
+  },
+  "qualifiedScores": [
+    70
+  ],
+  "newPlatformCalls": 0,
+  "newModelCalls": 0,
+  "scoringPolicyChanged": false,
+  "conclusion": "All 14 exclusions in this saved run have a verified follower-below-minimum finding; they are not evidence of 14 semantic relevance failures.",
+  "limitations": [
+    "Search coverage still did not reach the target of 10.",
+    "This audit does not establish broader model quality or production acceptance."
+  ]
+}
