@@ -15,7 +15,7 @@ export const creatorSyncLimits = Object.freeze({ max_snapshot_bytes: 32 * 1024 *
 export const accessCredentialMetadataSchema = z.object({
   installation_id: uuid, credential_id: uuid, access_user_id: identifier, access_device_id: z.string().regex(/^dev_[A-Za-z0-9_-]{24}$/u),
   source_instance_id: uuid, access_pairing_id: z.string().regex(/^pair_[A-Za-z0-9_-]{24}$/u),
-  client_platform: z.enum(["macos", "windows"]), app_version: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9.+-]{0,63}$/u),
+  client_platform: z.enum(["macos", "windows", "linux"]), app_version: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9.+-]{0,63}$/u),
   status: z.enum(["active", "revoked", "invalidated"]), revision: positive,
   created_at: unsigned, updated_at: unsigned, last_seen_at: unsigned.nullable().optional(), revoked_at: unsigned.nullable().optional(),
   protocol: z.literal("reacher.creator_sync"), protocol_version: z.literal(1),

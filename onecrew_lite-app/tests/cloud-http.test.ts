@@ -31,6 +31,9 @@ test("real cloud HTTP listener rejects unauthenticated store APIs and unsigned w
     for (const path of ["/api/campaigns/example/results", "/api/campaigns/example/hits/example/material?revision=1"]) assert.equal((await fetch(`${server.origin}${path}`)).status, 401, path);
     for (const [path, method] of [["/api/privacy/requests", "GET"], ["/api/privacy/requests/example/export", "GET"], ["/api/privacy/requests/example/delivered", "POST"]] as const) assert.equal((await fetch(`${server.origin}${path}`, { method })).status, 401, path);
     assert.equal((await fetch(`${server.origin}/api/connections/disconnect`, { method: "POST" })).status, 401);
+    for (const path of ["pair", "connect", "disconnect", "prepare", "readback"]) assert.equal((await fetch(`${server.origin}/api/mail/${path}`, { method: "POST" })).status, 401);
+    for (const path of ["recipients", "batches"]) assert.equal((await fetch(`${server.origin}/api/mail/${path}`)).status, 401);
+    assert.equal((await fetch(`${server.origin}/mail/pairing/callback`)).status, 400);
     for (const [path, method] of [["/api/campaign-templates", "GET"], ["/api/campaign-templates", "POST"], ["/api/campaign-templates/example", "GET"], ["/api/campaign-templates/example/generate", "POST"]] as const) assert.equal((await fetch(`${server.origin}${path}`, { method })).status, 401, path);
     const invalid = await fetch(`${server.origin}/api/products`, { headers: { authorization: `Bearer ${secret}` } });
     assert.equal(invalid.status, 401);

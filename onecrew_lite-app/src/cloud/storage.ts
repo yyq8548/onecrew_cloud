@@ -10,6 +10,7 @@ import { ShopifyInstallationStore } from "../shopify/installation-store.ts";
 import { BrowserSnapshotStore } from "./browser-snapshot-store.ts";
 import { CampaignJobStore } from "./campaign-jobs.ts";
 import { CampaignTemplateStore } from "./campaign-templates.ts";
+import { CloudMailStore } from "./mail-store.ts";
 
 export async function openCloudStorage(directory: string, initialize = false) {
   if (!isAbsolute(directory)) throw new Error("cloud.absolute_data_directory_required");
@@ -42,6 +43,8 @@ export async function openCloudStorage(directory: string, initialize = false) {
   opening.defer(() => browserSnapshots.close());
   const campaignJobs = new CampaignJobStore(database);
   const campaignTemplates = new CampaignTemplateStore(database);
+  const mail = new CloudMailStore(database, key);
+  opening.defer(() => mail.close());
   const ownership = opening.move();
-  return { lease, installations, browserSnapshots, campaignJobs, campaignTemplates, close: () => ownership.disposeAsync() };
+  return { lease, installations, browserSnapshots, campaignJobs, campaignTemplates, mail, close: () => ownership.disposeAsync() };
 }

@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-25",
+  "kind": "derived_local_verification_summary",
+  "cloud_linux": { "typecheck": "passed", "tests": 51, "passed": 51, "failed": 0, "skipped": 0, "duration_ms": 31984.479848, "log": "linux-check.log" },
+  "cloud_web": { "typecheck": "passed", "build": "passed", "log": "web-build.log" },
+  "company_access": { "base": "a2d3e64814384602847bbfc421b600b9565faaf4", "worker_typecheck": "passed", "web_typecheck": "passed", "cloud_contract_tests": 1, "cloud_contract_passed": 1, "web_build": "passed" },
+  "company_sync": { "base": "a1ced58d41c2c0920e8bbe1bf13bc8b0651468a5", "worker_typecheck": "passed", "admin_typecheck": "passed", "local_d1_migrations": 9, "integrity": "ok", "foreign_key_violations": 0, "installation_rows": 0, "enrollment_rows": 0, "mutation_rows": 0, "populated_snapshot_migration_verified": false },
+  "company_network": { "fetch": "ssh_port_22_timed_out", "latest_base_verified": false, "pushed": false, "merged": false, "deployed": false },
+  "integration": { "shopify_member_to_access_pairing_verified": false, "remote_linux_enrollment_verified": false, "gmail_authorization_verified": false, "email_sent": false },
+  "private_company_artifacts": ".scratch/company-gmail/APPROVAL.md and patches; transfer privately",
+  "private_company_logs": ".scratch/gmail-access-*.log and .scratch/gmail-sync-*.log"
+}

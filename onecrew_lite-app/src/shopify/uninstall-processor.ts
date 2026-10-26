@@ -4,6 +4,7 @@ import { ShopRuntimeRegistry } from "../cloud/shop-runtime-registry.ts";
 import { ShopifyInstallationStore, type ShopifyWebhookReceipt, type VerifiedWebhookEnvelope } from "./installation-store.ts";
 import type { ShopBrowserManager } from "../cloud/shop-browser-manager.ts";
 import type { ShopifyPrivacyService } from "./privacy-service.ts";
+import type { CloudMailStore } from "../cloud/mail-store.ts";
 
 // 单写进程内串行排空，持久收件负责崩溃后的恢复。
 export class ShopifyUninstallProcessor {
@@ -14,13 +15,15 @@ export class ShopifyUninstallProcessor {
   readonly #onFailure: (error: unknown) => void;
   readonly #browsers: ShopBrowserManager | undefined;
   readonly #privacy: ShopifyPrivacyService | undefined;
+  readonly #mail: CloudMailStore | undefined;
   #failure: unknown;
   #closed = false;
 
-  constructor(store: ShopifyInstallationStore, runtimes: ShopRuntimeRegistry, onFailure: (error: unknown) => void, browsers?: ShopBrowserManager, privacy?: ShopifyPrivacyService) {
+  constructor(store: ShopifyInstallationStore, runtimes: ShopRuntimeRegistry, onFailure: (error: unknown) => void, browsers?: ShopBrowserManager, privacy?: ShopifyPrivacyService, mail?: CloudMailStore) {
     this.#store = store; this.#runtimes = runtimes; this.#onFailure = onFailure;
     this.#browsers = browsers;
     this.#privacy = privacy;
+    this.#mail = mail;
   }
 
   assertHealthy(): void {
@@ -37,7 +40,7 @@ export class ShopifyUninstallProcessor {
   #schedule(receipt: ShopifyWebhookReceipt): void {
     if ((receipt.topic !== "APP_UNINSTALLED" && !this.#privacy) || receipt.completed_at !== null || this.#scheduled.has(receipt.webhook_id)) return;
     // 即使前方有其他店铺等待排空，本店铺也立即取消准入和账户上下文。
-    if (receipt.lifecycle_revision !== null) { this.#runtimes.suspend(receipt.shop); this.#browsers?.suspend(receipt.shop); }
+    if (receipt.lifecycle_revision !== null) { this.#mail?.disableShop(receipt.shop); this.#runtimes.suspend(receipt.shop); this.#browsers?.suspend(receipt.shop); }
     this.#scheduled.add(receipt.webhook_id);
     void this.#queue.add(async () => {
       if (this.#failure !== undefined) throw new CloudHttpError("cloud.uninstall_processor_unavailable", 503);

@@ -9,6 +9,7 @@ import { openCloudLibrary, ShopLibraryService } from "./shop-library.ts";
 import { CloudCampaignService } from "./campaign-service.ts";
 import { ServerSemanticClient, type ServerSemanticConfiguration } from "../discovery/server-semantic-client.ts";
 import { ShopifyPrivacyService } from "../shopify/privacy-service.ts";
+import { CloudMailService } from "./mail-service.ts";
 
 interface CloudApplicationOptions {
   readonly directory: string;
@@ -34,13 +35,14 @@ export async function startCloudApplication(options: CloudApplicationOptions) {
   const runtimes = new ShopRuntimeRegistry();
   opening.defer(() => runtimes.close());
   const data = new ShopDataService(storage.lease, storage.installations, runtimes);
+  const mail = new CloudMailService({ lease: storage.lease, store: storage.mail, installations: storage.installations, data, applicationUrl: options.shopify.applicationUrl, onFailure: options.reportFailure });
   const library = new ShopLibraryService(tables, data, options.shopify.applicationUrl);
   const campaigns = options.model && browsers ? new CloudCampaignService({ data, installations: storage.installations, jobs: storage.campaignJobs, templates: storage.campaignTemplates, browsers, library, model: new ServerSemanticClient(options.model), reportFailure: options.reportFailure, onFatal: options.onBackgroundFailure }) : undefined;
-  const privacy = new ShopifyPrivacyService({ installations: storage.installations, data, library, jobs: storage.campaignJobs, templates: storage.campaignTemplates, snapshots: storage.browserSnapshots, ...(browsers ? { browsers } : {}) });
-  const uninstalls = new ShopifyUninstallProcessor(storage.installations, runtimes, options.onUninstallFailure, browsers, privacy);
+  const privacy = new ShopifyPrivacyService({ installations: storage.installations, data, library, jobs: storage.campaignJobs, templates: storage.campaignTemplates, snapshots: storage.browserSnapshots, mail: { store: storage.mail, lease: storage.lease }, ...(browsers ? { browsers } : {}) });
+  const uninstalls = new ShopifyUninstallProcessor(storage.installations, runtimes, options.onUninstallFailure, browsers, privacy, storage.mail);
   opening.defer(() => uninstalls.close());
   await uninstalls.recover();
-  const http = await listenCloudHttp({ shopify: options.shopify, installations: storage.installations, uninstalls, data, library, campaignJobs: storage.campaignJobs, ...(campaigns ? { campaigns } : {}), ...(browsers ? { browsers } : {}), ...(options.webDirectory ? { webDirectory: options.webDirectory } : {}), reportFailure: options.reportFailure }, options.port);
+  const http = await listenCloudHttp({ shopify: options.shopify, installations: storage.installations, uninstalls, data, library, mail, campaignJobs: storage.campaignJobs, ...(campaigns ? { campaigns } : {}), ...(browsers ? { browsers } : {}), ...(options.webDirectory ? { webDirectory: options.webDirectory } : {}), reportFailure: options.reportFailure }, options.port);
   opening.defer(() => http.close());
   const ownership = opening.move();
   let closing: Promise<void> | undefined;

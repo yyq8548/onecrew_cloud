@@ -1,6 +1,6 @@
 # OneCrew Cloud
 
-面向 Shopify 后台的独立云端版本，继承 Lite 的创作者搜索、Campaign、证据评分和 Library。服务器运行浏览器与开源模型，商家无需安装客户端。邮件本轮仅保留未启用的接口。
+面向 Shopify 后台的独立云端版本，继承 Lite 的创作者搜索、Campaign、证据评分和 Library。服务器运行浏览器与开源模型，商家无需安装客户端。Gmail 本地代码已接入，实际授权和发信仍依赖公司服务改动通过审批并发布，见 [Gmail 接入范围](development/cloud/ACCESS-CLOUD-APPROVAL.md)。
 
 仓库：https://github.com/yyq8548/onecrew_cloud.git。导入来源为 Lite 提交 `1ac72b654eaf823df6c14ce512e34c6c43ddd8f2`，来源和进度见 [开发记录](development/CLOUD-IMPLEMENTATION.md)。目录和包标识保留 `onecrew_lite-*` 以便复用；本仓库不依赖相邻 Lite 源码或账号目录。
 
@@ -36,7 +36,7 @@ node --test --test-concurrency=4 onecrew_lite-app/tests/cloud-*.test.ts
 
 Cloud 启动方法与当前验证范围见 [Cloud HTTP 服务](development/cloud/SERVICE.md)。Linux 浏览器构建与边界见 [浏览器环境](development/cloud/browser/README.md)。继承代码的构建说明见 [development/README.md](development/README.md)，桌面安装内容不作为云端部署入口。
 
-免费模型的固定权重、Linux CPU 配置、本机 Metal 验证和实际性能见 [模型验证](development/cloud/model/README.md)。待填写的 [Shopify 应用配置模板](development/cloud/shopify.app.toml.example)对应当前权限和 Webhook 路由，需真实开发应用与 HTTPS 地址后才能使用。按用户当前要求，邮件本轮暂不接入，Access/Sync 保持只读。
+免费模型的固定权重、Linux CPU 配置、本机 Metal 验证和实际性能见 [模型验证](development/cloud/model/README.md)。待填写的 [Shopify 应用配置模板](development/cloud/shopify.app.toml.example)对应当前权限和 Webhook 路由，需真实开发应用与 HTTPS 地址后才能使用。Gmail 复用原授权、发送确认、持久记录与真实回执；公司补丁只在隔离本地目录准备，等待用户审批后由 River 合并。
 
 不购买付费服务。账号凭据、浏览器会话、模型权重、数据库和依赖缓存不提交。第三方许可证保留在所属模块；当前项目没有整体开源授权声明。
 

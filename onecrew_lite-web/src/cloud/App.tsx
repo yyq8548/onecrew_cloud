@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cloudApi, installation, products, platformLabels, platform as platformSchema, type Platform } from './api';
 import Campaign from './Campaign';
 import PrivacyRequests from './PrivacyRequests';
+import Mail from './Mail';
 const RemoteBrowser = lazy(() => import('./RemoteBrowser'));
 
 export default function CloudApp() {
@@ -48,6 +49,7 @@ export default function CloudApp() {
     {workspace && <Campaign key={workspace.workspace.shop} catalog={catalog} disabled={login !== null || disconnecting !== null} loadingProducts={loading} onMoreProducts={() => void moreProducts()} onBusyChange={setCampaignBusy} />}
     {login && <Suspense fallback={<p role="status">正在加载登录窗口…</p>}><RemoteBrowser platform={login} onClose={() => setLogin(null)} /></Suspense>}
     {workspace && <PrivacyRequests key={`privacy-${workspace.workspace.shop}`} />}
+    {workspace && <Mail key={`mail-${workspace.workspace.shop}`} />}
     <footer className="text-xs text-muted-foreground"><a href="/licenses/NOTICE.txt" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">开源软件声明</a></footer>
   </main>;
 }

@@ -13,7 +13,7 @@ const installationSchema = z.object({ installation_id: fields.installation_id, c
   source_instance_id: fields.source_instance_id, client_platform: fields.client_platform, app_version: fields.app_version,
   status: z.enum(["active", "revoked"]), revision: fields.revision, created_at: fields.created_at, updated_at: fields.updated_at,
   last_seen_at: fields.last_seen_at, revoked_at: fields.revoked_at }).strict();
-export interface AccessPairingCandidate { installationId: string; credentialId: string; bearer: Buffer; platform: "windows" | "macos"; appVersion: string }
+export interface AccessPairingCandidate { installationId: string; credentialId: string; bearer: Buffer; platform: "windows" | "macos" | "linux"; appVersion: string }
 type HttpResult = { status: number; body: unknown } | { status: "transport" };
 const fail = (code = "access.enrollment_recovery_required") => new AccessVerificationError(code);
 

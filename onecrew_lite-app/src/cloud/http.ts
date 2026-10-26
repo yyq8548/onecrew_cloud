@@ -25,6 +25,9 @@ import { CloudCampaignService } from "./campaign-service.ts";
 import { CampaignJobStore, createCloudCampaign, startCloudCampaign } from "./campaign-jobs.ts";
 import { generateFromTemplate, saveCampaignTemplate } from "./campaign-templates.ts";
 import { AccountChangedError } from "../identity/account-context.ts";
+import { AccessVerificationError } from "../identity/access-verification.ts";
+import { MailAccessError } from "../mail/access-mail-client.ts";
+import type { CloudMailService } from "./mail-service.ts";
 
 interface CloudHttpOptions {
   readonly shopify: ShopifyConfiguration;
@@ -37,10 +40,13 @@ interface CloudHttpOptions {
   readonly library?: ShopLibraryService;
   readonly campaigns?: CloudCampaignService;
   readonly campaignJobs?: CampaignJobStore;
+  readonly mail?: CloudMailService;
   readonly reportFailure: (failure: { requestId: string; code: string; errorClass: string }) => void;
 }
 type HttpEnvironment = { Variables: { requestId: string; identity: VerifiedShopifySession } };
 const productsQuery = z.strictObject({ first: z.coerce.number().int().min(1).max(100).default(25), after: z.string().min(1).max(4096).optional() });
+const mailDraft = z.strictObject({ mailbox_ref_id: z.string().min(1), subject: z.string(), body: z.string(),
+  recipients: z.array(z.strictObject({ email: z.string(), source: z.string() })).min(1).max(100) });
 
 export function createCloudHttpApp(options: CloudHttpOptions) {
   const client = createShopifyClient(options.shopify);
@@ -85,6 +91,7 @@ export function createCloudHttpApp(options: CloudHttpOptions) {
     return access;
   }
   function campaigns() { if (!options.campaigns) throw new CloudHttpError("cloud.campaigns_not_configured", 503); return options.campaigns; }
+  function mail() { if (!options.mail) throw new CloudHttpError("cloud.mail_not_configured", 503); return options.mail; }
   function browserAvailable(shop: string) { if (options.campaignJobs?.busy(shop)) throw new CloudHttpError("cloud.campaign_busy", 409); }
   app.post("/api/shopify/install", async context => {
     options.uninstalls.assertHealthy();
@@ -328,13 +335,51 @@ export function createCloudHttpApp(options: CloudHttpOptions) {
     store.confirmCustomerDataDelivery(access.identity.shop, id);
     return context.json({ delivered: true });
   });
-  app.get("/api/mail/status", context => {
-    assertInstalled(context.get("identity").shop);
-    return context.json({ enabled: false, reason: "not_implemented" });
+  app.get("/mail/pairing/callback", async context => {
+    const input = z.strictObject({ code: z.string().regex(/^reacher_pairing_v1\.[A-Za-z0-9_-]{43}$/u), state: z.string().regex(/^[A-Za-z0-9_-]{43}$/u) }).parse(context.req.query());
+    await mail().complete(input.code, input.state);
+    context.header("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+    return context.text("OneCrew 授权完成。请返回 Shopify 页面，刷新邮箱连接。");
   });
-  app.post("/api/mail/send", context => {
-    assertInstalled(context.get("identity").shop);
-    throw new CloudHttpError("cloud.mail_not_implemented", 501);
+  app.get("/api/mail/status", async context => {
+    const access = await campaignAccess(context);
+    return context.json(await mail().status(access.identity.shop, access.identity.userId));
+  });
+  app.post("/api/mail/pair", async context => {
+    z.strictObject({}).parse(await context.req.json());
+    const access = await campaignAccess(context);
+    return context.json(mail().begin(access.identity.shop, access.identity.userId));
+  });
+  app.post("/api/mail/connect", async context => {
+    z.strictObject({}).parse(await context.req.json());
+    const access = await campaignAccess(context);
+    return context.json(await mail().connect(access.identity.shop, access.identity.userId));
+  });
+  app.post("/api/mail/disconnect", async context => {
+    z.strictObject({}).parse(await context.req.json());
+    const access = await campaignAccess(context);
+    await mail().disconnect(access.identity.shop, access.identity.userId);
+    return context.json({ disconnected: true });
+  });
+  app.get("/api/mail/recipients", async context => {
+    const access = await campaignAccess(context);
+    return context.json(await mail().recipients(access.identity.shop));
+  });
+  app.get("/api/mail/batches", async context => {
+    const access = await campaignAccess(context);
+    return context.json(await mail().list(access.identity.shop, access.identity.userId));
+  });
+  app.post("/api/mail/prepare", async context => {
+    const input = mailDraft.parse(await context.req.json()), access = await campaignAccess(context);
+    return context.json({ batch: await mail().prepare(access.identity.shop, access.identity.userId, input) });
+  });
+  app.post("/api/mail/send", async context => {
+    const input = z.strictObject({ id: z.uuid(), action: z.enum(["confirm", "pause", "resume", "cancel"]) }).parse(await context.req.json()), access = await campaignAccess(context);
+    return context.json(await mail().control(access.identity.shop, access.identity.userId, input.id, input.action));
+  });
+  app.post("/api/mail/readback", async context => {
+    const input = z.strictObject({ id: z.uuid() }).parse(await context.req.json()), access = await campaignAccess(context);
+    return context.json(await mail().readback(access.identity.shop, access.identity.userId, input.id));
   });
   app.post("/webhooks/shopify", async context => {
     const rawBody = await context.req.text();
@@ -346,8 +391,8 @@ export function createCloudHttpApp(options: CloudHttpOptions) {
   });
   app.notFound(context => context.json({ error: { code: "request.not_found" }, request_id: context.get("requestId") }, 404));
   app.onError((error, context) => {
-    const status = error instanceof CloudHttpError ? error.status : error instanceof AccountChangedError ? 409 : error instanceof OpenCliError ? error.code === "opencli_cancelled" ? 409 : 502 : error instanceof TableDataError ? error.status as ContentfulStatusCode : error instanceof z.ZodError || error instanceof SyntaxError ? 400 : 500;
-    const code = error instanceof CloudHttpError ? error.message : error instanceof AccountChangedError ? "shopify.installation_changed" : error instanceof OpenCliError || error instanceof TableDataError ? error.code : status === 400 ? "request.invalid_input" : "cloud.request_failed";
+    const status = error instanceof CloudHttpError ? error.status : error instanceof AccessVerificationError ? error.status as ContentfulStatusCode : error instanceof MailAccessError ? 502 : error instanceof AccountChangedError ? 409 : error instanceof OpenCliError ? error.code === "opencli_cancelled" ? 409 : 502 : error instanceof TableDataError ? error.status as ContentfulStatusCode : error instanceof z.ZodError || error instanceof SyntaxError ? 400 : 500;
+    const code = error instanceof CloudHttpError ? error.message : error instanceof AccountChangedError ? "shopify.installation_changed" : error instanceof OpenCliError || error instanceof TableDataError || error instanceof AccessVerificationError || error instanceof MailAccessError ? error.code : status === 400 ? "request.invalid_input" : "cloud.request_failed";
     if (status >= 500) options.reportFailure({ requestId: context.get("requestId"), code, errorClass: error.name });
     return context.json({ error: { code }, request_id: context.get("requestId") }, status);
   });

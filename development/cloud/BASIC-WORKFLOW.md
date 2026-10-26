@@ -1,6 +1,14 @@
 # 最简单版本的基础流程
 
-当前优先级：本地基础功能，线上环境与上架材料暂缓。商品、平台、粉丝范围，默认共寻找 10 位 KOL；复用现有 Campaign、OpenCLI、4B 和 Library，不增加页面或配置项。四平台范围和邮件未启用状态保持不变。
+当前优先级：本地基础功能，线上环境与上架材料暂缓。商品、平台、粉丝范围，默认共寻找 10 位 KOL；复用现有 Campaign、OpenCLI、4B 和 Library。用户新增 Gmail 发送要求，本地已接入最小邮箱区域和原发送能力；公司改动等待用户审批，由 River 合并。四平台范围保持不变。
+
+## Gmail 本地实现
+
+复用现有 AccessGmailProvider、GmailBulkRepository、GmailBulkWorker 和 Gmail 回执验证。店铺成员完成 OneCrew 配对后授权 Gmail，选择已保存的联系方式或输入收件人，填写主题和正文，先保存预览，再明确确认发送；支持暂停、继续待发邮件、取消和回执查询。重启后暂停未完成批次，未知结果不自动重发。
+
+每位店铺成员通过已验证的 Access 映射使用独立邮件数据库；完整 Google refresh token 留在 Access，Cloud 加密保存本应用安装凭据。卸载即时停用并排空，店铺数据删除覆盖邮件数据库。Lite 原目录不变。
+
+最终 Linux 类型检查和 51 项 Cloud 检查通过，Cloud 页面构建通过。Access/Sync 本地补丁、检查和待审批范围见 [Gmail 接入](ACCESS-CLOUD-APPROVAL.md)。公司网络连接超时，补丁基于本机缓存主分支；实际 Shopify 成员、Access 批准、Linux 远端登记和真实 Gmail 发送尚未验收，目前没有发送邮件。
 
 ## 2026-10-25 真实运行结果
 

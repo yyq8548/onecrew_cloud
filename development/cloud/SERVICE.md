@@ -2,6 +2,8 @@
 
 本入口属于本地实现阶段。已装配店铺浏览器、简化 KOL 搜索、Campaign 与内嵌页面代码；Shopify 真实安装、商品读取与有效 Webhook 尚未验收。模型单样本与平台断开组件已有真实验证，评分质量、完整搜索和四平台真实账号验收仍待完成。
 
+Gmail 已完成本地接口和页面接入，替换原 501 空接口。复用原 Access 授权、发送确认与回执，使用店铺成员到 Access 用户的映射及成员独立邮件数据库。当前 Linux 类型检查和 51 项 Cloud 检查通过；实际授权、Linux 登记和发信待公司补丁审批、发布及真实账号验收，见 [Gmail 接入范围](ACCESS-CLOUD-APPROVAL.md)。
+
 2026-10-25：当前为[最简单版本的本地基础流程](BASIC-WORKFLOW.md)。用户批准 v16 精简输入，保持免费 4B 和 8,192 窗口，完整材料留库；实际任务保存 60 条 YouTube 来源、20 位候选、5 位匹配、2 位待核验、13 位排除。已修复关闭自动扩词后仍发送长请求的问题，原任务恢复正常结束，Library、模板与完整结果关闭重开一致。Linux 类型检查和 50 项 Cloud 检查通过，两个原超长材料输入缩减至 1,002、1,322 token。默认 10 位未找满，宽泛品类仍有漏判；旧 v15 镜像仅作为依赖基准，不包含本轮源码，当前检查以只读挂载最终源码的记录为准。
 
 ## Shopify 应用配置
@@ -78,8 +80,15 @@ SQLite 使用 WAL 和 FULL 同步。备份必须同时保护数据库与密钥�
 | `POST /api/connections` | 校验成员权限，创建当前店铺的九十秒单次连接凭据 |
 | `POST /api/connections/close` | 停止本店铺远程视图，等待浏览器加密保存与容器停止 |
 | `Upgrade /connections/socket` | 同源、单次子协议凭据；固定连接本店铺浏览器，最长十五分钟 |
-| `GET /api/mail/status` | 返回 `enabled: false`、`reason: not_implemented` |
-| `POST /api/mail/send` | 返回 HTTP 501 与 `cloud.mail_not_implemented`；没有发送行为 |
+| `GET /api/mail/status` | 当前成员配对状态及可用 Gmail 邮箱，需有效 Shopify online session |
+| `POST /api/mail/pair` | 创建加密、五分钟有效、一次性 PKCE 配对状态，返回 Access 原确认入口 |
+| `GET /mail/pairing/callback` | 以 code/state 完成原 Linux 安装登记与远端验证，绑定发起配对的店铺成员 |
+| `POST /api/mail/connect` | 返回 Access Gmail 授权确认入口 |
+| `POST /api/mail/disconnect` | 停用本应用的成员绑定并停止发送，保留共享 Gmail 授权 |
+| `GET /api/mail/recipients` | 本店铺保存的邮箱联系方式与来源 |
+| `GET /api/mail/batches`、`POST /api/mail/prepare` | 当前成员的历史批次与待确认草稿；prepare 不发送 |
+| `POST /api/mail/send` | 对保存批次执行 confirm/pause/resume/cancel；confirm/resume 启动原 GmailBulkWorker |
+| `POST /api/mail/readback` | 按原 Gmail ID 核对实际回执，未知结果不自动重发 |
 | `POST /webhooks/shopify` | 官方 SDK 验证原始正文的 HMAC，事务保存加密收件记录；卸载事件在同一事务内停用安装并删除 offline session，随后立即取消本店铺任务准入并安排排空 |
 
 API 以 `Authorization: Bearer <Shopify session token>` 验证身份。店铺来源于 SDK 验证后的 `dest`，客户端传入的店铺字段不能决定数据归属。商品权限同时检查 online token 对应成员和 `associated_user_scope`，不使用后台 offline token 提升成员权限。
