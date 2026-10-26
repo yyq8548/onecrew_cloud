@@ -1,0 +1,8 @@
+c4589c40c6cf242475a491c375423d5fc58f39cfa320ffe251cc5505767af8ca  onecrew_lite-opencli/onecrew-site-auth/probe.mjs
+e784ff0182c6273935e1fec3c3261a95217cf7a6ba79b236c98d2fca2852205c  onecrew_lite-opencli/onecrew-site-auth/whoami.js
+970abb98331cc8f547daf24a14d8a92364ac6476e90a93c8e18c9788c83e2c54  onecrew_lite-app/src/platforms/opencli/auth-status.ts
+157a3ba4b5f5d620dbc31ad6c27a5d39f99e3c5638bab3584bea67789818c89b  onecrew_lite-app/src/platforms/opencli/reader.ts
+8cb80d7ab095cd5a516a87b05c6eb2489c124732f5e95ff72a1f6764c7bfeeb8  onecrew_lite-app/src/cloud/shop-browser-manager.ts
+07cc085cabd4cd843b83807fc4bf6a2e2f4b86cf5ac94fee03a623f2e4398a24  onecrew_lite-app/src/cloud/linux-browser-host.ts
+1ca2307bb7dae99933d77a7fbc176dc4548b54a6e372902674c4649c0894ef70  onecrew_lite-app/src/cloud/remote-browser-gateway.ts
+68f45fd641adbc12fcd2f008246e831663a94e4ce20bd3de86fa4cb9c3b04dd8  onecrew_lite-app/src/cloud/docker-browser-client.ts

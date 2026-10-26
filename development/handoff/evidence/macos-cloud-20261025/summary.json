@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-25",
+  "sourceCommit": "4c9b5f0f6192a9531e2447cc675ab95fe45f8faf",
+  "runtime": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "node": "v26.7.0"
+  },
+  "initialCommand": "node --test --test-concurrency=1 tests/cloud-*.test.ts",
+  "initial": {
+    "tests": 52,
+    "passed": 50,
+    "failed": 2,
+    "skipped": 0,
+    "failureReason": "execution sandbox denied real loopback HTTP listeners with listen EPERM"
+  },
+  "affectedCommand": "node --test --test-reporter=tap --test-concurrency=1 tests/cloud-application.test.ts tests/cloud-http.test.ts",
+  "affected": {
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "execution": "host execution permitting 127.0.0.1 listeners"
+  },
+  "final": {
+    "distinctTestsPassed": 52,
+    "unresolvedFailures": 0,
+    "skipped": 0,
+    "sourceFilesHashed": 61,
+    "sourceChangedBetweenRuns": false
+  },
+  "coverage": [
+    "real SQLite and PGlite state",
+    "store isolation and persistence",
+    "campaign, templates, results and score contracts",
+    "privacy and uninstall processing",
+    "real HTTP startup and rejection of unauthenticated requests"
+  ],
+  "modelCalls": 0,
+  "platformReads": 0,
+  "emailsSent": 0,
+  "companySourceModified": false,
+  "liteModified": false,
+  "limitations": {
+    "realShopifyInstallationVerified": false,
+    "fourPlatformAccountAcceptanceVerified": false,
+    "productionDeploymentVerified": false
+  }
+}

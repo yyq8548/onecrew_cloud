@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: cloud application recovers persisted uninstall and privacy work before HTTP starts and releases storage on shutdown
+ok 1 - cloud application recovers persisted uninstall and privacy work before HTTP starts and releases storage on shutdown
+  ---
+  duration_ms: 1530.017667
+  type: 'test'
+  ...
+# Subtest: real cloud HTTP listener rejects unauthenticated store APIs and unsigned webhooks
+ok 2 - real cloud HTTP listener rejects unauthenticated store APIs and unsigned webhooks
+  ---
+  duration_ms: 556.052583
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4470.04625

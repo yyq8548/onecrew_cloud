@@ -2,6 +2,22 @@
 
 本目录携带模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## YouTube 真实账号与保存恢复 2026-10-26
+
+[真实账号摘要](evidence/youtube-account-20261026/summary.json)、[保存前后实际观察](evidence/youtube-account-20261026/observations.json)、[八份原实现哈希](evidence/youtube-account-20261026/source-sha256.txt)。用户在隔离 Cloud 浏览器亲自登录，直接读取同一活动页面确认账号头像可见、LOGGED_IN 为 true、登录入口不可见，原检测函数返回已认证。
+
+随后正常关闭登录窗口和浏览器，复用原 AES-GCM 加密快照保存恢复。恢复前后 Cookie 数据库均保留 18 条持久登录记录，原完整检测返回 logged_in；登录页重开后，通过原「保存并检查」HTTP 接口再次得到 logged_in。未修改应用、检测规则或扩展权限，未调用模型或发信。Cookie 值、账号身份、加密快照及原完整材料只在私有目录保存，公开观察不含这些数据。
+
+初次 not_logged_in 已实际复现，但当次保存前状态未采集，不能确认原因，也不能宣称通过源码修复了该次问题。当前通过的是后续由本人登录并完整采集的会话；已登录搜索/内容读取、真实账号断开、其他三平台与 Shopify 身份仍待实际验收。
+
+## Mac 原生 Cloud 检查 2026-10-25
+
+[检查摘要](evidence/macos-cloud-20261025/summary.json)、[61 份源文件哈希](evidence/macos-cloud-20261025/source-sha256.txt)、[首次本机检查日志](evidence/macos-cloud-20261025/initial-native-check.log)、[实际 HTTP 检查日志](evidence/macos-cloud-20261025/real-http-check.log)。源码基准为 `4c9b5f0`，运行环境为原生 macOS ARM64 Node 26.7.0。
+
+52 项检查中首次通过 50 项，应用启动和 HTTP 两项因执行沙盒禁止监听 127.0.0.1 而报 listen EPERM。允许实际本机监听后仅重跑这两项，均通过；两次之间应用源码未改，最终 52 个不同检查均通过，无跳过、无未解决失败。数据库、任务/模板/评分合同、隐私/卸载及 HTTP 拒绝路径使用现有实现，没有调用模型、读取平台或发送邮件。
+
+此记录证明当前源码的 Mac 本机组件及合同检查通过；实际 Shopify 安装、四平台账号搜索、人工评分质量和正式部署仍需对应验收。
+
 ## Mac 原生 Gmail 实际发送 2026-10-25
 
 [真实验收摘要](evidence/macos-gmail-20261025/summary.json)、[源码哈希](evidence/macos-gmail-20261025/source-sha256.txt)、[Mac 类型检查](evidence/macos-gmail-20261025/typecheck.log)、[17 项邮件相关检查](evidence/macos-gmail-20261025/tests.log)、[本机网页构建](evidence/macos-gmail-20261025/web-build.log)。

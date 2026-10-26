@@ -1,0 +1,89 @@
+✖ cloud application recovers persisted uninstall and privacy work before HTTP starts and releases storage on shutdown (3946.502375ms)
+✔ cloud read boundary rejects unsupported platform selectors and arbitrary commands (3.421167ms)
+✔ private public-page grants are outside the browser-facing read whitelist (0.47325ms)
+✔ the worker error envelope preserves original error identity and redacted diagnostics (4.169334ms)
+✔ read result envelope keeps exact integer evidence through the inherited JSON codec (0.476542ms)
+✔ snapshot publication checks store ownership and lifecycle and retains current and previous files (53.463167ms)
+✔ session cleanup can discard every previous encrypted generation and its previous pointer (54.661958ms)
+✔ snapshot storage restores real file bytes after restart and authenticates before releasing plaintext (32.110042ms)
+✔ durable Campaign jobs isolate stores, reject changed replay and recover only unfinished work (27.958459ms)
+✔ Campaign confirmation reuses real repositories, is idempotent and cannot approve another store or excluded platform (3085.423333ms)
+✔ real template storage isolates stores, retains exact rules and reopens with its original plan (38.695ms)
+✔ legacy plans without the new follower range are preserved without inventing template conditions (0.409917ms)
+✔ customer requests export their actual received data, clear personal fields and redact only the matching store (24.095125ms)
+✔ cloud reader rejects foreign bindings, unsupported platforms and uninstalled owners before opening a browser (1223.347625ms)
+✖ real cloud HTTP listener rejects unauthenticated store APIs and unsigned webhooks (9.709625ms)
+✔ offline session storage survives reopen, encrypts tokens and separates store ownership (16.485208ms)
+✔ mail pairing persists encrypted PKCE, consumes once and invalidates replaced or disconnected flows (14.804125ms)
+✔ mail draft with an unknown mailbox fails as input error without creating send records (216.052791ms)
+✔ real 4B response retains content and integer usage (3.54325ms)
+✔ extra decimal metadata cannot invalidate otherwise valid completion (1.856ms)
+✔ usage and completion status remain strict (1.522875ms)
+✔ strict JSON, duplicate keys and invalid Unicode remain rejected (0.776542ms)
+✔ generated business JSON retains its original numeric checks (0.385125ms)
+✔ cloud discovery exposes exactly the four approved platforms (2.458541ms)
+{"event":"cloud.cold_backup_restore_verified","sqliteRestored":true,"libraryRestored":true,"snapshotAuthenticated":true,"redactedShopAbsent":true,"replaySafeAfterReinstall":true}
+✔ privacy queue removes shop data and a cold backup restores the other store without restoring deleted data (5020.12025ms)
+✔ Cloud score fields only accept the candidate's saved evidence IDs (2.947875ms)
+✔ correction schemas retain the evidence restriction and empty evidence permits no IDs (1.065625ms)
+✔ Cloud rejects the extra requirement returned by the real 4B model (5.36625ms)
+✔ Cloud follower merging includes exact bounds, rejects excess and preserves unknown counts (4.885792ms)
+✔ Cloud follower merging uses rounded bounds and never upgrades a content rejection (0.705917ms)
+✔ Cloud follower merging leaves legacy conditions and foreign profiles unchanged (0.773334ms)
+✔ cloud model contract retains schema, rules and saved evidence (3.125875ms)
+✔ model endpoint rejects embedded credentials, invalid protocols and invalid limits (0.521875ms)
+✔ shop Campaign databases isolate identical IDs, persist across restart and close on uninstall (2449.498958ms)
+✔ uninstall during empty database initialization leaves a complete store that can reopen (539.684667ms)
+✔ Shopify ownership does not weaken the Access email requirement (0.818541ms)
+✔ a real supervised filesystem failure still closes the store database during removal (567.075292ms)
+✔ shared real PGlite keeps Shopify Library tenants separate and persistent without Access email (4186.1965ms)
+✔ real store databases and encrypted snapshot generations can be removed without affecting another store (1247.735ms)
+✔ two stores owned by one user retain independent contexts and execution gates (3.289875ms)
+✔ store storage and ownership cannot be reassigned through resolve (0.443792ms)
+✔ Shopify official verifier rejects absent and unsigned browser sessions (4.255209ms)
+✔ Shopify application URL must be a dedicated HTTPS origin (0.15575ms)
+✔ keyword generation accepts the complete real product snapshot passed by Campaign service (7.203625ms)
+✔ fixed KOL parameters require a product, supported unique platforms and a complete follower range (0.714667ms)
+✔ keyword output cannot change fixed KOL conditions or add a platform (2.359959ms)
+✔ follower ranges reject definite excess and retain uncertainty at rounded boundaries (0.472083ms)
+✔ cloud storage initializes private persistent files, reopens and refuses replacement keys (25.656541ms)
+✔ uninstall cancels only its shop, waits for real execution drain and blocks reinstall until completion (9.220208ms)
+✔ a real failed operation keeps uninstall pending and reports processor failure (1.73475ms)
+✔ recovery handles uninstall receipts without marking privacy work complete (2.631959ms)
+✔ encrypted inbox deduplicates local storage inputs and persists uninstall revision before acknowledgement (16.174208ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 50
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37882.518875
+
+✖ failing tests:
+
+test at tests/cloud-application.test.ts:10:1
+✖ cloud application recovers persisted uninstall and privacy work before HTTP starts and releases storage on shutdown (3946.502375ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2302:21)
+      at listenInCluster (node:net:2433:12)
+      at node:net:2662:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/cloud-http.test.ts:10:1
+✖ real cloud HTTP listener rejects unauthenticated store APIs and unsigned webhooks (9.709625ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2302:21)
+      at listenInCluster (node:net:2433:12)
+      at node:net:2662:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }

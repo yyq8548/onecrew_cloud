@@ -1,0 +1,26 @@
+{
+  "beforeSave": {
+    "origin": "https://www.youtube.com",
+    "loggedInConfig": true,
+    "accountButtonVisible": true,
+    "signInVisible": false,
+    "originalProbeAuthenticated": true
+  },
+  "savedDatabase": {
+    "authenticationRecords": 18,
+    "persistent": true,
+    "encrypted": true
+  },
+  "afterRestore": {
+    "authenticationRecords": 18,
+    "status": "logged_in",
+    "method": "full",
+    "issue": null
+  },
+  "originalSaveAndCheckHttp": {
+    "status": "logged_in",
+    "method": "full",
+    "issue": null,
+    "encryptedSnapshotSaved": true
+  }
+}

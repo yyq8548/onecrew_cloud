@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-26",
+  "sourceCommit": "4c9b5f0f6192a9531e2447cc675ab95fe45f8faf",
+  "platform": "youtube",
+  "realUserLogin": true,
+  "existingCloudIsolatedBrowser": true,
+  "visibleSelfAccountVerifiedBeforeSave": true,
+  "originalAuthenticationProbePassed": true,
+  "encryptedPersistenceAndRestorePassed": true,
+  "originalSaveAndCheckHttpPassed": true,
+  "authenticationRecordsBeforeAndAfter": 18,
+  "initialStatus": "not_logged_in",
+  "initialPreSaveStateCaptured": false,
+  "initialCauseConfirmed": false,
+  "subsequentRealUserLoginCompleted": true,
+  "applicationSourceChanged": false,
+  "authenticationRulesChanged": false,
+  "modelCalls": 0,
+  "emailsSent": 0,
+  "liteModified": false,
+  "companySourceModified": false,
+  "limitations": {
+    "authenticatedSearchVerified": false,
+    "profileAndContentReadVerified": false,
+    "realAccountDisconnectVerified": false,
+    "otherThreePlatformsVerified": false,
+    "shopifyNetworkVerified": false
+  },
+  "privateEvidenceDirectory": "$ONECREW_CLOUD/.scratch/youtube-persistence-20261026"
+}
