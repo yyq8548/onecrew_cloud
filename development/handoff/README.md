@@ -1,6 +1,6 @@
 # 换电脑开发交接
 
-更新日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，源码与交接资料已上传，尚未上架或部署生产。用户已恢复基础功能开发，goal 当前为 **active**；优先完成最简单的本地搜索、评分与结果保存流程，线上环境暂缓。
+更新日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，源码与交接资料已上传，尚未上架或部署生产。goal 当前为 **blocked**，等待[本地 4B 窗口调整批准](../cloud/model/CONTEXT-WINDOW-APPROVAL.md)；优先完成最简单的本地搜索、评分与结果保存流程，线上环境暂缓。现有窗口仍为 8,192，完整 10 人任务未通过。
 
 ## 先读这几份文件
 
