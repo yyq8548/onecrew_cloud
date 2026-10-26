@@ -2,6 +2,16 @@
 
 本目录携带模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## Mac 原生 Gmail 实际发送 2026-10-25
+
+[真实验收摘要](evidence/macos-gmail-20261025/summary.json)、[源码哈希](evidence/macos-gmail-20261025/source-sha256.txt)、[Mac 类型检查](evidence/macos-gmail-20261025/typecheck.log)、[17 项邮件相关检查](evidence/macos-gmail-20261025/tests.log)、[本机网页构建](evidence/macos-gmail-20261025/web-build.log)。
+
+Cloud 独立目录通过原 Mac 本机端口配对完成真实 Access 登录，回读实际安装凭据的平台为 macos。用户亲自授权指定 Gmail，并明确允许一封固定主题正文的自发自收测试；实际草稿预览后只确认一次，批次 completed、单封 sent，Gmail message ID 存在，原发送模块的内容回读通过。已有其他邮箱连接保留，没有使用假接口或虚构 Shopify 成员身份。
+
+本轮只修改 Cloud 仓库：邮箱平台按实际主进程系统登记；Mac 主服务默认模型版本为原免费 4B Metal；增加 `cloud:mail:local` 启动入口。没有执行 Linux 登记迁移或新增公司源码修改。邮箱地址、实际 message ID、凭据和完整发送记录仅保存在私有 `.scratch/macos-gmail-live/`，公开文件不含个人邮箱地址。
+
+本次证明本机原邮件模块的真实配对、授权、发送和 Gmail 内容回读；未独立核对 INBOX 标签，不证明 Shopify 店铺成员映射、远程 HTTPS/CSP 或正式部署通过。后续运行说明见 [Mac 运行](../cloud/MACOS.md)。
+
 ## 五十份真实商品关键词检查 2026-10-25
 
 [摘要](evidence/keywords-50-20261025/summary.json)、[逐项派生记录](evidence/keywords-50-20261025/cases.jsonl)、[源码哈希](evidence/keywords-50-20261025/source-sha256.txt)、[实际模型配置](evidence/keywords-50-20261025/model-config.log)。原公开目录、完整模型关键词输出、脚本及模型日志保存在私有 `.scratch/keyword-batch-20261025/`，公开记录仅携带商品来源、输入哈希、用量、耗时、条件和输出哈希。
@@ -10,13 +20,13 @@
 
 该样本满足本机这 50 份关键词输入的结构化率及拟定 60 秒延迟门槛。商品来自同一品牌，不等于全面商品覆盖、人工关键词质量、100 份评分标注、评分 P95、真实四平台搜索或生产硬件验收。没有 Shopify 登录、平台读取、邮件发送或公司源码修改。
 
-## 当前完整 Linux 镜像 2026-10-25
+## Mac 切换前的 Linux 镜像 2026-10-25
 
 [构建与验证摘要](evidence/service-current-20261025/summary.json)、[196 份镜像文件哈希](evidence/service-current-20261025/image-sources.sha256)、[实际产物与初始化检查](evidence/service-current-20261025/artifact-check.log)、[清理后实际镜像](evidence/service-current-20261025/images-after-cleanup.log)。
 
-从仓库完整 Dockerfile 构建 v16/Gmail 成功，包含按锁文件安装依赖、Library 与 Cloud 网页构建、应用类型检查；不依赖私有旧增量镜像。镜像内相关源码与当前仓库一致，非 root Node 26.7.0、pnpm 10.32.1 及真实 CLI 私有存储初始化通过。复用源码仍一致的 52 项 Cloud 与 8 项原邮件规则检查，没有再次调用模型或平台。
+从仓库完整 Dockerfile 构建 v16/Gmail 成功，包含按锁文件安装依赖、Library 与 Cloud 网页构建、应用类型检查；不依赖私有旧增量镜像。镜像内相关源码与切换 Mac 前的仓库一致，非 root Node 26.7.0、pnpm 10.32.1 及真实 CLI 私有存储初始化通过。当时复用源码仍一致的 52 项 Cloud 与 8 项原邮件规则检查，没有再次调用模型或平台。此后 Mac 平台与模型默认版本已修改，当前源码证据见上方 Mac 验收记录。
 
-当前镜像 `9174e7cd0184`，上一版 `f18a613c2af1`；已确认无容器引用并移除旧 `f9175d539c69`、`9eed979e5829`。共享依赖层、模型、浏览器及用户数据保留。没有启动生产服务、对外部署或验证真实 Shopify/Gmail 授权。
+该轮镜像 `9174e7cd0184`，上一版 `f18a613c2af1`；已确认无容器引用并移除旧 `f9175d539c69`、`9eed979e5829`。共享依赖层、模型、浏览器及用户数据保留。该轮没有启动生产服务、对外部署或验证真实 Shopify/Gmail 授权。
 
 ## 模板更换商品完整运行 2026-10-25
 

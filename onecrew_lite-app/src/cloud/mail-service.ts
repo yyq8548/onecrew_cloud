@@ -27,6 +27,7 @@ export class CloudMailService {
   readonly #options: CloudMailOptions;
   readonly #sessions = new Map<string, Promise<MailSession>>();
   readonly #callback: string;
+  readonly #platform: "macos" | "linux" = process.platform === "darwin" ? "macos" : "linux";
   constructor(options: CloudMailOptions) {
     this.#options = options;
     const callback = new URL("/mail/pairing/callback", options.applicationUrl);
@@ -47,7 +48,7 @@ export class CloudMailService {
     const pending = store.begin(shop, member, installations.lifecycleRevision(shop));
     const url = new URL("/pairing/authorize", ACCESS_AUTHORIZE_ORIGIN);
     url.search = new URLSearchParams({ app_version: "0.9.1", callback_url: this.#callback, code_challenge: pending.challenge, code_challenge_method: "S256",
-      label: "OneCrew Cloud", platform: "linux", product: "onecrew_lite", state: pending.state }).toString();
+      label: "OneCrew Cloud", platform: this.#platform, product: "onecrew_lite", state: pending.state }).toString();
     return { authorize_url: url.toString() };
   }
   async complete(code: string, state: string): Promise<void> {
@@ -55,7 +56,7 @@ export class CloudMailService {
     const pending = store.consume(state), parent = await data.resolve(pending.shop);
     if (installations.lifecycleRevision(pending.shop) !== pending.revision) throw new CloudHttpError("shopify.installation_changed", 409);
     await this.#track(parent, async () => {
-      const candidate = { installationId: pending.installationId, credentialId: pending.credentialId, bearer: Buffer.from(pending.bearer), platform: "linux" as const, appVersion: "0.9.1" };
+      const candidate = { installationId: pending.installationId, credentialId: pending.credentialId, bearer: Buffer.from(pending.bearer), platform: this.#platform, appVersion: "0.9.1" };
       try {
         const proof = await enrollAccessInstallation(candidate, code, pending.verifier, state, pending.idempotency);
         using release = { [Symbol.dispose]() { proof.dispose(); } };

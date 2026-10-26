@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-25",
+  "runtime": "native macOS",
+  "accessInstallationPlatform": "macos",
+  "authorization": "user-approved single self-addressed test message",
+  "flow": "existing Mac Access loopback pairing and Gmail modules from the independent Cloud repository",
+  "actualGmailAuthorizationVerified": true,
+  "sentMessages": 1,
+  "batchState": "completed",
+  "itemState": "sent",
+  "gmailMessageIdPresent": true,
+  "approvedContentReadbackPassed": true,
+  "selfAddressed": true,
+  "extraRecipients": 0,
+  "testSubject": "OneCrew Cloud Gmail 测试",
+  "approvedBodySha256": "39e5e6843df42b6aacd731ea9e6b489e686bf5d44cad50efc032e03222dac5e7",
+  "preparedEvidenceSha256": "a106664f8be011d2a0779608474a3d43f545ff04c0530aaf24ed79078c2456b7",
+  "resultEvidenceSha256": "c8063bfd42f5faf18579f4ae42e974e5d1fa468d3a4db789ff9745f0afdccddc",
+  "privateEvidenceDirectory": "$ONECREW_CLOUD/.scratch/macos-gmail-live",
+  "otherMailboxConnectionsPreserved": true,
+  "liteModified": false,
+  "companyCodeModifiedThisRun": false,
+  "syncLinuxMigrationUsed": false,
+  "companyCloudCallbackPatchUsed": false,
+  "modelCalls": 0,
+  "limitations": {
+    "shopifyMemberBindingVerified": false,
+    "publicCloudHttpsCallbackVerified": false,
+    "inboxLabelIndependentlyVerified": false,
+    "productionDeploymentVerified": false
+  }
+}

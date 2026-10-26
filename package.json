@@ -8,6 +8,7 @@
     "onecrew_lite": "pnpm --filter onecrew_lite-app cli",
     "cloud:initialize": "pnpm --filter onecrew_lite-app cloud:initialize",
     "cloud:serve": "pnpm --filter onecrew_lite-app cloud:serve",
+    "cloud:mail:local": "node onecrew_lite-app/src/cli.ts serve --data-dir .scratch/macos-gmail-live --vault .scratch/macos-gmail-live/vault.sqlite --master-key .scratch/macos-gmail-live/masterkey --web-assets onecrew_lite-web/dist --library-web-assets onecrew_lite-library/web/dist",
     "build:tables": "pnpm --filter onecrew_lite_tables build:teable && pnpm --filter onecrew_lite_tables build:server && pnpm --filter onecrew_lite_tables build:web:unified",
     "build:ui": "pnpm --filter onecrew-web build && pnpm --filter onecrew-mcp-ui build",
     "build:candidate": "node onecrew_lite-app/src/packaging/build-candidate.ts",

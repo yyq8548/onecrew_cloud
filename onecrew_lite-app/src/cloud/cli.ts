@@ -14,7 +14,7 @@ if (command === "initialize") {
   await storage.close();
   console.info(JSON.stringify({ event: "cloud.storage_initialized", directory }));
 } else {
-  const configuration = z.object({ SHOPIFY_API_KEY: z.string().min(1), SHOPIFY_API_SECRET: z.string().min(1), SHOPIFY_APPLICATION_URL: z.url(), ONECREW_CLOUD_PORT: z.coerce.number().int().min(1).max(65535).default(8788), ONECREW_BROWSER_IMAGE: z.string().min(1).default("onecrew-cloud-browser:worker"), ONECREW_BROWSER_SECCOMP_PROFILE: z.string().min(1), ONECREW_MODEL_ENDPOINT: z.url().default("http://127.0.0.1:8789/v1/chat/completions"), ONECREW_MODEL_NAME: z.string().min(1).default("onecrew-qwen3-4b-q4"), ONECREW_MODEL_REVISION: z.string().min(1).default("Qwen-bc640142-Q4_K_M:7485fe6f:llama-8c74db29") }).parse(process.env);
+  const configuration = z.object({ SHOPIFY_API_KEY: z.string().min(1), SHOPIFY_API_SECRET: z.string().min(1), SHOPIFY_APPLICATION_URL: z.url(), ONECREW_CLOUD_PORT: z.coerce.number().int().min(1).max(65535).default(8788), ONECREW_BROWSER_IMAGE: z.string().min(1).default("onecrew-cloud-browser:worker"), ONECREW_BROWSER_SECCOMP_PROFILE: z.string().min(1), ONECREW_MODEL_ENDPOINT: z.url().default("http://127.0.0.1:8789/v1/chat/completions"), ONECREW_MODEL_NAME: z.string().min(1).default("onecrew-qwen3-4b-q4"), ONECREW_MODEL_REVISION: z.string().min(1).default(process.platform === "darwin" ? "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal" : "Qwen-bc640142-Q4_K_M:7485fe6f:llama-8c74db29") }).parse(process.env);
   let application: Awaited<ReturnType<typeof startCloudApplication>> | undefined;
   let shutdown: Promise<void> | undefined;
   const close = () => {

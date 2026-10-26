@@ -7,7 +7,7 @@
 - 使用文件编辑工具修改代码，临时文件放受忽略的 `.scratch`；不使用 `/tmp`、脚本改写源码或 Git 回滚代码。保留用户已有修改。
 - 使用真实材料与实现验证，模拟参数或本地检查不能证明 Shopify、平台账号或生产验收通过。复用仍对当前源码有效的检查证据。
 - 涉及公司分支、MR、合并、客户端打包、Cloudflare/R2 或生产发布时，先读取 [合并与部署流程](docs/release/合并与部署流程.md)。本仓库的 GitHub 源码交接不等于生产发布。
-- 当前实现依赖与启动方法见 [README](README.md) 和 [Cloud 服务](development/cloud/SERVICE.md)。换电脑从仓库内完整 Dockerfile 构建，不依赖旧机镜像 ID 或 `.scratch` 基准镜像。
+- 当前部署主机为用户这台 Mac，主服务原生运行，免费 4B 使用 Metal；本机 Gmail 启动和数据保留要求见 [Mac 运行](development/cloud/MACOS.md)，Shopify 服务见 [Cloud 服务](development/cloud/SERVICE.md)。现有搜索浏览器容器继续复用，不新增 Linux 服务器；Sync Linux 草稿不属于当前部署范围。
 
 ## 构建与缓存
 

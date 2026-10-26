@@ -1,0 +1,4 @@
+
+> onecrew_lite-app@0.9.1 typecheck $ONECREW_CLOUD/onecrew_lite-app
+> tsc --noEmit
+

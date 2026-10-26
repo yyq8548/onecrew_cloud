@@ -1,0 +1,25 @@
+✔ mail pairing persists encrypted PKCE, consumes once and invalidates replaced or disconnected flows (22.444417ms)
+✔ mail draft with an unknown mailbox fails as input error without creating send records (225.423417ms)
+✔ 冻结正文，按 Rust 地址规则规范、去重并保留首个来源 (1.3665ms)
+✔ 指纹包含发件人收件人主题正文，来源不影响指纹 (0.132209ms)
+✔ 人数按去重前验证，主题正文和来源限制计算 UTF-8 字节 (0.7555ms)
+✔ 发送邮箱必须匹配并具备 Gmail 可用性及发送回读能力 (0.113417ms)
+✔ 草稿不领取，确认启动，暂停恢复，取消只影响待发送项 (0.527708ms)
+✔ 中断保留未知项，恢复仅允许 pending，尝试标记阻止重新发送 (0.14075ms)
+✔ 跨批次查重只阻止已经尝试的效果状态 (0.101708ms)
+✔ 成功、接受、失败和未知结果分别保存，completed 不代表全成功 (0.128084ms)
+✔ 真实 MailComposer 编译及 MailParser 回读，单收件人、Unicode与冻结内容完整 (46.4545ms)
+✔ 禁止附件、文件URL输入、额外头、多个收件人及头注入 (1.100041ms)
+✔ 实际编译回读核对消息id、SENT标签、发件人收件人主题正文 (10.413084ms)
+✔ 原重试上限及 Retry-After 规则使用真实运算核对，无网络 (0.232875ms)
+✔ 已取消请求在任何网络操作前明确拒绝 (0.583333ms)
+✔ 内部邮件只能取冻结批次领取，幂等键来自原条目，其他邮箱或改动正文拒绝 (0.377833ms)
+✔ 响应严格拒绝损坏UTF-8，不用替换字符修复JSON (0.25225ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1121.694625

@@ -2,7 +2,9 @@
 
 本入口属于本地实现阶段。已装配店铺浏览器、简化 KOL 搜索、Campaign 与内嵌页面代码；Shopify 真实安装、商品读取与有效 Webhook 尚未验收。模型单样本与平台断开组件已有真实验证，评分质量、完整搜索和四平台真实账号验收仍待完成。
 
-Gmail 已完成本地接口和页面接入，替换原 501 空接口。复用原 Access 授权、发送确认与回执，使用店铺成员到 Access 用户的映射及成员独立邮件数据库。当前 Linux 类型检查和相关检查通过，见[验收证据](../handoff/EVIDENCE.md)。原邮件规则拒绝的无效输入返回 HTTP 400 与 `gmail_bulk_invalid_input`，其他错误继续按原错误类型返回；实际授权、Linux 登记和发信待公司补丁审批、发布及真实账号验收，见 [Gmail 接入范围](ACCESS-CLOUD-APPROVAL.md)。
+当前主机按用户指示采用本机 Mac：Cloud 主服务原生运行，免费 4B 使用 Metal，现有搜索浏览器 Docker 环境保留。Gmail 配对和登记使用实际主进程平台，本机为 `macos`；不新增 Linux 服务器，不执行 Sync Linux 迁移。启动与独立账号目录见 [Mac 运行](MACOS.md)。
+
+Gmail 已完成本地接口和页面接入，替换原 501 空接口。2026-10-25 已通过原 Mac 配对和邮件模块完成用户授权的一封真实自发自收邮件，Gmail 回读通过，批次 completed、单封 sent；本轮没有修改公司代码。店铺成员映射与独立邮件数据库仍保留，Shopify 内嵌页面的完整绑定尚待真实店铺和远程 HTTPS 回调验收，见 [Gmail 范围](ACCESS-CLOUD-APPROVAL.md)。原邮件输入规则和 HTTP 400 错误处理保持原样。
 
 2026-10-25：当前为[最简单版本的本地基础流程](BASIC-WORKFLOW.md)。用户批准 v16 精简输入，保持免费 4B 和 8,192 窗口，完整材料留库；实际任务保存 60 条 YouTube 来源、20 位候选、5 位匹配、2 位待核验、13 位排除。原任务恢复正常结束，Library、模板与完整结果关闭重开一致；另一个真实商品的模板任务也已完成。Gmail 后续改动的 52 项 Cloud 检查和 8 项原邮件规则检查通过，两个原超长材料输入缩减至 1,002、1,322 token。默认 10 位未找满，宽泛品类仍有漏判。当前完整 Linux 镜像已包含 v16 与 Gmail，从仓库 Dockerfile 构建通过，见下文产物验证。
 
@@ -38,7 +40,7 @@ pnpm --filter onecrew-web build:cloud
 | `ONECREW_BROWSER_IMAGE` | 浏览器镜像，默认 `onecrew-cloud-browser:worker` |
 | `ONECREW_MODEL_ENDPOINT` | 自托管 llama.cpp 结构化生成端点，默认 `http://127.0.0.1:8789/v1/chat/completions` |
 | `ONECREW_MODEL_NAME` | 固定模型名称，默认 `onecrew-qwen3-4b-q4` |
-| `ONECREW_MODEL_REVISION` | 权重与推理程序版本，默认 `Qwen-bc640142-Q4_K_M:7485fe6f:llama-8c74db29` |
+| `ONECREW_MODEL_REVISION` | 本机 Mac 默认 `Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal`；原 Linux 兼容默认仍保留 |
 
 ```sh
 pnpm cloud:serve
@@ -169,7 +171,7 @@ Discovery 执行器通过公开 Reader 接口复用原实现。云端依赖工�
 
 ## Linux 本地验收
 
-当前完整镜像为 `onecrew-cloud-service:linux-check` / `linux-v16-gmail`，ID `9174e7cd0184`，Linux arm64。实际从仓库 `development/cloud/service/Dockerfile` 构建，按锁文件安装依赖，完成 Library 构建、Cloud 网页构建和后端类型检查，不依赖私有增量基准。镜像包含 v16 精简评分与 Gmail 本地实现。
+本节是切换 Mac 主机前的历史 Linux 证据，不代表当前 Mac 提交的镜像产物，也不要求当前部署使用 Linux 服务器。镜像为 `onecrew-cloud-service:linux-check` / `linux-v16-gmail`，ID `9174e7cd0184`，Linux arm64；其构建与 196 份文件哈希对应当时源代码。当前 Mac 平台和模型版本改动的证据见 [Mac Gmail](../handoff/evidence/macos-gmail-20261025/summary.json)。
 
 在仓库根目录构建并运行专用验收镜像：
 

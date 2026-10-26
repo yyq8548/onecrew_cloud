@@ -2,7 +2,9 @@
 
 更新日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，尚未上架或部署生产。用户已批准[精简输入并验证](../cloud/model/CONTEXT-WINDOW-APPROVAL.md)，保持免费 4B 和 8,192 窗口；本地真实任务已正常结束并通过数据重开检查，最终找到 5 位匹配候选，目标 10 位。本轮先处理基础功能，线上环境暂缓；完整上架目标尚未完成。
 
-用户已新增 Gmail 发送要求，Cloud 本地接口、页面、Linux 类型与相关检查通过，模板更换商品也已完整实跑，见 [验收证据](EVIDENCE.md)。用户已批准按 Access `91c4f98`、Sync `d7f7046` 进行隔离本地适配；对应类型、构建、合同、空库迁移和五项匿名入口检查通过，保留最新产品字段和同事改动。用户要求 CSP 暂不修改、先统一列出范围，[公司改动清单](../cloud/ACCESS-CLOUD-APPROVAL.md)已整理。私有交付入口为 `.scratch/company-gmail/CURRENT-DELIVERY.md`，旧 patch 不可直接应用。公司代码和补丁未上传公开 GitHub，换电脑须私下携带。真实授权和实发仍待验收。
+用户现选择本机 Mac 作为当前及后续部署主机，Cloud 主服务原生运行、4B 使用 Metal，搜索浏览器保留已有 Docker 环境。已使用 Cloud 独立目录完成原 Mac 登录、指定 Gmail 授权、一封明确批准的真实自发自收邮件与 Gmail 内容回读；本机类型检查、17 项邮件相关检查及页面构建通过。运行入口见 [Mac 运行](../cloud/MACOS.md)，证据见 [验收记录](EVIDENCE.md)。本次没有新增公司源码修改，Sync Linux 草稿不再属于当前 Mac 部署范围。
+
+Shopify 成员绑定和远程商家网页授权仍待实际店铺及 Access HTTPS/CSP 补充；公司改动继续先审批，见 [公司改动清单](../cloud/ACCESS-CLOUD-APPROVAL.md)。私有交付入口为 `.scratch/company-gmail/CURRENT-DELIVERY.md`，历史 Linux patch 不可作为当前 Mac 交付应用。公司代码、补丁、邮箱地址、凭据与邮件记录不上传公开 GitHub。
 
 ## 先读这几份文件
 
@@ -31,7 +33,7 @@
 - 同一 4B Metal 对 50 个真实公开商品的固定输入，首次关键词结构化输出 50/50 通过，中位数 2.465 秒、P95 6.913 秒，无重试，模型已正常关闭。同品牌样本尚未人工核对关键词质量，不替代评分 P95、人工评分和真实平台搜索。
 - 当前 Linux 类型检查与 50 项 Cloud 检查通过。两份原超长材料终版实际输入为 1,002、1,322 token；两个超长材料、广告、无关商品及零模型粉丝预筛选五项检查通过。护肤内容与防晒目标仍有宽泛关联漏判，不代表批量质量或 P95 通过。
 - 真实完整任务保存 60 条来源、20 位候选、5 位匹配、2 位待核验、13 位排除，Library、模板、全部结果关闭重开后一致。修复关闭自动扩词后，复用原任务恢复正常结束，没有重新采集；真实 Shopify 和四平台账号验收仍未完成。
-- 当前 Linux 验证镜像包含 v16/Gmail，ID `9174e7cd0184`，已从仓库完整 Dockerfile 构建；196 份相关文件哈希与真实 CLI 初始化通过。上一版 v15 `f18a613c2af1` 保留，两个无容器引用的更旧镜像已清理。镜像 ID 不会随 Git 迁移，证据见[当前镜像](evidence/service-current-20261025/summary.json)。
+- 切换 Mac 前的 Linux 验证镜像 `9174e7cd0184` 与 196 份哈希作为历史证据保留，不代表本次 Mac 修改后的产物。当前运行与真实 Gmail 验证使用 Mac 原生服务，见[本轮证据](evidence/macos-gmail-20261025/summary.json)。
 
 ## 新电脑准备
 
