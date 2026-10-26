@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { readFileSync } from "node:fs";
 import { isAbsolute, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
@@ -17,6 +18,7 @@ import { cloudSessionReceipt } from "../platforms/opencli/cloud-session.ts";
 export interface ShopBrowserConfiguration { readonly image: string; readonly seccompProfile: string; readonly dataDirectory: string }
 const inspection = z.object({ Image: z.string(), State: z.object({ Running: z.boolean() }), Config: z.object({ Labels: z.record(z.string(), z.string()) }) });
 interface Active { cancel: AbortController; settled: Promise<void> }
+interface TaskSession { workspace: ShopifyWorkspace; revision: number; active: Active; client: DockerBrowserClient; signal: AbortSignal }
 
 export class ShopBrowserManager {
   readonly #config: ShopBrowserConfiguration;
@@ -25,6 +27,7 @@ export class ShopBrowserManager {
   readonly #scope: string;
   readonly #active = new Map<string, Active>();
   readonly #closing = new Map<string, Promise<void>>();
+  readonly #task = new AsyncLocalStorage<TaskSession>();
   #image: Promise<string> | undefined;
   #stopping = false;
   constructor(config: ShopBrowserConfiguration, store: ShopifyInstallationStore, snapshots: BrowserSnapshotStore) {
@@ -100,6 +103,15 @@ export class ShopBrowserManager {
     await dockerCommand(["stop", this.#name(owner)]);
   }
   async #using<T>(workspace: ShopifyWorkspace, signal: AbortSignal, operation: (client: DockerBrowserClient, signal: AbortSignal) => Promise<T>, discardPrevious = false): Promise<T> {
+    const task = this.#task.getStore();
+    if (task) {
+      if (workspace.shop !== task.workspace.shop || workspace.tenant_id !== task.workspace.tenant_id || workspace.base_id !== task.workspace.base_id || this.#active.get(workspace.shop) !== task.active) throw new CloudHttpError("cloud.browser_owner_mismatch", 409);
+      this.#assert(workspace, task.revision);
+      const stopped = AbortSignal.any([signal, task.signal]); stopped.throwIfAborted();
+      const result = await operation(task.client, stopped);
+      this.#assert(workspace, task.revision);
+      return result;
+    }
     if (this.#stopping || this.#closing.has(workspace.shop)) throw new CloudHttpError("cloud.shop_stopping", 409);
     if (this.#active.has(workspace.shop)) throw new CloudHttpError("cloud.worker_busy", 409);
     const revision = this.#store.lifecycleRevision(workspace.shop);
@@ -119,6 +131,9 @@ export class ShopBrowserManager {
       try { if (prepared) await this.#checkpoint(owner, revision, discardPrevious); }
       finally { this.#active.delete(workspace.shop); settled.resolve(); }
     }
+  }
+  task<T>(workspace: ShopifyWorkspace, signal: AbortSignal, operation: (signal: AbortSignal) => Promise<T>): Promise<T> {
+    return this.#using(workspace, signal, (client, stopped) => this.#task.run({ workspace, revision: this.#store.lifecycleRevision(workspace.shop), active: this.#active.get(workspace.shop)!, client, signal: stopped }, () => operation(stopped)));
   }
   search(workspace: ShopifyWorkspace, request: unknown, signal: AbortSignal) {
     const input = cloudCreatorSearch.parse(request);

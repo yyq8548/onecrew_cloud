@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-26",
+  "scope": "onecrew_cloud only",
+  "model": "Qwen3-4B Q4_K_M, Metal, 8192 context",
+  "scoring": "v18, brand-name policy v1, direct-order policy v1",
+  "youtube": {
+    "campaign_id": "d63913fa-76ed-4a44-852a-baea76ae2acb",
+    "job_elapsed_ms": 178858,
+    "pipeline_elapsed_ms": 147982,
+    "hits": 60,
+    "candidates": 17,
+    "qualified": 6,
+    "pending": 2,
+    "rejected": 9,
+    "target": 10,
+    "semantic_calls": 13,
+    "reads": 27,
+    "searches": 3,
+    "video_reads": 24,
+    "automatic_contact_page_reads": 0,
+    "failures": 0,
+    "brand_vendor": "Owala",
+    "same_name_author_outcome": "pending",
+    "same_name_author_score": null,
+    "library_templates_idempotency_reopen_passed": true,
+    "direct_order_rule_validation": "separate actual-response replay after this run"
+  },
+  "instagram": {
+    "online_stop": "opencli_auth_required",
+    "online_complete_after_optimization": false,
+    "actual_search_and_profile_receipts_replayed": 5,
+    "posts_retained_before_first_score": 3,
+    "recent_posts_read_during_replay": 0,
+    "model_calls_during_replay": 0,
+    "original_database_unchanged": true
+  },
+  "browser_task": {
+    "same_container_for_consecutive_reads": true,
+    "no_checkpoint_between_reads": true,
+    "end_checkpoint_and_stop": true,
+    "outside_read_and_disconnect_rejected": true,
+    "cancellation_drained_and_auth_restored": true
+  },
+  "selected_contacts": {
+    "elapsed_ms": 4300,
+    "pages": 2,
+    "other_candidates_unchanged": true,
+    "verdicts_unchanged": true,
+    "library_published": true,
+    "email_sent": false
+  },
+  "actual_response_replays": {
+    "brand_same_name": "insufficient, no score, original audit passed",
+    "personal_review": "supported, original audit passed",
+    "legacy_without_vendor": "unchanged, original audit passed",
+    "direct_order": "insufficient, no score, original audit passed",
+    "sponsor_only": "insufficient, no score, original audit passed",
+    "additional_model_calls": 0
+  },
+  "checks": {
+    "app_typecheck": "passed",
+    "web_typecheck_and_build": "passed before backend-only final rules",
+    "http_scoring_public_source_tests": 12,
+    "product_template_follower_tests": 6,
+    "actual_instagram_replay_tests": 1
+  },
+  "limitations": [
+    "Target of 10 creators not reached",
+    "Instagram needs owner login and an online complete rerun",
+    "No new TikTok complete run for this optimization",
+    "X deferred at user request",
+    "Brand matching requires vendor and exact normalized name",
+    "Direct-order rule only covers the approved English expression in the selected excerpt",
+    "No batch human scoring acceptance, Shopify network or production acceptance"
+  ]
+}

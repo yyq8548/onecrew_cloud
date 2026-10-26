@@ -233,6 +233,14 @@ export function createCloudHttpApp(options: CloudHttpOptions) {
     access.assertCurrent();
     return context.body(stringifyApplicationJson({ execution }), 200, { "content-type": "application/json" });
   });
+  app.post("/api/campaigns/:id/candidates/:candidate/contacts", async context => {
+    const service = campaigns(), id = z.string().min(1).max(128).parse(context.req.param("id")), candidate = z.string().min(1).max(128).parse(context.req.param("candidate"));
+    const input = z.strictObject({ expected_revision: z.number().int().positive() }).parse(await context.req.json());
+    const access = await campaignAccess(context);
+    const result = await service.findContacts(access.identity.shop, id, candidate, input.expected_revision);
+    access.assertCurrent();
+    return context.json(result);
+  });
   app.get("/api/library", async context => {
     if (!options.library) throw new CloudHttpError("cloud.library_not_configured", 503);
     const query = z.strictObject({ page: z.coerce.number().int().positive().default(1), size: z.coerce.number().int().min(1).max(100).default(25) }).parse(context.req.query());

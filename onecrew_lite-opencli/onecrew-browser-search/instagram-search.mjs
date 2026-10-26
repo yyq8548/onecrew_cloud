@@ -1,3 +1,5 @@
+import { observeInstagramVisibleCaption } from './instagram-visible.mjs';
+
 export function projectInstagramVisibleSearch(rows, limit) {
   if (!Number.isInteger(limit) || limit < 1 || limit > 20 || !Array.isArray(rows) || rows.length > 100) throw new Error('ONECREW_INSTAGRAM_SEARCH_INVALID');
   const seen = new Set();
@@ -8,7 +10,7 @@ export function projectInstagramVisibleSearch(rows, limit) {
     if (seen.has(row.username)) return [];
     seen.add(row.username);
     return [{provider:'onecrew-instagram-visible-v1',execution_mode:'opencli_dom',username:row.username,
-      name:Array.from(row.name || row.username).slice(0,200).join(''),url:row.url}];
+      name:Array.from(row.name || row.username).slice(0,200).join(''),url:row.url,...(row.matched_post ? {matched_post:row.matched_post} : {})}];
   }).slice(0,limit);
 }
 
@@ -100,7 +102,12 @@ export async function readInstagramKeywordSearch(owned,query,limit) {
     await owned.goto(source,{settleMs:0});
     const author=unwrap(await owned.evaluate(`(${observeInstagramSearchPostAuthor.toString()})(${JSON.stringify(source)})`));
     if(author?.stop) throw new Error('ONECREW_INSTAGRAM_SEARCH_'+author.stop.toUpperCase());
-    if(!author?.unavailable) rows.push(author);
+    if(!author?.unavailable) {
+      const code=new URL(source).pathname.split('/')[2];
+      const caption=unwrap(await owned.evaluate(`(${observeInstagramVisibleCaption.toString()})(${JSON.stringify(author.username)},${JSON.stringify(code)})`));
+      if(caption?.stop) throw new Error('ONECREW_INSTAGRAM_SEARCH_'+caption.stop.toUpperCase());
+      rows.push({...author,matched_post:{post_id:code,author_url:author.url,source_url:source,...caption}});
+    }
     if(new Set(rows.map(row=>row.username)).size>=limit) break;
   }
   return projectInstagramVisibleSearch(rows,limit);

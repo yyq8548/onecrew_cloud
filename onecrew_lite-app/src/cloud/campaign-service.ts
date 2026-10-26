@@ -1,4 +1,5 @@
 import { createDiscoveryRuntime } from "../discovery/runtime.ts";
+import { DiscoveryPublicPageExecutor } from "../discovery/public-page-execution.ts";
 import { DiscoveryDraftError } from "../discovery/draft.ts";
 import { DiscoverySemanticError } from "../discovery/semantic-client.ts";
 import { ServerSemanticClient } from "../discovery/server-semantic-client.ts";
@@ -18,7 +19,7 @@ import type { ShopData, ShopDataService } from "./shop-data.ts";
 import type { ShopLibraryService } from "./shop-library.ts";
 import type { ShopRuntime } from "./shop-runtime-registry.ts";
 
-interface Scope { readonly data: ShopData; readonly engine: ReturnType<typeof createDiscoveryRuntime>; readonly dependencies: ReturnType<typeof createCloudDiscoveryDependencies>; readonly tasks: Set<Promise<void>>; readonly drafts: Map<string, AbortController>; readonly failures: unknown[] }
+interface Scope { readonly data: ShopData; readonly engine: ReturnType<typeof createDiscoveryRuntime>; readonly dependencies: ReturnType<typeof createCloudDiscoveryDependencies>; readonly tasks: Set<Promise<unknown>>; readonly drafts: Map<string, AbortController>; readonly failures: unknown[] }
 interface Configuration {
   data: ShopDataService; installations: ShopifyInstallationStore; jobs: CampaignJobStore; templates: CampaignTemplateStore; browsers: ShopBrowserManager; library: ShopLibraryService; model: ServerSemanticClient;
   reportFailure(failure: { requestId: string; code: string; errorClass: string }): void;
@@ -57,7 +58,7 @@ export class CloudCampaignService {
           },
           scoringIdentity: () => this.#config.model.scoringIdentity(),
         });
-        const engine = createDiscoveryRuntime({ accounts: data.runtime.accounts, repositories: data.databases.discoveryResolver(), directories: data.databases, dependencies, supervisor: data.runtime.supervisor, library: this.#config.library.projection(data), scoreInstructions: cloudCampaignScoreInstructions, finalizeScore: finalizeCloudCampaignScore, scoreTransport: cloudCampaignScoreTransport });
+        const engine = createDiscoveryRuntime({ accounts: data.runtime.accounts, repositories: data.databases.discoveryResolver(), directories: data.databases, dependencies, supervisor: data.runtime.supervisor, library: this.#config.library.projection(data), scoreInstructions: cloudCampaignScoreInstructions, finalizeScore: (material, count, proposal) => finalizeCloudCampaignScore(material, count, proposal, this.#config.jobs.product(shop, material.campaign_id)?.vendor), scoreTransport: cloudCampaignScoreTransport, scheduling: { automaticPublicPages: false } });
         const scope: Scope = { data, engine, dependencies, tasks: new Set(), drafts: new Map(), failures: [] };
         data.runtime.resources.defer(async () => {
           for (const cancellation of scope.drafts.values()) cancellation.abort(new Error("cloud.job_interrupted"));
@@ -127,12 +128,13 @@ export class CloudCampaignService {
   }
 
   async #prepareAndRun(scope: Scope, job: CloudCampaignJob, product: ShopifyProductSnapshot, conditions: CloudCampaignConditions, cancellation: AbortSignal) {
-    const context = scope.data.runtime.context, signal = AbortSignal.any([context.signal, cancellation]);
+    const context = scope.data.runtime.context;
+    const workspace = this.#config.installations.workspace(job.shop)!;
+    return this.#config.browsers.task(workspace, AbortSignal.any([context.signal, cancellation]), async signal => {
     const owned = await scope.data.databases.discoveryResolver().resolve(context);
     const assertCurrent = async () => { scope.data.assertCurrent(); owned.assertOwned(); signal.throwIfAborted(); };
     await assertCurrent();
     if (owned.repository.findPlan(job.campaign_id)) throw new CloudHttpError("discovery.plan_conflict", 409);
-    const workspace = this.#config.installations.workspace(job.shop)!;
     await this.#config.browsers.read(workspace, { method: "checkBrowserProfile", args: [] }, signal);
     await assertCurrent();
     const capabilities = await this.#config.browsers.read(workspace, { method: "creatorSearchCapabilities", args: [] }, signal);
@@ -155,6 +157,7 @@ export class CloudCampaignService {
     await assertCurrent();
     if (!status || status.campaign_id !== plan.id || status.revision !== plan.revision) throw new Error("cloud.execution_owner_changed");
     return status;
+    });
   }
 
   async #plan(scope: Scope, id: string, revision?: number) {
@@ -186,6 +189,28 @@ export class CloudCampaignService {
     return this.#config.templates.save(shop, input, reference);
   }
   async templates(shop: string) { await this.#config.data.resolve(shop); return this.#config.templates.list(shop); }
+  async findContacts(shop: string, campaign: string, candidate: string, revision: number) {
+    const scope = await this.#scope(shop), { owned } = await this.#plan(scope, campaign, revision);
+    if (!owned.repository.candidateIsQualified(campaign, candidate)) throw new CloudHttpError("cloud.qualified_candidate_missing", 404);
+    const context = scope.data.runtime.context;
+    const task = this.#config.browsers.task(this.#config.installations.workspace(shop)!, context.signal, async signal => {
+      const environment = await scope.dependencies.reads(context);
+      const reader = new DiscoveryPublicPageExecutor(scope.data.runtime.accounts, scope.data.databases.discoveryResolver(), environment.browsers, environment.reader);
+      let pages = 0;
+      for (; pages < 2; pages++) {
+        signal.throwIfAborted(); owned.assertOwned();
+        const next = owned.repository.nextPublicPage(campaign, [], false, candidate);
+        if (!next) break;
+        const receipt = await reader.readOnce(context, next);
+        if (receipt.stop_code !== null) throw new CloudHttpError(receipt.stop_code, 502);
+      }
+      signal.throwIfAborted(); scope.data.assertCurrent();
+      await this.#config.library.projection(scope.data).publish(context, campaign, revision);
+      return { pages_read: pages, has_more: owned.repository.nextPublicPage(campaign, [], false, candidate) !== null };
+    }).finally(() => scope.tasks.delete(task));
+    scope.tasks.add(task);
+    return task;
+  }
   async template(shop: string, id: string) {
     await this.#config.data.resolve(shop);
     const stored = this.#config.templates.get(shop, id);
@@ -202,15 +227,18 @@ export class CloudCampaignService {
     if (plan.approved_at === null || plan.phase !== "active") throw new CloudHttpError("discovery.approval_required", 409);
     if (this.#config.browsers.busy(shop)) throw new CloudHttpError("cloud.worker_busy", 409);
     const job = this.#config.jobs.begin({ id: input.id, shop, campaign_id: campaign, kind: "execution", brief: plan.brief, expected_revision: plan.revision, request, product: this.#config.jobs.product(shop, campaign) });
-    const started = await scope.engine.startExecution(scope.data.runtime.context, { campaign_id: campaign, expected_revision: plan.revision, profile_ref: "cloud", excluded_platforms: [] }).then(value => ({ ok: true as const, value }), error => ({ ok: false as const, error: error as unknown }));
-    if (!started.ok) {
-      this.#config.jobs.finish(shop, job.id, "failed", "failed", failureCode(started.error));
-      throw started.error;
-    }
-    this.#track(scope, job, scope.data.runtime.supervisor.waitForIdle(scope.data.runtime.context), status => {
+    const cancellation = new AbortController(); scope.drafts.set(job.id, cancellation);
+    const work = this.#config.browsers.task(this.#config.installations.workspace(shop)!, AbortSignal.any([scope.data.runtime.context.signal, cancellation.signal]), async signal => {
+      signal.throwIfAborted();
+      await scope.engine.startExecution(scope.data.runtime.context, { campaign_id: campaign, expected_revision: plan.revision, profile_ref: "cloud", excluded_platforms: [] });
+      const status = await scope.data.runtime.supervisor.waitForIdle(scope.data.runtime.context);
+      signal.throwIfAborted();
+      return status;
+    });
+    this.#track(scope, job, work, status => {
       if (!status || status.campaign_id !== campaign || status.revision !== plan.revision) throw new Error("cloud.execution_owner_changed");
       return { phase: status.stage, failed: status.stage === "error", code: status.failure_code };
-    });
+    }, cancellation.signal);
     return job;
   }
 

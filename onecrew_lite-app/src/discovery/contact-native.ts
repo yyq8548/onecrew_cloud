@@ -74,7 +74,7 @@ export function discoveryNativeLinkSource(database: DatabaseSync, input: Discove
   for (const [link, query] of loadDiscoveryContactLookupLinks(database, input.candidate_id, input.expected_revision)) if (link === input.requested_url) return source(query);
   return null;
 }
-export function nextDiscoveryNativeContactLink(database: DatabaseSync, campaign: string, excludedPlatforms: readonly string[], requiredOnly = false): DiscoveryPublicPageInput | null {
+export function nextDiscoveryNativeContactLink(database: DatabaseSync, campaign: string, excludedPlatforms: readonly string[], requiredOnly = false, candidate: string | null = null): DiscoveryPublicPageInput | null {
   snapshot(database);
   const rows = database.prepare(`SELECT c.id,c.criteria_revision,c.source_profile_ref,p.status,p.active_query FROM discovery_candidates c
     JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id
@@ -84,10 +84,11 @@ export function nextDiscoveryNativeContactLink(database: DatabaseSync, campaign:
     WHERE d.id=? AND d.phase='active' AND c.criteria_revision=d.current_revision AND a.approved_at IS NOT NULL
       AND NOT EXISTS(SELECT 1 FROM json_each(?) excluded WHERE excluded.value IN (c.platform,c.source_platform))
       AND (?=0 OR c.verdict='pending')
+      AND (? IS NULL OR c.id=?)
       AND policy.policy='score_and_contact_v1' AND (c.verdict='qualified' OR (c.verdict='pending' AND json_array_length(json_extract(a.criteria_json,'$.requirements'))>0))
       AND (c.verdict='qualified' OR (SELECT COUNT(*) FROM discovery_public_page_reads page WHERE page.candidate_id=c.id)<2)
       AND NOT ${discoveryReadBusySql(database, campaign, "c.source_platform")} AND NOT ${discoveryReadBusySql(database, campaign, "c.platform")}
-      AND (p.status='completed' OR (p.status='technical_stop' AND p.stop_code='interrupted_public_page_read')) ORDER BY c.id`).all(campaign, stringifyApplicationJson(excludedPlatforms), requiredOnly ? 1 : 0);
+      AND (p.status='completed' OR (p.status='technical_stop' AND p.stop_code='interrupted_public_page_read')) ORDER BY c.id`).all(campaign, stringifyApplicationJson(excludedPlatforms), requiredOnly ? 1 : 0, candidate, candidate);
   for (const raw of rows) {
     const row = z.object({ id: text, criteria_revision: z.number().int().min(0).max(4294967295), source_profile_ref: text, status: text, active_query: text.nullable() }).parse(raw);
     const input = { campaign_id: campaign, candidate_id: row.id, expected_revision: row.criteria_revision, profile_ref: row.source_profile_ref, requested_url: "" }, material = loadDiscoveryNativeContactMaterial(database, input);

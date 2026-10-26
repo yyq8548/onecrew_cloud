@@ -159,7 +159,7 @@ export class DiscoveryRepository {
     }
     const targetReached = snapshot.progress.length > 0 ? snapshot.progress.every(source => source.qualified >= source.target_count) : (stopped.every(platform => excluded.includes(platform)) ? snapshot.counts : this.countCandidates(campaign, excluded)).qualified >= snapshot.campaign.target_count;
     const matchingRead = fallback.kind.startsWith("read_") || fallback.kind === "resolve_article";
-    const page = scoring.length > 0 ? this.nextPublicPage(campaign, [...excluded, ...policy.busyPlatforms ?? []], !targetReached && (policy.holdDiscovery === true || matchingRead)) : null;
+    const page = scoring.length > 0 && policy.automaticPublicPages !== false ? this.nextPublicPage(campaign, [...excluded, ...policy.busyPlatforms ?? []], !targetReached && (policy.holdDiscovery === true || matchingRead)) : null;
     if (page !== null) {
       const independent = this.#transaction(() => {
         const contact = loadDiscoveryNativeContactMaterial(this.#db, page);
@@ -209,7 +209,14 @@ export class DiscoveryRepository {
   savedNativeProfile(campaign: string, revision: number, profile: string, platform: string, source: string) { return new DiscoveryWebSourceRepository(this.#db).savedProfile(campaign, revision, profile, platform, source); }
   webSourceSource(campaign: string, hit: string) { return new DiscoveryWebSourceRepository(this.#db).source(campaign, hit); }
   claimWebSource(campaign: string, revision: number, hit: string) { return new DiscoveryWebSourceRepository(this.#db).claim(campaign, revision, hit); }
-  finishWebSource(claim: DiscoveryWebSourceClaim, native: unknown, stop: string | null) { return new DiscoveryWebSourceRepository(this.#db).finish(claim, native, stop); }
+  finishWebSource(claim: DiscoveryWebSourceClaim, native: unknown, stop: string | null) {
+    const repository = new DiscoveryWebSourceRepository(this.#db), receipt = repository.finish(claim, native, stop);
+    if (claim.origin_platform === "instagram" && receipt.status === "completed") {
+      repository.retainInstagramProfiles(claim.campaign_id);
+      this.retainSearchContent(claim.campaign_id, claim.search_hit_id);
+    }
+    return receipt;
+  }
   getWebSource(campaign: string, hit: string) { return new DiscoveryWebSourceRepository(this.#db).get(campaign, hit); }
   nextContentHit(campaign: string, platform: string, held: readonly string[] = []) {
     if (platform === "instagram") new DiscoveryWebSourceRepository(this.#db).retainInstagramProfiles(campaign);
@@ -243,7 +250,7 @@ export class DiscoveryRepository {
   nextContactLookup(campaign: string, excluded: readonly string[] = []) { return new DiscoveryContactLookupRepository(this.#db).next(campaign, excluded); }
   claimContactLookup(input: DiscoveryContactLookup) { return new DiscoveryContactLookupRepository(this.#db).claim(input); }
   finishContactLookup(input: DiscoveryContactLookup) { return new DiscoveryContactLookupRepository(this.#db).settle(input); }
-  nextPublicPage(campaign: string, excluded: readonly string[] = [], requiredOnly = false) { return new DiscoveryPublicPageRepository(this.#db).next(campaign, excluded, requiredOnly); }
+  nextPublicPage(campaign: string, excluded: readonly string[] = [], requiredOnly = false, candidate: string | null = null) { return new DiscoveryPublicPageRepository(this.#db).next(campaign, excluded, requiredOnly, candidate); }
   claimPublicPage(input: DiscoveryPublicPageInput) { return new DiscoveryPublicPageRepository(this.#db).claim(input); }
   finishPublicPage(input: FinishDiscoveryPublicPageInput) { return new DiscoveryPublicPageRepository(this.#db).settle(input); }
   reusePublicPage(claim: DiscoveryPublicPageClaim) { return new DiscoveryPublicPageRepository(this.#db).reuse(claim); }
@@ -269,6 +276,19 @@ export class DiscoveryRepository {
   recoverInterruptedProfiles() { return new DiscoveryProfileRepository(this.#db).recoverInterrupted(); }
   finishProfile(claim: DiscoveryProfileClaim, native: unknown, stop: string | null) { return new DiscoveryProfileRepository(this.#db).finish(claim, native, stop); }
   reuseProfile(claim: DiscoveryProfileClaim) { return new DiscoveryProfileRepository(this.#db).reuse(claim); }
+  retainSearchContent(campaign: string, hit: string): void {
+    const row = this.#db.prepare("SELECT m.material_json FROM discovery_search_materials m JOIN discovery_search_hits h ON h.id=m.search_hit_id JOIN discovery_profile_reads p ON p.search_hit_id=h.id AND p.discovery_campaign_id=h.discovery_campaign_id WHERE h.discovery_campaign_id=? AND h.id=? AND h.platform='instagram'").get(campaign, hit);
+    if (!row) return;
+    const post = creatorSearchMaterial.parse(parseApplicationJson(z.string().parse(row.material_json))).instagram_post;
+    if (!post) return;
+    const profile = this.getProfile(campaign, hit);
+    if (profile.status !== "completed" || profile.stop_code !== null || profile.native_profile?.private_account === true) return;
+    if (post.author_url !== profile.claim.author_url) throw new Error("discovery_search_content_author_mismatch");
+    if (this.#db.prepare("SELECT 1 FROM discovery_content_reads WHERE discovery_campaign_id=? AND search_hit_id=?").get(campaign, hit)) return;
+    const claim = this.claimContent(campaign, profile.claim.expected_revision, hit);
+    const { author_url: _authorUrl, ...content } = post;
+    this.finishContent(claim, { ...content, author_id: claim.author_id }, null);
+  }
   interruptProfile(claim: DiscoveryProfileClaim) { return new DiscoveryProfileRepository(this.#db).interrupt(claim); }
   getProfile(campaign: string, hit: string) { return new DiscoveryProfileRepository(this.#db).get(campaign, hit); }
   listSearchHits(input: DiscoveryCandidatePageInput) {
@@ -477,7 +497,7 @@ export class DiscoveryRepository {
       seen.add(hit.source_url);
       if (hit.material) {
         const material = creatorSearchMaterial.parse(hit.material);
-        if (material.source_url !== hit.source_url || material.author_id !== hit.author_id || material.author_url !== hit.author_url || Buffer.byteLength(stringifyApplicationJson(material)) > 64000) throw new Error("discovery_search_material_invalid");
+        if (material.source_url !== hit.source_url || material.author_id !== hit.author_id || material.author_url !== hit.author_url || Buffer.byteLength(stringifyApplicationJson(material)) > 64000 || material.instagram_post && (claim.platform !== "instagram" || material.instagram_post.author_url !== hit.source_url)) throw new Error("discovery_search_material_invalid");
       }
     }
     this.#transaction(() => {

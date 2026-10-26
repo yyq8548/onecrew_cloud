@@ -3,10 +3,20 @@ import { z } from "zod";
 import { creatorSearchSource } from "./sources.ts";
 import { OpenCliError } from "./errors.ts";
 import { normalizeLinkedinHandle } from "./linkedin.ts";
+import { nativeContentObservations } from "./observations.ts";
+
+const instagramSearchPost = z.strictObject({
+  post_id: z.string().regex(/^[A-Za-z0-9_-]{1,32}$/u),
+  author_url: z.string().regex(/^https:\/\/www\.instagram\.com\/[a-z0-9_.]{1,30}\/$/u),
+  source_url: z.string().regex(/^https:\/\/www\.instagram\.com\/(?:p|reel)\/[A-Za-z0-9_-]{1,32}\/$/u),
+  text: z.string().refine(value => value.isWellFormed() && Buffer.byteLength(value) <= 8000 && !value.includes("\0")),
+  text_truncated: z.boolean(), observations: nativeContentObservations.optional(),
+}).refine(post => new URL(post.source_url).pathname.split("/")[2] === post.post_id);
 
 export const creatorSearchMaterial = z.strictObject({
   source_url: z.string(), author_id: z.string().nullable(), author_url: z.string().nullable(), native_author_id: z.string().nullable(),
   body_text: z.string().max(48000), body_completeness: z.enum(["unknown", "truncated"]), bio: z.string().max(8000).nullable(),
+  instagram_post: instagramSearchPost.optional(),
 });
 export interface CreatorSearchHit { source_url: string; title: string; author_label: string; author_id: string | null; author_url: string | null; material?: z.infer<typeof creatorSearchMaterial> }
 const text = z.string().refine(value => value.isWellFormed());
@@ -79,8 +89,10 @@ function generic(platform: string, input: unknown): CreatorSearchHit {
     const match = bound(canonical);
     if (match && BigInt(match[1]!) <= BigInt(Number.MAX_SAFE_INTEGER)) { source = canonical; authorId = match[1]!; authorUrl = `https://weibo.com/u/${authorId}`; }
   }
+  const post = platform === "instagram" && row.matched_post !== undefined ? parse(instagramSearchPost, row.matched_post) : undefined;
+  if (post && (field("provider") !== "onecrew-instagram-visible-v1" || post.author_url !== source)) invalid();
   return { source_url: source, title, author_label: clean(author, 200), author_id: authorId, author_url: authorUrl,
-    ...(platform === "twitter" ? { material: material(source, authorId, authorUrl, null, body, field("bio") || null) } : {}) };
+    ...(platform === "twitter" ? { material: material(source, authorId, authorUrl, null, body, field("bio") || null) } : post ? { material: { ...material(source, authorId, authorUrl, null, "", null), instagram_post: post } } : {}) };
 }
 
 export function decodeCreatorSearch(platform: string, value: unknown, limit: number): CreatorSearchHit[] {

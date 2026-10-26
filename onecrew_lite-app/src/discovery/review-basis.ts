@@ -282,7 +282,8 @@ export function loadDiscoveryReviewBasis(database: DatabaseSync, campaign: strin
     const saved = database.prepare("SELECT material_json FROM discovery_search_materials WHERE search_hit_id=?").get(hit);
     if (saved) {
       const material = creatorSearchMaterial.parse(parse(z.string().parse(saved.material_json)));
-      if (material.source_url !== basis.hit.source_url || material.author_url !== (basis.hit.author_url ?? basis.native_profile?.profile_url) || material.native_author_id !== null && material.native_author_id !== basis.native_author_id) throw new Error("review_search_material_binding_changed");
+      const searchAuthorUrl = platform === "instagram" && material.instagram_post ? material.instagram_post.author_url : material.author_url;
+      if (material.source_url !== basis.hit.source_url || searchAuthorUrl !== (basis.hit.author_url ?? basis.native_profile?.profile_url) || material.native_author_id !== null && material.native_author_id !== basis.native_author_id) throw new Error("review_search_material_binding_changed");
       if (material.native_author_id === basis.native_author_id && material.body_text.trim()) basis.source_description = [basis.source_description, `Search response (${material.body_completeness}): ${material.body_text}`].filter(Boolean).join("\n");
       if (platform === "twitter" && basis.native_content?.status === "completed" && material.author_id === object(object(basis.native_content.native_content).identity).handle && !basis.native_profile?.bio && material.bio && basis.native_profile) {
         basis.native_profile.bio = material.bio; basis.native_profile.bio_status = "unknown";

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { z } from 'zod';
 import { discoveryQualityScore, type DiscoveryReviewMaterial } from '@onecrew/runtime-contracts/discovery';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -16,6 +17,7 @@ const failure = (error: unknown) => error instanceof Error ? error.message : '�
 export default function Results({ campaignId, revision }: { campaignId: string; revision: number }) {
   const [data, setData] = useState<CampaignResults | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState(''), [more, setMore] = useState(false);
   const [filter, setFilter] = useState<'all' | keyof typeof verdicts>('all'), [page, setPage] = useState(1);
+  const [contactBusy, setContactBusy] = useState(''), [contactNotice, setContactNotice] = useState('');
   const [evidence, setEvidence] = useState<{ ids: string[]; title: string; selected: string } | null>(null), [material, setMaterial] = useState<DiscoveryReviewMaterial | null>(null), [materialError, setMaterialError] = useState(''), [materialBusy, setMaterialBusy] = useState(false);
   const request = useRef<AbortController | null>(null), evidenceRequest = useRef<AbortController | null>(null);
   useEffect(() => () => { request.current?.abort(); evidenceRequest.current?.abort(); }, []);
@@ -46,6 +48,14 @@ export default function Results({ campaignId, revision }: { campaignId: string; 
     }).catch(error => { if (!controller.signal.aborted) setMaterialError(failure(error)); });
     if (!controller.signal.aborted) setMaterialBusy(false);
   }
+  async function findContacts(candidate: string) {
+    setContactBusy(candidate); setContactNotice(''); setError('');
+    await cloudApi(`/api/campaigns/${encodeURIComponent(campaignId)}/candidates/${encodeURIComponent(candidate)}/contacts`, z.object({ pages_read: z.number().int(), has_more: z.boolean() }), { body: { expected_revision: revision } }).then(async result => {
+      await load();
+      setContactNotice(result.pages_read === 0 ? '没有更多已确认来源可供读取。' : `已读取 ${result.pages_read} 个联系页面，结果已更新。${result.has_more ? '还可以继续查找。' : ''}`);
+    }).catch(error => setError(failure(error)));
+    setContactBusy('');
+  }
   const library = data?.library.creators, projection = library?.projection;
   const currentLibrary = library?.state === 'current' && projection?.criteria_revision === revision;
   const contacts = currentLibrary && evidence ? library.sources.find(source => source.search_hit_id === evidence.selected)?.contacts ?? [] : [];
@@ -61,6 +71,7 @@ export default function Results({ campaignId, revision }: { campaignId: string; 
     <summary className="cursor-pointer font-medium">结果与证据</summary>
     <Button variant="outline" disabled={busy} onClick={() => void load()}>{busy ? '正在读取…' : '刷新结果'}</Button>
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+    {contactNotice && <p role="status" className="text-sm">{contactNotice}</p>}
     {data && <>
       <section className="space-y-3" aria-label="Library 推荐结果">
         <h3 className="font-medium">Library 推荐 · {currentLibrary ? recommended.length : '等待同步'}</h3>
@@ -82,6 +93,7 @@ export default function Results({ campaignId, revision }: { campaignId: string; 
         <p className="text-muted-foreground">已匹配 {data.counts.qualified} 位，待核验 {data.counts.pending} 位，未匹配 {data.counts.rejected} 位；当前已加载 {data.candidates.length} 位。</p>
         <ul className="space-y-3">{candidates.map(candidate => <DiscoveryCandidateCard key={candidate.id} item={candidate} campaign={data.campaign} reasonLabels={reasonLabels}>
           <span className="self-center text-muted-foreground">{verdicts[candidate.verdict]}</span>
+          {candidate.verdict === 'qualified' && <Button size="sm" variant="outline" disabled={busy || contactBusy !== ''} onClick={() => void findContacts(candidate.id)}>{contactBusy === candidate.id ? '正在查找…' : '查找联系方式'}</Button>}
           {candidate.evidence.source_urls.map(url => { const hit = data.hits.find(hit => hit.source_url === url); return hit ? <Button key={url} size="sm" variant="outline" onClick={() => void openMaterial([hit.id], candidate.display_name)}>查看证据</Button> : <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="underline">查看原始来源</a>; })}
         </DiscoveryCandidateCard>)}</ul>
         {candidates.length === 0 && <p role="status">当前已加载的记录中没有此状态的创作者。</p>}

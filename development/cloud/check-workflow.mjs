@@ -29,7 +29,7 @@ const directory = resolve(dataDirectory), origin = 'https://cloud.example.com';
 const captured = await readFile(resolve(productFile), 'utf8');
 const source = parseApplicationJson(captured).product;
 // 使用真实商店公开 JSON；本地既有安装记录只决定存储归属，不代表 Shopify 安装或成员验收。
-const product = shopifyProductSnapshot.parse({ id: `gid://shopify/Product/${source.id}`, title: source.title, description: load(source.body_html).text(), onlineStoreUrl: productUrl, updatedAt: new Date(source.updated_at).toISOString(), captured_at: Date.now() });
+const product = shopifyProductSnapshot.parse({ id: `gid://shopify/Product/${source.id}`, title: source.title, description: load(source.body_html).text(), vendor: source.vendor, onlineStoreUrl: productUrl, updatedAt: new Date(source.updated_at).toISOString(), captured_at: Date.now() });
 const metadata = new DatabaseSync(join(directory, 'cloud.sqlite'), { readOnly: true });
 const shops = metadata.prepare('SELECT shop FROM shopify_installations WHERE uninstalled_at IS NULL').all();
 metadata.close();
@@ -87,9 +87,10 @@ assert.equal(status.execution?.failure_code, null);
 assert.ok(['finished', 'needs_evidence'].includes(status.execution.stage));
 assert.equal(result.campaign.target_count, 10);
 assert.ok(result.hits.length > 0);
-assert.ok(result.candidates.some(candidate => candidate.evidence.assessment?.quality_rating), '必须实际完成评分');
+assert.ok(result.candidates.some(candidate => candidate.evidence.reviewed_quality?.verified), '必须实际完成并保存评分审核');
 assert.ok(result.library.table);
-assert.ok(result.library.creators.recommendations.some(creator => creator.values.score), '评分必须发布到 Library');
+if (result.counts.qualified > 0) assert.ok(result.library.creators.recommendations.some(creator => creator.values.score), '合格候选的评分必须发布到 Library');
+else assert.equal(result.library.creators.recommendations.length, 0, '没有合格候选时不得生成推荐');
 assert.deepEqual(failures, []);
 assert.deepEqual(fatal, []);
 if (sourceTemplate) {

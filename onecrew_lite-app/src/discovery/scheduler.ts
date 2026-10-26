@@ -20,8 +20,10 @@ import { INACTIVE_CREATOR_SOURCES } from "../platforms/opencli/sources.ts";
 import type { DiscoveryLibraryProjection } from "./runtime.ts";
 import { discoveryShouldHold } from "./backpressure.ts";
 import { DISCOVERY_READ_CONCURRENCY } from "./read-capacity.ts";
+import type { DiscoverySchedulingPolicy } from "./step.ts";
 
 interface SchedulerConfiguration {
+  scheduling?: DiscoverySchedulingPolicy | undefined;
   accounts: AccountContextService; repositories: DiscoveryRepositoryResolver; directories: AccountDatabases; supervisor: DiscoveryExecutionSupervisor;
   advances: DiscoveryAdvanceExecutor; library: DiscoveryLibraryProjection; dependencies?: DiscoveryDependencyResolver;
   matcher(context: AccountContext): Promise<DiscoverySemanticMatcher>;
@@ -49,7 +51,7 @@ export class DiscoveryScheduler {
       const current = owned.repository.getPlan(input.campaign_id);
       if (current.phase !== "active" || current.revision !== input.expected_revision || current.scopes.some(scope => scope.profile_ref !== input.profile_ref)) throw new Error("discovery_execution_approval_changed");
       await configuration.library.readiness(context); accounts.assertCurrent(context); owned.assertOwned();
-      const next = owned.repository.planStep(input.campaign_id, input.expected_revision, [...new Set([...input.excluded_platforms, ...INACTIVE_CREATOR_SOURCES])]);
+      const next = owned.repository.planStep(input.campaign_id, input.expected_revision, [...new Set([...input.excluded_platforms, ...INACTIVE_CREATOR_SOURCES])], [], configuration.scheduling);
       if (!["target_reached", "needs_evidence", "search_exhausted", "busy"].includes(next.kind)) {
         if (!configuration.dependencies) throw new Error("discovery_dependency_unavailable");
         const environment = await configuration.dependencies.reads(context), browser = await environment.browsers.resolve(context, input.profile_ref); await browser.assertCurrent();
@@ -82,7 +84,7 @@ export class DiscoveryScheduler {
       const next = discoveryShouldHold(holdDiscovery, active);
       if (next !== holdDiscovery) metrics.enqueue(input.campaign_id, next ? "pipeline.discovery_held" : "pipeline.discovery_resumed", 0);
       holdDiscovery = next;
-      owner.change(status => { status.pipeline = { active_pending: active, queued_scores: jobs.filter(job => job.state === "queued").length, running_scores: jobs.filter(job => job.state === "running").length, discovery_held: holdDiscovery, contact_pending: owned.repository.nextPublicPage(input.campaign_id, unavailable) !== null }; });
+      owner.change(status => { status.pipeline = { active_pending: active, queued_scores: jobs.filter(job => job.state === "queued").length, running_scores: jobs.filter(job => job.state === "running").length, discovery_held: holdDiscovery, contact_pending: configuration.scheduling?.automaticPublicPages !== false && owned.repository.nextPublicPage(input.campaign_id, unavailable) !== null }; });
     };
     let readAhead = 0, finalStage: DiscoveryExecutionStage = "paused", finalReason = "execution_interrupted", fatal = false;
     const reads: ReadJob[] = [];
@@ -179,7 +181,7 @@ export class DiscoveryScheduler {
         if (!reads.some(read => read.outcome)) {
           while (reads.length < DISCOVERY_READ_CONCURRENCY && !owner.signal.aborted) {
             const started = performance.now(); let read: ReadJob;
-            const task = configuration.advances.advance(context, { campaign_id: input.campaign_id, expected_revision: input.expected_revision, excluded_platforms: input.excluded_platforms }, jobs.flatMap(job => job.deferred), jobs.map(job => job.hit), owner.signal, result => { read.attempt = result; }, { holdDiscovery })
+            const task = configuration.advances.advance(context, { campaign_id: input.campaign_id, expected_revision: input.expected_revision, excluded_platforms: input.excluded_platforms }, jobs.flatMap(job => job.deferred), jobs.map(job => job.hit), owner.signal, result => { read.attempt = result; }, { ...configuration.scheduling, holdDiscovery })
               .then(result => ({ ok: true as const, result }), error => ({ ok: false as const, error: error as unknown }))
               .then(outcome => { read.outcome = outcome; return outcome; });
             read = { started, task }; reads.push(read);

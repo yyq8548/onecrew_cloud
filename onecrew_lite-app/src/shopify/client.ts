@@ -69,7 +69,7 @@ export function createShopifyClient(configuration: ShopifyConfiguration) {
       const client = new api.clients.Graphql({ session });
       const result = await client.request(`query OneCrewProducts($first: Int!, $after: String) {
         products(first: $first, after: $after) {
-          nodes { id title description onlineStoreUrl updatedAt }
+          nodes { id title description vendor onlineStoreUrl updatedAt }
           pageInfo { hasNextPage endCursor }
         }
       }`, { variables: { first, after } });
@@ -80,7 +80,7 @@ export function createShopifyClient(configuration: ShopifyConfiguration) {
       shopDomainSchema.parse(session.shop); shopifyProductId.parse(id);
       const client = new api.clients.Graphql({ session });
       const result = await client.request(`query OneCrewProduct($id: ID!) {
-        product(id: $id) { id title description onlineStoreUrl updatedAt }
+        product(id: $id) { id title description vendor onlineStoreUrl updatedAt }
       }`, { variables: { id } });
       if (result.errors || !result.data) throw new Error("shopify.product_failed");
       const parsed = z.object({ product: shopifyProductSnapshot.omit({ captured_at: true }).nullable() }).parse(result.data);

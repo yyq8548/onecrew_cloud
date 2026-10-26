@@ -2,7 +2,7 @@ import type { DiscoveryRepository } from "./repository.ts";
 import { canAdvanceSearchAfterStop } from "./stops.ts";
 import { DISCOVERY_READ_CONCURRENCY } from "./read-capacity.ts";
 
-export interface DiscoverySchedulingPolicy { holdDiscovery?: boolean; heldQueryHits?: readonly string[]; busyPlatforms?: readonly string[] }
+export interface DiscoverySchedulingPolicy { holdDiscovery?: boolean; heldQueryHits?: readonly string[]; busyPlatforms?: readonly string[]; automaticPublicPages?: boolean }
 
 export type DiscoveryStep = { kind: "search"; platform: string; profile_ref: string }
   | { kind: "read_video"; profile_ref: string; search_hit_id: string }
@@ -38,14 +38,14 @@ export function planDiscoveryStep(repository: DiscoveryStepSource, campaignId: s
   const blocked = [...new Set([...excluded, ...deferred, ...reached, ...occupied])], scopes = campaign.scopes.filter(scope => !blocked.includes(scope.platform)), runs = campaign.platform_runs.filter(run => !blocked.includes(run.platform));
   const contactBlocked = [...new Set([...excluded, ...deferred, ...occupied])];
   if (progress.length ? progress.every(source => source.qualified >= source.target_count) : counts.qualified >= campaign.target_count) {
-    const page = repository.nextPublicPage(campaignId, contactBlocked);
+    const page = policy.automaticPublicPages === false ? null : repository.nextPublicPage(campaignId, contactBlocked);
     if (page) return { kind: "read_public_page", profile_ref: page.profile_ref, candidate_id: page.candidate_id, requested_url: page.requested_url };
     return { kind: deferred.length || occupied.length ? "busy" : "target_reached" };
   }
   const first = scopes.flatMap(scope => runs.filter(run => run.platform === scope.platform && run.status === "unsearched"))[0];
   const held = policy.heldQueryHits ?? [];
   const authorReview = policy.holdDiscovery ? undefined : repository.webAuthorReady(campaignId, revision, blocked)[0]; if (authorReview) return { kind: "resolve_article", search_hit_id: authorReview.claim.search_hit_id };
-  const requiredPage = repository.nextPublicPage(campaignId, contactBlocked, true); if (requiredPage) return { kind: "read_public_page", profile_ref: requiredPage.profile_ref, candidate_id: requiredPage.candidate_id, requested_url: requiredPage.requested_url };
+  const requiredPage = policy.automaticPublicPages === false ? null : repository.nextPublicPage(campaignId, contactBlocked, true); if (requiredPage) return { kind: "read_public_page", profile_ref: requiredPage.profile_ref, candidate_id: requiredPage.candidate_id, requested_url: requiredPage.requested_url };
   for (const platform of ["youtube", "twitter", "bilibili", "tiktok", "instagram", "weibo", "bluesky", "zhihu", "hackernews", "pixiv", "linkedin", "douyin"]) {
     if (platforms.has(platform) && !blocked.includes(platform)) { const hit = repository.nextContentHit(campaignId, platform); if (hit) return { kind: "read_content", search_hit_id: hit }; }
   }
@@ -75,6 +75,6 @@ export function planDiscoveryStep(repository: DiscoveryStepSource, campaignId: s
   for (const phase of ["technical_stop", "completed"]) for (const scope of scopes) {
     if (runs.some(run => run.platform === scope.platform && run.profile_ref === scope.profile_ref && run.status === phase && (phase !== "technical_stop" || canAdvanceSearchAfterStop(run.stop_code))) && repository.nextSearchKeyword(campaignId, scope) !== null) return { kind: "search", platform: scope.platform, profile_ref: scope.profile_ref };
   }
-  const page = repository.nextPublicPage(campaignId, contactBlocked); if (page) return { kind: "read_public_page", profile_ref: page.profile_ref, candidate_id: page.candidate_id, requested_url: page.requested_url };
+  const page = policy.automaticPublicPages === false ? null : repository.nextPublicPage(campaignId, contactBlocked); if (page) return { kind: "read_public_page", profile_ref: page.profile_ref, candidate_id: page.candidate_id, requested_url: page.requested_url };
   return { kind: deferred.length || occupied.length ? "busy" : counts.pending > 0 ? "needs_evidence" : "search_exhausted" };
 }

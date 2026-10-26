@@ -14,9 +14,11 @@ import { cloudKolCriteria } from '../../../onecrew_lite-app/src/cloud/campaign-p
 import { cloudCampaignConditions } from '../../../onecrew_lite-app/src/cloud/campaign-parameters.ts';
 import { cloudCampaignScoreInstructions, cloudCampaignScoreParagraphs, cloudCampaignScoreTransport, cloudProductScorePrompt, finalizeCloudCampaignScore } from '../../../onecrew_lite-app/src/cloud/campaign-scoring.ts';
 
-const [dataDirectory, campaignId, hitId, title, description, savedResponseFile, minimum = '10000', maximum = '100000', expectedRelation, expectedSelection, expectedExcerptPattern, expectedQuality] = process.argv.slice(2);
+const [dataDirectory, campaignId, hitId, title, description, savedResponseFile, minimum = '10000', maximum = '100000', expectedRelation, expectedSelection, expectedExcerptPattern, expectedQuality, productFile] = process.argv.slice(2);
 assert.ok(dataDirectory && campaignId && hitId && title && description, '用法：node development/cloud/model/check-score.mjs <真实材料数据目录> <Campaign ID> <hit ID> <本地商品标题> <本地商品说明>');
 const directory = resolve(dataDirectory);
+const vendor = productFile ? JSON.parse(await readFile(resolve(productFile), 'utf8')).product.vendor : undefined;
+if (productFile) assert.equal(typeof vendor, 'string');
 await using ownership = new AsyncDisposableStack();
 const storage = await openCloudStorage(directory);
 ownership.defer(() => storage.close());
@@ -32,10 +34,9 @@ const saved = await data.reviewMaterial(shop, campaignId, hitId, campaign.revisi
 // 原始创作者材料保持不变；商品文字和筛选条件仅是本地性能输入，不代表 Shopify 商品。
 // 评分只在内存中校验，不能写回使用不同目标的原任务。
 const requirement = '必须有真实内容证据支持与商品的相关性。';
-const conditions = cloudCampaignConditions.parse({ platforms: ['youtube'], min_followers: Number(minimum), max_followers: Number(maximum), target_count: 10 });
-const objective = `寻找适合推广商品「${title}」的 KOL。${requirement}平台：youtube；粉丝范围：${conditions.min_followers}–${conditions.max_followers}；目标共 10 位。商品资料以本地测试输入为准。`;
+const conditions = cloudCampaignConditions.parse({ platforms: [saved.hit.platform], min_followers: Number(minimum), max_followers: Number(maximum), target_count: 10 });
+const objective = `寻找适合推广商品「${title}」的 KOL。${requirement}平台：${saved.hit.platform}；粉丝范围：${conditions.min_followers}–${conditions.max_followers}；目标共 10 位。商品资料以本地测试输入为准。`;
 const material = { ...saved, criteria: cloudKolCriteria(conditions) };
-assert.equal(material.hit.platform, 'youtube');
 console.info(JSON.stringify({ event: 'cloud.saved_native_followers', count: material.native_followers ?? null, estimate: material.native_follower_estimate ?? null }, (_, value) => typeof value === 'bigint' ? String(value) : value));
 const countFindings = discoveryRequiredCountFindings(material, material.native_followers ?? null, objective);
 if (countFindings !== null) {
@@ -84,15 +85,22 @@ const relation = compact.relation;
 // 只验证真实响应的编号合同；原文必须由代码从所属候选材料取回。
 assert.throws(() => transport.expand({ ...compact, paragraph_id: 'local-product-input' }));
 assert.throws(() => transport.expand({ ...compact, source_excerpt: title }));
-const proposal = finalizeCloudCampaignScore(material, material.native_followers ?? null, transport.expand(compact));
+const proposal = finalizeCloudCampaignScore(material, material.native_followers ?? null, transport.expand(compact), vendor);
+const brandPending = vendor?.trim() && material.hit.author_label.trim().toLowerCase() === vendor.trim().toLowerCase() && proposal.selection.outcome !== 'contradicted';
+if (brandPending) {
+  assert.equal(proposal.selection.outcome, 'insufficient');
+  assert.equal(proposal.quality_rating.outcome, 'insufficient');
+  assert.equal(proposal.quality_rating.match_level, null);
+}
 assert.match(proposal.quality_rating.rationale, /\p{Script=Han}/u, '代码生成的说明必须使用中文');
 const selected = paragraphs.find(paragraph => paragraph.paragraph_id === compact.paragraph_id);
 console.info(JSON.stringify({ event: 'cloud.saved_paragraph_selected', selected: selected ?? null }));
-if (selected) {
+if (selected && proposal.quality_rating.outcome === 'supported') {
   assert.ok(proposal.quality_rating.rationale.includes(selected.quote));
   if (expectedExcerptPattern) assert.match(selected.quote, new RegExp(expectedExcerptPattern, 'iu'), '所选原文必须支持本次商品判断');
 }
-if (relation !== 'insufficient_content_evidence' || compact.creator === 'not_creator') assert.throws(() => transport.expand({ ...compact, paragraph_id: '' }), /cloud\.score_source_excerpt_required/);
+if (proposal.quality_rating.outcome === 'supported') assert.throws(() => transport.expand({ ...compact, paragraph_id: '' }), /cloud\.score_source_excerpt_required/);
+if (compact.creator === 'not_creator') assert.throws(() => transport.expand({ ...compact, creator_paragraph_id: '' }));
 const audit = () => {
   const findings = [proposal.selection, proposal.quality_rating, ...proposal.requirement_findings];
   const evidence = applyDiscoverySelectionQuality(material, findings, {}, 'local-performance-only');
@@ -106,7 +114,7 @@ if (expectedRelation !== undefined || expectedSelection !== undefined) {
   if (expectedSelection) assert.equal(proposal.selection.outcome, expectedSelection, '最终入选结果与输入范围不符');
   if (expectedQuality) assert.equal(proposal.quality_rating.outcome, expectedQuality, '最终质量状态与预期不符');
   if (expectedQuality === 'insufficient') assert.equal(proposal.quality_rating.match_level, null, '待核验结果不得保留质量等级');
-  if (expectedSelection === 'insufficient' && expectedQuality === 'insufficient') assert.ok(proposal.requirement_findings.every(finding => finding.outcome === 'insufficient'));
+  if (expectedSelection === 'insufficient' && expectedQuality === 'insufficient' && !brandPending) assert.ok(proposal.requirement_findings.every(finding => finding.outcome === 'insufficient'));
   assert.match(proposal.quality_rating.rationale, /\p{Script=Han}/u, '理由必须使用中文');
   console.info(JSON.stringify({ event: 'cloud.saved_classification_checked', relation, selection: proposal.selection.outcome, level: proposal.quality_rating.match_level, humanBatchAcceptance: false }));
 }

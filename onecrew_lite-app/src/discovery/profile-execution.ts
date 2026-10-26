@@ -32,7 +32,11 @@ export class DiscoveryProfileExecutor {
     })().then(value => ({ ok: true as const, value }), error => ({ ok: false as const, error: error as unknown }));
     // 已开始的读取始终提交原账号回执；账号切换只禁止下一次读取。
     owned.assertOwned();
-    if (observed.ok) return observed.value.reused ? observed.value.receipt : owned.repository.finishProfile(claim, observed.value.native, null);
+    if (observed.ok) {
+      const receipt = observed.value.reused ? observed.value.receipt : owned.repository.finishProfile(claim, observed.value.native, null);
+      if (claim.platform === "instagram") owned.repository.retainSearchContent(claim.campaign_id, claim.search_hit_id);
+      return receipt;
+    }
     if (observed.error instanceof OpenCliError && !["opencli_cancelled", "opencli_cancel_pending"].includes(observed.error.code)) return owned.repository.finishProfile(claim, null, observed.error.code === "opencli_read_command_unavailable" ? "opencli_command_unavailable" : observed.error.code);
     const interrupted = await Promise.resolve().then(() => owned.repository.interruptProfile(claim)).then(() => ({ ok: true as const }), error => ({ ok: false as const, error: error as unknown }));
     if (!interrupted.ok) throw new AggregateError([observed.error, interrupted.error], "discovery_profile_read_and_interrupt_failed");

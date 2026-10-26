@@ -26,7 +26,7 @@ test("real cloud HTTP listener rejects unauthenticated store APIs and unsigned w
       assert.ok(response.headers.get("x-request-id"));
     }
     const secret = randomBytes(32).toString("hex");
-    for (const [path, method] of [["/api/campaigns", "POST"], ["/api/campaign-jobs", "GET"], ["/api/campaign-jobs/example", "GET"], ["/api/campaign-jobs/example/cancel", "POST"], ["/api/campaigns/example/approve", "POST"], ["/api/campaigns/example/start", "POST"], ["/api/campaigns/example/pause", "POST"]] as const) assert.equal((await fetch(`${server.origin}${path}`, { method })).status, 401, path);
+    for (const [path, method] of [["/api/campaigns", "POST"], ["/api/campaign-jobs", "GET"], ["/api/campaign-jobs/example", "GET"], ["/api/campaign-jobs/example/cancel", "POST"], ["/api/campaigns/example/approve", "POST"], ["/api/campaigns/example/start", "POST"], ["/api/campaigns/example/pause", "POST"], ["/api/campaigns/example/candidates/example/contacts", "POST"]] as const) assert.equal((await fetch(`${server.origin}${path}`, { method })).status, 401, path);
     for (const path of ["/api/library", "/api/library/table", "/api/library/table/creators"]) assert.equal((await fetch(`${server.origin}${path}`)).status, 401, path);
     for (const path of ["/api/campaigns/example/results", "/api/campaigns/example/hits/example/material?revision=1"]) assert.equal((await fetch(`${server.origin}${path}`)).status, 401, path);
     for (const [path, method] of [["/api/privacy/requests", "GET"], ["/api/privacy/requests/example/export", "GET"], ["/api/privacy/requests/example/delivered", "POST"]] as const) assert.equal((await fetch(`${server.origin}${path}`, { method })).status, 401, path);

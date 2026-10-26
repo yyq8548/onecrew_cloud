@@ -7,7 +7,7 @@ import { shopDomainSchema } from "./shop-runtime-registry.ts";
 import { cloudCampaignConditions } from "./campaign-parameters.ts";
 
 export const shopifyProductId = z.string().regex(/^gid:\/\/shopify\/Product\/[1-9]\d*$/u);
-export const shopifyProductSnapshot = z.strictObject({ id: shopifyProductId, title: z.string(), description: z.string(), onlineStoreUrl: z.url().nullable(), updatedAt: z.iso.datetime(), captured_at: z.number().int().positive() });
+export const shopifyProductSnapshot = z.strictObject({ id: shopifyProductId, title: z.string(), description: z.string(), vendor: z.string().optional(), onlineStoreUrl: z.url().nullable(), updatedAt: z.iso.datetime(), captured_at: z.number().int().positive() });
 export type ShopifyProductSnapshot = z.infer<typeof shopifyProductSnapshot>;
 export const createCloudCampaign = cloudCampaignConditions.safeExtend({ id: z.uuid(), product_id: shopifyProductId });
 export const startCloudCampaign = z.strictObject({ id: z.uuid(), expected_revision: z.number().int().positive().max(4294967295) });

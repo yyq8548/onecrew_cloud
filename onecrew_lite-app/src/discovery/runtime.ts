@@ -25,9 +25,10 @@ import { DiscoveryScheduler } from "./scheduler.ts";
 import { discoveryExecutionInput, type DiscoveryExecutionInput } from "./execution-supervisor.ts";
 import { DiscoveryWorkspace, workspacePresence } from "./workspace.ts";
 import { HostSemanticClient, HostOperationRuns, hostWorkOwner, hostWorkClaimInput, hostWorkSubmitInput, hostWorkGetInput } from "./host-work.ts";
+import type { DiscoverySchedulingPolicy } from "./step.ts";
 
 export interface DiscoveryLibraryProjection { readiness(context: AccountContext): Promise<void>; publish(context: AccountContext, campaign: string, revision: number): Promise<DiscoveryExecutionLibrary> }
-export interface DiscoveryRuntimeConfiguration { accounts: AccountContextService; repositories: DiscoveryRepositoryResolver; directories: AccountDatabases; dependencies?: DiscoveryDependencyResolver; supervisor: DiscoveryExecutionSupervisor; library: DiscoveryLibraryProjection; scoreInstructions?: DiscoveryScoreInstructions; finalizeScore?: DiscoveryScoreFinalizer; scoreTransport?: DiscoveryScoreTransport; onStarted?(context: AccountContext, campaign: string): void }
+export interface DiscoveryRuntimeConfiguration { accounts: AccountContextService; repositories: DiscoveryRepositoryResolver; directories: AccountDatabases; dependencies?: DiscoveryDependencyResolver; supervisor: DiscoveryExecutionSupervisor; library: DiscoveryLibraryProjection; scoreInstructions?: DiscoveryScoreInstructions; finalizeScore?: DiscoveryScoreFinalizer; scoreTransport?: DiscoveryScoreTransport; scheduling?: DiscoverySchedulingPolicy; onStarted?(context: AccountContext, campaign: string): void }
 
 // 统一主程序创建并注入唯一supervisor；本模块不创建第二个准入锁或账号选择器。
 export function createDiscoveryRuntime(configuration: DiscoveryRuntimeConfiguration) {
@@ -63,7 +64,7 @@ export function createDiscoveryRuntime(configuration: DiscoveryRuntimeConfigurat
       if (owned.repository.getPlan(campaign).revision !== plan.revision) throw new Error("discovery_revision_changed");
     }
   }
-  const scheduler = new DiscoveryScheduler({ accounts, repositories, directories: configuration.directories, supervisor, advances, matcher, metrics: context => workspace.metrics(context), library: { readiness: context => library.readiness(context), publish: (context, campaign, revision) => publish(context, campaign, true, revision) }, ...(configuration.dependencies ? { dependencies: configuration.dependencies } : {}), ...(configuration.onStarted ? { onStarted: configuration.onStarted } : {}) });
+  const scheduler = new DiscoveryScheduler({ accounts, repositories, directories: configuration.directories, supervisor, advances, matcher, scheduling: configuration.scheduling, metrics: context => workspace.metrics(context), library: { readiness: context => library.readiness(context), publish: (context, campaign, revision) => publish(context, campaign, true, revision) }, ...(configuration.dependencies ? { dependencies: configuration.dependencies } : {}), ...(configuration.onStarted ? { onStarted: configuration.onStarted } : {}) });
   function stopAcceptingWork(): void { closing = true; configuration.dependencies?.stopSemantic?.(); drafts.stopAcceptingWork(); supervisor.stopAcceptingWork(); }
   function startExecution(context: AccountContext, input: DiscoveryExecutionInput) { assertAccepting(context); return scheduler.start(context, input); }
   function pauseExecution(context: AccountContext, campaignId: string) {
@@ -135,7 +136,7 @@ export function createDiscoveryRuntime(configuration: DiscoveryRuntimeConfigurat
           if (web_author_ready.length) return { step: { kind: "needs_evidence" }, campaign, counts: owned.repository.countCandidates(input.campaign_id), transcript: null, profile: null, content: null, identity: null, next_action: "resolve_web_author", review_ready: [], web_author_ready };
           const metrics = await workspace.metrics(context), began = performance.now();
           let attempted: import("./advance.ts").DiscoveryAdvanceResult | undefined;
-          const outcome = await advances.advance(context, input, [], [], context.signal, value => { attempted = value; }).then(value => ({ ok: true as const, value }), error => ({ ok: false as const, error: error as unknown }));
+          const outcome = await advances.advance(context, input, [], [], context.signal, value => { attempted = value; }, configuration.scheduling).then(value => ({ ok: true as const, value }), error => ({ ok: false as const, error: error as unknown }));
           owned.assertOwned(); assertAccepting(context);
           const result = outcome.ok ? outcome.value : attempted;
           if (result) {

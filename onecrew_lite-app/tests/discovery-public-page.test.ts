@@ -29,6 +29,8 @@ test("original Rust SQLite public page plan, charged claim, full receipt and reo
   const value = await fixture();
   try {
     assert.deepEqual(value.repository.next("pages"), oracle.planned);
+    assert.deepEqual(value.repository.next("pages", [], false, oracle.input.candidate_id), oracle.planned);
+    assert.equal(value.repository.next("pages", [], false, oracle.input.campaign_id), null);
     assert.equal(value.repository.next("pages", ["youtube"]), null);
     assert.equal(value.database.prepare("SELECT used_calls FROM discovery_campaigns").get()!.used_calls, 2);
     assert.deepEqual(value.repository.claim(oracle.input), oracle.claim);

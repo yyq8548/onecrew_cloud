@@ -48,7 +48,7 @@ export class DiscoveryPublicPageRepository {
     if (!row) throw new Error("Public page candidate not found");
     return row.verdict === "pending" || discoveryEligibleContactAuthor(this.#db, input.campaign_id, input.expected_revision, input.candidate_id) !== null;
   }
-  next(campaign: string, excludedPlatforms: readonly string[] = [], requiredOnly = false): DiscoveryPublicPageInput | null {
+  next(campaign: string, excludedPlatforms: readonly string[] = [], requiredOnly = false, candidate: string | null = null): DiscoveryPublicPageInput | null {
     return this.#transaction(false, () => {
       const rows = this.#db.prepare(`SELECT c.id,c.source_profile_ref,c.criteria_revision,l.value,json_extract(c.evidence_json,'$.video_description') AS description,c.verdict
         FROM discovery_candidates c JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id
@@ -59,6 +59,7 @@ export class DiscoveryPublicPageRepository {
         JOIN discovery_video_identity_bindings b ON b.search_hit_id=h.id AND b.candidate_id=c.id AND b.discovery_campaign_id=d.id AND b.criteria_revision=d.current_revision AND b.native_author_id=c.platform_account_id
         JOIN json_each(c.evidence_json,'$.public_links') l
         WHERE d.id=? AND d.phase='active' AND a.approved_at IS NOT NULL AND c.criteria_revision=d.current_revision
+          AND (? IS NULL OR c.id=?)
           AND NOT EXISTS(SELECT 1 FROM json_each(?) excluded WHERE excluded.value=c.platform)
           AND ((c.verdict='pending' AND (COALESCE(json_extract(a.criteria_json,'$.requires_public_tool_url'),1)=1 OR json_extract(a.criteria_json,'$.region')='中国大陆以外'
             OR (json_array_length(json_extract(a.criteria_json,'$.requirements'))>0 AND (SELECT COUNT(*) FROM discovery_public_page_reads page WHERE page.candidate_id=c.id)<2)))
@@ -69,14 +70,14 @@ export class DiscoveryPublicPageRepository {
           AND NOT ${discoveryReadBusySql(this.#db, campaign, "c.platform")}
           AND ((p.status='completed' AND NOT EXISTS(SELECT 1 FROM discovery_public_page_reads r WHERE r.candidate_id=c.id AND r.requested_url=l.value))
             OR(p.status='technical_stop' AND p.stop_code='interrupted_public_page_read' AND EXISTS(SELECT 1 FROM discovery_public_page_reads r WHERE r.candidate_id=c.id AND r.requested_url=l.value AND r.status='reading' AND r.search_hit_id=h.id AND r.source_excerpt=json_extract(c.evidence_json,'$.video_description') AND p.active_query='page:'||c.id||':'||r.call_number)))
-        ORDER BY c.id,l.key`).all(campaign, stringifyApplicationJson(excludedPlatforms));
+        ORDER BY c.id,l.key`).all(campaign, candidate, candidate, stringifyApplicationJson(excludedPlatforms));
       for (const raw of rows) {
         const row = z.object({ id: text, source_profile_ref: text, criteria_revision: u32, value: text, description: text, verdict: text }).parse(raw);
         if (row.verdict === "qualified") continue;
         const input = { campaign_id: campaign, expected_revision: row.criteria_revision, profile_ref: row.source_profile_ref, candidate_id: row.id, requested_url: row.value };
         if (Buffer.byteLength(row.value) <= 2048 && row.value.startsWith("https://") && !discoveryCommunityInvite(row.value) && discoveryObservesLink(row.description, row.value) && this.#scoreValid(input)) return input;
       }
-      return nextDiscoveryNativeContactLink(this.#db, campaign, excludedPlatforms, requiredOnly);
+      return nextDiscoveryNativeContactLink(this.#db, campaign, excludedPlatforms, requiredOnly, candidate);
     });
   }
   claim(raw: DiscoveryPublicPageInput): DiscoveryPublicPageClaim {
