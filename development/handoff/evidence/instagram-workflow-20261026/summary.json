@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-26",
+  "platform": "instagram",
+  "campaign": "4f8c3376-e46e-4c68-b0d3-3b352b9edd50",
+  "product": {
+    "id": "gid://shopify/Product/5541111988383",
+    "title": "FreeSip®",
+    "url": "https://checkout.owalalife.com/products/freesip"
+  },
+  "target": 10,
+  "hits": 13,
+  "candidates": 13,
+  "counts": {
+    "qualified": 2,
+    "pending": 5,
+    "rejected": 6
+  },
+  "reasons": {
+    "selection_unverified": 5,
+    "requirement_unverified": 7,
+    "selection_mismatch": 6,
+    "below_min_subscribers": 6
+  },
+  "completed": true,
+  "failureCode": null,
+  "persistedAfterReopen": true,
+  "realSearchAndModel": true,
+  "model": "Qwen3-4B Q4_K_M / Metal / 8192",
+  "shopifyNetworkVerified": false,
+  "humanQualityVerified": false,
+  "knownQualityIssue": {
+    "source": "https://www.instagram.com/yetiticocr/",
+    "score": 70,
+    "quote": "💳 CLICK DE PAGO",
+    "finding": "Payment prompt alone does not support product relevance."
+  }
+}

@@ -12,7 +12,11 @@
 
 已登录 YouTube 同样完成真实运行：60 条来源、12 位候选、5 位匹配、7 位因粉丝低于下限排除；评分、Library、模板和关闭重开通过，无未完成评分。本次 59 次平台操作包含公开页面联系信息读取，整体约 16 分钟，未达到 10 位。见[已登录 YouTube 证据](../handoff/evidence/youtube-workflow-20261026/summary.json)。
 
-X 已按用户要求暂缓，停止登录重试。Instagram 初次英文账号搜索没有进入评分，用户已批准复用现有内容搜索，真实验证进行中。Shopify 网络身份和上线条件不在本次验证内。
+Instagram 已按批准范围复用帖子搜索与作者核验，并约束空段落的评分输出。真实任务保存 13 条来源、13 位候选：2 位匹配、5 位待核验、6 位因粉丝不足排除。评分、Library、条件模板、重复请求及关闭重开检查通过，无失败代码、无延期评分；本轮未找满 10 位。5 位待核验候选的创作者身份尚未确认，其中 1 位还缺少商品内容依据。见[完整流程证据](../handoff/evidence/instagram-workflow-20261026/summary.json)、[候选结果](../handoff/evidence/instagram-workflow-20261026/candidates.json)和[空段落修复验证](../handoff/evidence/empty-paragraph-schema-20261026.json)。
+
+Instagram 的 2 位匹配是程序判定，尚未通过人工质量验收。其中 `yetiticocr` 的 70 分依据只是“💳 CLICK DE PAGO”（付款提示），不能证明商品内容相关性；当前存在评分误判。空段落修复没有修改非空段落的评分标准，此问题另列于[当前问题](../handoff/ISSUES.md)。
+
+X 已按用户要求暂缓，停止登录重试。Shopify 网络身份和上线条件不在本次验证内。
 
 ## Gmail 本地实现
 

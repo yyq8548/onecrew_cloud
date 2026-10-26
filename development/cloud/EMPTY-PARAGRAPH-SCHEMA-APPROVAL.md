@@ -1,6 +1,6 @@
 # 空内容段落的评分约束
 
-待用户批准，评分源码尚未修改。
+2026-10-26 用户已批准，按以下范围实施和验证。
 
 ## 真实失败
 
@@ -8,7 +8,7 @@
 
 使用该候选原材料和同一 4B 独立诊断，实际输出为：`relation=related_product_use_case`、`paragraph_id=""`、`creator=unknown`。原审核抛出 `cloud.score_source_excerpt_required`。保存这次真实输出后无模型调用回放，同样失败，确认可选段落数量为 0。
 
-## 拟修改范围
+## 修改范围
 
 仅修改 onecrew_cloud 内 `onecrew_lite-app/src/cloud/campaign-scoring.ts`：当可选内容段落为空时，模型输出 JSON Schema 只允许 `relation=insufficient_content_evidence`、`paragraph_id=""`、`creator=unknown`。有段落的评分逻辑不变。
 
@@ -21,4 +21,6 @@
 - 复用已有有段落材料核对评分行为不变。
 - 继续原 Instagram 任务，核对完整评分、Library、模板和关闭重开结果；保持未完成项可见。
 
-此项涉及此前两文件 Instagram 搜索批准范围之外的评分文件，因此另行审批。
+原错误响应已被新 Schema 拒绝；同一真实材料使用 4B 一次返回合法的证据不足，并通过原审核。有段落的保存响应回放保持原等级、引用和审核结果，未增加模型调用。类型检查及 6 项相关测试通过，见[验证证据](../handoff/evidence/empty-paragraph-schema-20261026.json)。
+
+原 Instagram 任务恢复后正常完成：13 条来源、13 位候选、2 位匹配、5 位待核验、6 位因粉丝不足排除；评分、Library、条件模板、重复请求及关闭重开检查通过，无失败代码或延期评分。本轮未找满 10 位，见[完整流程证据](../handoff/evidence/instagram-workflow-20261026/summary.json)。

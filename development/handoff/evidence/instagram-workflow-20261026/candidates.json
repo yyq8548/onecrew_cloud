@@ -1,0 +1,106 @@
+[
+  {
+    "url": "https://www.instagram.com/yetiticocr/",
+    "verdict": "qualified",
+    "followers": 35838,
+    "score": 70,
+    "reason": "商品内容匹配等级：中；原文：“💳 CLICK DE PAGO”",
+    "source": "https://www.instagram.com/yetiticocr/"
+  },
+  {
+    "url": "https://www.instagram.com/sipandgo.egypt/",
+    "verdict": "qualified",
+    "followers": 13242,
+    "score": 70,
+    "reason": "商品内容匹配等级：中；原文：“✔️ Sip through the straw or swig”",
+    "source": "https://www.instagram.com/sipandgo.egypt/"
+  },
+  {
+    "url": "https://www.instagram.com/clubkeiji/",
+    "verdict": "pending",
+    "followers": 11672,
+    "score": null,
+    "reason": "创作者身份待核验；现有内容不足以判断与商品的关联。",
+    "source": "https://www.instagram.com/clubkeiji/"
+  },
+  {
+    "url": "https://www.instagram.com/thelilishopmnl/",
+    "verdict": "rejected",
+    "followers": 5008,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 5008，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/thelilishopmnl/"
+  },
+  {
+    "url": "https://www.instagram.com/ryankevintomlinson/",
+    "verdict": "rejected",
+    "followers": 3695,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 3695，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/ryankevintomlinson/"
+  },
+  {
+    "url": "https://www.instagram.com/koalastraw/",
+    "verdict": "pending",
+    "followers": 32660,
+    "score": null,
+    "reason": "创作者身份待核验；商品内容匹配等级：中；原文：“Stay clean out there with a stainless steel straw that's compatible with the Owala water bottle! 🫧”",
+    "source": "https://www.instagram.com/koalastraw/"
+  },
+  {
+    "url": "https://www.instagram.com/thelilishopmnl_v2/",
+    "verdict": "rejected",
+    "followers": 560,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 560，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/thelilishopmnl_v2/"
+  },
+  {
+    "url": "https://www.instagram.com/canada_online_finds/",
+    "verdict": "rejected",
+    "followers": 1657,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 1657，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/canada_online_finds/"
+  },
+  {
+    "url": "https://www.instagram.com/becuratedbys/",
+    "verdict": "rejected",
+    "followers": 9012,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 9012，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/becuratedbys/"
+  },
+  {
+    "url": "https://www.instagram.com/vortelle.store/",
+    "verdict": "rejected",
+    "followers": 975,
+    "score": null,
+    "reason": "初步评估：原生粉丝观察为 975，低于要求的下限 10000。此项必要条件已确定不符合，结束该候选。",
+    "source": "https://www.instagram.com/vortelle.store/"
+  },
+  {
+    "url": "https://www.instagram.com/kitan.isawumi/",
+    "verdict": "pending",
+    "followers": 11481,
+    "score": null,
+    "reason": "创作者身份待核验；商品内容匹配等级：中；原文：“After all my problems with my old Owala, I think I FINALLY found the perfect water bottle.”",
+    "source": "https://www.instagram.com/kitan.isawumi/"
+  },
+  {
+    "url": "https://www.instagram.com/homiqcart/",
+    "verdict": "pending",
+    "followers": 139027,
+    "score": null,
+    "reason": "创作者身份待核验；商品内容匹配等级：低；原文：“Funny gadgets 😁 😂”",
+    "source": "https://www.instagram.com/homiqcart/"
+  },
+  {
+    "url": "https://www.instagram.com/botella.bwn/",
+    "verdict": "pending",
+    "followers": 16611,
+    "score": null,
+    "reason": "创作者身份待核验；商品内容匹配等级：中；原文：“16oz Book Worm (FreeSip) - for the book lovers who are always lost in a good story.”",
+    "source": "https://www.instagram.com/botella.bwn/"
+  }
+]

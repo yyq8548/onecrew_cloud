@@ -2,9 +2,9 @@
 
 ## 当前优先事项
 
-2026-10-26 YouTube 真实登录：用户亲自在隔离 Cloud 浏览器登录，已确认实际账号头像、访问者配置和原检测函数均为已登录。原加密快照保存恢复后保留 18 条持久登录 Cookie 记录，原「保存并检查」HTTP 接口返回 logged_in。初次失败前的状态未采集，原因未确定；本轮没有修改应用或检测规则。其他三平台、已登录搜索/内容读取和真实账号断开仍待验收，见[真实账号证据](handoff/evidence/youtube-account-20261026/summary.json)。
+2026-10-26 三平台真实流程：YouTube、TikTok、Instagram 已通过本人登录保存检查，以及搜索、内容读取、免费 4B Metal 评分、Library、条件模板、重复请求和关闭重开。程序分别标记 5、2、2 位匹配，均未达到目标 10 位。Instagram 已复用帖子搜索并完成获批的空段落输出约束，原任务正常恢复完成；但其中一条 70 分依据只是付款提示，评分质量仍未通过人工验收，不能把自动匹配数量当作已确认合格 KOL 数量。X 按用户要求暂缓；真实账号断开和 Shopify 仍待验收。当前结果见[基础流程](cloud/BASIC-WORKFLOW.md)，评分问题见[当前问题](handoff/ISSUES.md)。
 
-2026-10-25 Mac 原生检查：当前源码的 52 项 Cloud 检查全部通过，覆盖真实 SQLite/PGlite、任务/模板/评分合同、店铺隔离、隐私/卸载与 HTTP。首次 50 项通过，两项因执行沙盒拒绝本机监听而失败；允许监听后仅重跑这两项，均通过，没有源码修改或新增模型、平台、邮件调用。证据见[原生检查](handoff/evidence/macos-cloud-20261025/summary.json)。用户已确认四平台账号均可用于验证，正在独立 Cloud 浏览器完成本人登录；真实账号搜索尚未宣称通过。
+2026-10-25 Mac 原生检查：52 项 Cloud 检查全部通过，覆盖真实 SQLite/PGlite、任务/模板/评分合同、店铺隔离、隐私/卸载与 HTTP。首次 50 项通过，两项因执行沙盒拒绝本机监听而失败；允许监听后仅重跑这两项，均通过，没有源码修改或新增模型、平台、邮件调用。证据见[原生检查](handoff/evidence/macos-cloud-20261025/summary.json)。2026-10-26 空段落修改后，类型检查、6 项相关回归、真实 4B、非空段落回放与 Instagram 完整任务通过，见[修复证据](handoff/evidence/empty-paragraph-schema-20261026.json)。
 
 2026-10-25 Mac 与真实 Gmail：用户选择这台 Mac 作为当前和后续部署主机，不新增 Linux 服务器。Cloud 邮箱配对和登记已改为主进程实际平台，本机为 macOS；默认模型版本使用已验证的 4B Metal。通过独立 Cloud Mac 工作台完成真实 Access 登录、指定邮箱授权、预览、一封用户明确批准的自发自收邮件及 Gmail 内容回读，批次 completed、单封 sent。Mac 类型检查、17 项邮件相关检查和页面构建通过；本次没有新增公司源码修改或执行 Sync Linux 迁移。运行说明见 [Mac](cloud/MACOS.md)，证据见[实际回执摘要](handoff/evidence/macos-gmail-20261025/summary.json)。Shopify 成员绑定与远程 HTTPS 回调保持待验收。
 

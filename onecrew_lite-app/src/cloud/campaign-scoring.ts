@@ -83,9 +83,9 @@ export const cloudCampaignScoreTransport: DiscoveryScoreTransport = (material, b
     return { paragraph_id: paragraph.paragraph_id, before: [...citation.quote.slice(0, start)].slice(-120).join(""), after: [...citation.quote.slice(start + paragraph.quote.length)].slice(0, 120).join("") };
   });
   const decode = z.strictObject({
-    relation: z.enum(["same_product_type_content", "related_content_category", "related_product_use_case", "weak_content_connection", "sponsor_or_discount_mention_only", "insufficient_content_evidence"]),
+    relation: paragraphs.length ? z.enum(["same_product_type_content", "related_content_category", "related_product_use_case", "weak_content_connection", "sponsor_or_discount_mention_only", "insufficient_content_evidence"]) : z.literal("insufficient_content_evidence"),
     paragraph_id: z.enum(["", ...paragraphs.map(paragraph => paragraph.paragraph_id)]),
-    creator: z.enum(["confirmed", "not_creator", "unknown"]),
+    creator: paragraphs.length ? z.enum(["confirmed", "not_creator", "unknown"]) : z.literal("unknown"),
   });
   const scores = { same_product_type_content: 95, related_content_category: 85, related_product_use_case: 70, weak_content_connection: 40 } as const;
   const descriptions = {

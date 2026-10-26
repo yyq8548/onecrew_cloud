@@ -1,0 +1,38 @@
+{
+  "source": "https://www.instagram.com/koalastraw/",
+  "campaign": "4f8c3376-e46e-4c68-b0d3-3b352b9edd50",
+  "paragraphs": 0,
+  "originalInvalidResponseRejected": true,
+  "generationSchema": {
+    "relation": ["insufficient_content_evidence"],
+    "paragraph_id": [""],
+    "creator": ["unknown"]
+  },
+  "real4BResponse": {
+    "relation": "insufficient_content_evidence",
+    "paragraph_id": "",
+    "creator": "unknown"
+  },
+  "selection": "insufficient",
+  "quality": "insufficient",
+  "originalAuditPassed": true,
+  "reviewCommittedByDiagnostic": false,
+  "nonemptyReplay": {
+    "source": "https://www.youtube.com/watch?v=KwFKrI50Hws",
+    "paragraphs": 4,
+    "saved4BResponse": {
+      "relation": "related_product_use_case",
+      "paragraph_id": "p2",
+      "creator": "confirmed"
+    },
+    "selection": "supported",
+    "quality": "supported",
+    "level": "medium",
+    "sourceExcerptVerified": true,
+    "originalMaterialUnchanged": true,
+    "modelCalls": 0
+  },
+  "typecheckPassed": true,
+  "relatedTestsPassed": 6,
+  "shopifyNetworkVerified": false
+}
