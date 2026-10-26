@@ -10,11 +10,21 @@
 
 模型为原免费 4B Metal、8,192 窗口，生产代码及评分规则未改。原数据在独占锁保护下复制到独立验证目录；原始材料、密钥及浏览器快照留在受忽略目录，摘要仅携带公开商品、结果字段和原文理由哈希。Shopify 网络身份仍未验证；小样本评分不等于全面质量通过。本轮模型与浏览器已正常关闭。
 
+## 公司最新基准的本地适配 2026-10-25
+
+[验证摘要](evidence/company-local-20261025/summary.json)、[十七个修改文件的哈希](evidence/company-local-20261025/source-sha256.txt)。用户批准仅本地适配并验证；Access 基于 `91c4f98`、Sync 基于 `d7f7046`，公司原目录及旧草稿保留。
+
+Access worker/web 类型、WebCrypto 参数签名合同和页面构建通过；Sync runtime types、worker/admin 类型和管理端构建通过。Access 本地 D1 全部 22 个迁移、Sync 全部 11 个迁移通过。Sync 十到十一的独立空 SQLite 升级与实际 D1 完整性检查通过，列、外键和索引保留，产品列保留，外键违规为零；相关表为零行，未验证存量生产数据迁移。
+
+实际 Access、Sync Worker 一起运行，通过本地请求驱动的原生 service binding 验证五项 HTTP 处理器输入：合法 Cloud/桌面回调得到真实未登录 401，未允许回调、两种回调同时出现和 HTTP 回调得到 400。直接从 Node 传输时 Host 被测试工具改为临时端口，实际来源边界正确拒绝；公司来源校验未修改，没有伪造用户或服务响应。
+
+浏览器确认页表单的 CSP 尚未允许 Cloud，待审批补充，仅完成源码分析，未宣称浏览器授权跳转通过。当前新补丁、原日志和详细审批留在私有 `.scratch/company-gmail/`；公开文件只有摘要和哈希。公司未推送、MR、合并或部署，真实登录配对、Shopify 身份及 Gmail 授权发送未验收。
+
 ## 公司最新代码只读核对 2026-10-25
 
 [已 fetch 的主分支](evidence/company-review-20261025/heads.json)、[实际 schema 诊断](evidence/company-review-20261025/sync-schema-check.json)。公司网络恢复，读取 Access `91c4f98` 与 Sync `d7f7046`。Sync 已有 0009、0010 和产品列；原 Linux 草稿在最新真实迁移构建的空 SQLite 上实际报 8 列/9 值错误，诊断事务已回滚，完整性和外键检查正常。
 
-这证明旧草稿需要适配，不代表最新 D1 或存量数据迁移通过。本轮没有修改公司源码或旧补丁。任何后续公司修改须先审批；当前私有审批入口为 `.scratch/company-gmail/LATEST-REVIEW.md`，旧 patch 不可直接应用。
+这证明旧草稿需要适配，不代表存量数据迁移通过。该次只读核对没有修改公司源码或旧补丁，之后的已批准适配见上节。任何新增公司修改须先审批；私有批准范围入口为 `.scratch/company-gmail/LATEST-REVIEW.md`，旧 patch 不可直接应用。
 
 ## Gmail 输入错误修复 2026-10-25
 

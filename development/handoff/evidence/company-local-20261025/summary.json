@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-25",
+  "authorization": "approved isolated local adaptation and validation only",
+  "repositories": [
+    {
+      "name": "Access",
+      "directory": "access-current",
+      "base": "91c4f9826a5f6736c43275a8a8ff765c36a5483a",
+      "files": 11,
+      "patch": "access-current-cloud-gmail.patch",
+      "patchSha256": "456f8e0fb4ce243b649d0ec326abc42d828c1387e9dea261b20687cdc6e47287"
+    },
+    {
+      "name": "Sync",
+      "directory": "sync-current",
+      "base": "d7f70460e176dc94bef3a60370e3f2493e7940b4",
+      "files": 6,
+      "patch": "sync-current-linux-installations.patch",
+      "patchSha256": "5f11a6d0800a810663640b92ee227726e1c9d39724c6a97886fc0050972bb424"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Access worker/web typecheck",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-access-typecheck.log",
+      "sha256": "2d51a4840431efc90b174e1d4325d2c2334dd9b7eef27994846e22f8a20c770b"
+    },
+    {
+      "name": "Access real cryptography and request contract",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-access-contract.log",
+      "sha256": "06b837836e24c06f77e34b4b1c4f5855f98b193df1da52bd97956d23345aa8f9"
+    },
+    {
+      "name": "Access web build",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-access-build.log",
+      "sha256": "8d60a1f372a9d4290acf170ea1141523d253a4887f8721dc11669d51d3881fb5"
+    },
+    {
+      "name": "Sync runtime types",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-types.log",
+      "sha256": "dbec0a2f30db81d68965c607ce34909b87eea952c994ea3098069a28d619762b"
+    },
+    {
+      "name": "Sync worker typecheck",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-typecheck.log",
+      "sha256": "802bcc9edbcad61f118baeef2356b37a1435ecc403d61747ecc19d4530f308c0"
+    },
+    {
+      "name": "Sync admin typecheck",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-admin-typecheck.log",
+      "sha256": "ab8a118ae13f45319fdcf7a88d170d871c9253a87e56204205ccd4d13fd1c6c1"
+    },
+    {
+      "name": "Sync admin build",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-build.log",
+      "sha256": "74ae65facd22442d0a07fc5322a1f2078611872ae8304c62618fe4abc001f1b7"
+    },
+    {
+      "name": "Access local D1 fresh migrations",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-access-migration.log",
+      "sha256": "f2997beef89540019300153beb0e2d2ac4ce18c9f2f81d09fabef880006d179b"
+    },
+    {
+      "name": "Sync local D1 fresh migrations",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-migration.log",
+      "sha256": "8f9021974aace9f4706250752f7245b06c84f1be4d20cdcb330be4f0506c11dd"
+    },
+    {
+      "name": "Sync native upgrade and D1 integrity",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-sync-upgrade.log",
+      "sha256": "e0855685f8b3829ceec78882d0e5d567fcbc66708db711410ac7282b6d25e00a"
+    },
+    {
+      "name": "Access actual Workerd handler requests",
+      "status": "passed",
+      "privateLog": ".scratch/gmail-current-access-http.log",
+      "sha256": "568a589ea506c6e755a53ad3c98e031b8b8feb65de66a5c1e7febcf2b4aae55e"
+    }
+  ],
+  "routes": {
+    "workers": [
+      "actual Access source",
+      "actual Sync source"
+    ],
+    "transport": "native service binding from a local request driver",
+    "runtime": "local Workerd",
+    "migrations": {
+      "access": 22,
+      "sync": 11
+    },
+    "fakeServiceResponses": false,
+    "authenticatedApprovalVerified": false,
+    "results": [
+      {
+        "name": "allowed_cloud_requires_real_login",
+        "status": 401,
+        "error": "authentication_required"
+      },
+      {
+        "name": "desktop_callback_preserved",
+        "status": 401,
+        "error": "authentication_required"
+      },
+      {
+        "name": "unlisted_cloud_rejected",
+        "status": 400,
+        "error": "invalid_pairing_request"
+      },
+      {
+        "name": "both_callbacks_rejected",
+        "status": 400,
+        "error": "invalid_pairing_request"
+      },
+      {
+        "name": "insecure_callback_rejected",
+        "status": 400,
+        "error": "invalid_pairing_request"
+      }
+    ]
+  },
+  "migration": {
+    "revision": "d7f70460e176dc94bef3a60370e3f2493e7940b4",
+    "freshD1Migrations": 11,
+    "nativeUpgradeFrom": 10,
+    "nativeUpgradeTo": 11,
+    "columnsForeignKeysIndexesAndRowsPreserved": true,
+    "productColumnPreserved": true,
+    "rows": {
+      "creator_sync_installations": 0,
+      "creator_sync_enrollment_operations": 0,
+      "creator_sync_installation_mutations": 0
+    },
+    "integrity": "ok",
+    "foreignKeyViolations": 0,
+    "existingProductionDataVerified": false
+  },
+  "limitations": {
+    "authenticatedPairingVerified": false,
+    "gmailOAuthVerified": false,
+    "gmailSendVerified": false,
+    "populatedDatabaseMigrationVerified": false,
+    "browserFormRedirectVerified": false,
+    "shopifyIdentityVerified": false
+  },
+  "pendingApproval": {
+    "company": "Access",
+    "purpose": "allow the configured Cloud origin in the pairing page form-action CSP",
+    "sourceFiles": [
+      "src/security/access-boundary.ts",
+      "src/routes/pairing.ts"
+    ],
+    "implemented": false
+  },
+  "companyPublished": false,
+  "companyDeployed": false,
+  "companySourceIncluded": false
+}
