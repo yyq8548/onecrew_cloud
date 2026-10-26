@@ -1,0 +1,108 @@
+{
+  "private_source": ".scratch/compact-final-long_bottlepro.log",
+  "source_sha256": "9e49155c0c05c053ce1a3036f8e74ca8671fdf8652a06cb564ae26bc3eab2070",
+  "passed": true,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "20K subscribers",
+        "nominal": "20000",
+        "lower": "19500",
+        "upper": "20500"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=qGOk6wH6yS8&pp=ygUeRnJlZVNpcMKuIHdhdGVyIGJvdHRsZSByZXZpZXdz",
+      "productSource": "manual_local_input",
+      "promptBytes": 1947,
+      "candidatePromptBytes": 1497,
+      "originalCandidatePromptBytes": 4968,
+      "rulesBytes": 2633,
+      "originalRulesBytes": 10007,
+      "evidenceCount": 15,
+      "selectedParagraphs": 4,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 22855,
+      "usage": [
+        {
+          "input": 1322,
+          "cached_input": 0,
+          "output": 32,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "related_product_use_case",
+        "paragraph_id": "p2",
+        "creator": "confirmed"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": {
+        "paragraph_id": "p2",
+        "evidence_id": "e2",
+        "quote_sha256": "f0509384966761415d19f169790f342cfabeb47e9e6eab275d77c6d8c0ed69f9",
+        "quote_characters": 31,
+        "keyword_matches": 1
+      }
+    },
+    {
+      "event": "cloud.saved_classification_checked",
+      "relation": "related_product_use_case",
+      "selection": "supported",
+      "level": "medium",
+      "humanBatchAcceptance": false
+    },
+    {
+      "event": "cloud.saved_score_verified",
+      "elapsedMs": 22916,
+      "usage": [
+        {
+          "input": 1322,
+          "cached_input": 0,
+          "output": 32,
+          "reasoning_output": 0
+        }
+      ],
+      "selection": "supported",
+      "quality": "supported",
+      "level": "medium",
+      "rationale_sha256": "ac1a2d5f79b2fad66dc41ad0e0d4fa1470dd187addc5bb1c6d8225c73eb2b3a8",
+      "rationale_characters": 47,
+      "sourceExcerptVerified": true,
+      "keywords": [
+        "FreeSip® water bottle reviews",
+        "FreeSip® water bottle usage",
+        "FreeSip® water bottle features"
+      ],
+      "selectedParagraph": {
+        "paragraph_id": "p2",
+        "evidence_id": "e2",
+        "quote_sha256": "f0509384966761415d19f169790f342cfabeb47e9e6eab275d77c6d8c0ed69f9",
+        "quote_characters": 31,
+        "keyword_matches": 1
+      },
+      "requirements": [
+        "supported"
+      ],
+      "modelCalls": 1,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalled": true,
+      "shopifyNetworkVerified": false,
+      "fullCampaignVerified": false
+    }
+  ]
+}

@@ -2,6 +2,26 @@
 
 本目录携带 131 份模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## 精简输入 v16 2026-10-25
+
+当前实现和结果见[基础流程](../cloud/BASIC-WORKFLOW.md)。本轮保持免费 4B、8,192 窗口；完整材料留库，模型接收相关作者段落。未购买服务、未改 Lite/Access/Sync、未部署生产。
+
+| 证据 | 路径与用途 |
+| --- | --- |
+| 两份原超长请求的最终实测 | [BottlePro](evidence/compact-v16-20261025/long-bottlepro.json)、[Owala](evidence/compact-v16-20261025/long-owala.json)；1,322 / 1,002 token，22.9 / 3.7 秒，单次调用通过原审核 |
+| 广告、无关商品与零模型粉丝预筛选 | [广告](evidence/compact-v16-20261025/ad.json)、[无关商品](evidence/compact-v16-20261025/unrelated.json)、[粉丝](evidence/compact-v16-20261025/followers.json)、[五项状态](evidence/compact-v16-20261025/cases-status.log) |
+| 仍未通过的宽泛品类样本 | [护肤与防晒漏判](evidence/compact-v16-20261025/sunscreen-known-failure.json)；期待支持，实际证据不足，未写回原任务，不计作通过 |
+| 输入精简第一版的失败 | [第三方网页摘录误选](evidence/compact-v16-20261025/draft-public-page-failure.json)；原审核拒绝，当前可选段落已限定作者原生内容 |
+| 首次完整采集及结束失败 | [原任务事件](evidence/compact-v16-20261025/workflow-initial.jsonl)；60 条来源已保存，结束时旧自动扩词忽略关闭配置而失败 |
+| 修复后从同一任务恢复、保存及重开 | [最终恢复检查](evidence/compact-v16-20261025/workflow-accepted.log)；5 位匹配、2 位待核验、13 位排除，完整结果/Library/模板重开一致，平台计数保持 66 |
+| 关闭扩词的实际回归 | [修复前](evidence/compact-v16-20261025/expansion-before.log)、[修复后](evidence/compact-v16-20261025/expansion-after.log)；真实任务、无模型或平台请求 |
+| 当前源码 Linux 检查 | [类型检查与 50 项 Cloud 检查](evidence/compact-v16-20261025/linux-check.log)、[四份核心源码 SHA256](evidence/compact-v16-20261025/source-sha256.txt) |
+| 模型实际窗口和请求长度 | [运行日志摘录](evidence/compact-v16-20261025/model-window-and-tokens.log)；窗口为 8,192，包含试验阶段和旧自动扩词的超限记录，不能把所有行当作最终评分请求 |
+
+模型 JSON 为实际日志的派生摘要，保留分类、编号、用量、审核结果、原日志 SHA256；原文及中文理由只携带长度与哈希，正文仍在私有数据中。任务首次运行日志只提取实际 JSON 事件，不携带异常中重复的商品正文。其余日志仅替换旧机器工作区路径。数据库、密钥、浏览器快照和模型权重没有导出。
+
+人工批量质量、P95、真实 Shopify 与四平台账号仍未通过；本次没有找满 10 位。检查入口为 `development/cloud/check-workflow.mjs`、`development/cloud/check-query-expansion-disabled.mjs` 和 `development/cloud/model/check-score.mjs`。
+
 ## 基础流程 2026-10-25
 
 本轮新增记录独立于旧 131 份导出清单；当前状态见[基础流程](../cloud/BASIC-WORKFLOW.md)。

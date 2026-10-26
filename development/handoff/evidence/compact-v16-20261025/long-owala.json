@@ -1,0 +1,101 @@
+{
+  "private_source": ".scratch/compact-final-long_owala.log",
+  "source_sha256": "11aa3d22a80318827f8997db52b521b28469961733d514f51a5b06b244ca354d",
+  "passed": true,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "29.7K subscribers",
+        "nominal": "29700",
+        "lower": "29650",
+        "upper": "29750"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=wCuE6sIPTG4&pp=ygUeRnJlZVNpcMKuIHdhdGVyIGJvdHRsZSByZXZpZXdz",
+      "productSource": "manual_local_input",
+      "promptBytes": 1236,
+      "candidatePromptBytes": 786,
+      "originalCandidatePromptBytes": 2442,
+      "rulesBytes": 2531,
+      "originalRulesBytes": 10007,
+      "evidenceCount": 8,
+      "selectedParagraphs": 3,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 3678,
+      "usage": [
+        {
+          "input": 1002,
+          "cached_input": 0,
+          "output": 21,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "related_product_use_case",
+        "paragraph_id": "p1",
+        "creator": "confirmed"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": {
+        "paragraph_id": "p1",
+        "evidence_id": "e2",
+        "quote_sha256": "6dc696896fe830483636314e42200293564d8e4aaa35525eefaf0eebfcc0089b",
+        "quote_characters": 142,
+        "keyword_matches": 2
+      }
+    },
+    {
+      "event": "cloud.saved_score_verified",
+      "elapsedMs": 3691,
+      "usage": [
+        {
+          "input": 1002,
+          "cached_input": 0,
+          "output": 21,
+          "reasoning_output": 0
+        }
+      ],
+      "selection": "supported",
+      "quality": "supported",
+      "level": "medium",
+      "rationale_sha256": "3399d27d071491711a7d6f7c616337a7f84258089c42b8f6877bca31d73e66db",
+      "rationale_characters": 158,
+      "sourceExcerptVerified": true,
+      "keywords": [
+        "FreeSip® water bottle reviews",
+        "FreeSip® water bottle usage",
+        "FreeSip® water bottle features"
+      ],
+      "selectedParagraph": {
+        "paragraph_id": "p1",
+        "evidence_id": "e2",
+        "quote_sha256": "6dc696896fe830483636314e42200293564d8e4aaa35525eefaf0eebfcc0089b",
+        "quote_characters": 142,
+        "keyword_matches": 2
+      },
+      "requirements": [
+        "supported"
+      ],
+      "modelCalls": 1,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalled": true,
+      "shopifyNetworkVerified": false,
+      "fullCampaignVerified": false
+    }
+  ]
+}

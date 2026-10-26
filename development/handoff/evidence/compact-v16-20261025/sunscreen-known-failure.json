@@ -1,0 +1,56 @@
+{
+  "private_source": ".scratch/compact-sunscreen-verified.log",
+  "source_sha256": "52c1ff059a709bf9343d7c2fb0ab1325af8d87fe8861aaec1a0ace59b51c7b77",
+  "passed": false,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "545K subscribers",
+        "nominal": "545000",
+        "lower": "544500",
+        "upper": "545500"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D",
+      "productSource": "manual_local_input",
+      "promptBytes": 1667,
+      "candidatePromptBytes": 1238,
+      "originalCandidatePromptBytes": 4481,
+      "rulesBytes": 3010,
+      "originalRulesBytes": 10001,
+      "evidenceCount": 3,
+      "selectedParagraphs": 4,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 7514,
+      "usage": [
+        {
+          "input": 1199,
+          "cached_input": 0,
+          "output": 27,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "insufficient_content_evidence",
+        "paragraph_id": "",
+        "creator": "unknown"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": null
+    }
+  ]
+}

@@ -155,7 +155,7 @@ function compactScoringRules(rules: string): string {
 }
 export type DiscoveryScoreInstructions = (material: DiscoveryReviewMaterial) => string | null;
 export type DiscoveryScoreFinalizer = (material: DiscoveryReviewMaterial, count: number | bigint | null, proposal: z.infer<typeof discoveryMatchProposal>) => z.infer<typeof discoveryMatchProposal>;
-export type DiscoveryScoreTransport = (material: DiscoveryReviewMaterial, bundle: ScoreEvidenceBundle) => { decode: z.ZodType; expand(raw: unknown): z.infer<typeof discoveryMatchProposal> } | null;
+export type DiscoveryScoreTransport = (material: DiscoveryReviewMaterial, bundle: ScoreEvidenceBundle) => { decode: z.ZodType; prompt?: string; savedEvidence?: ScoreEvidenceBundle["evidence"]; expand(raw: unknown): z.infer<typeof discoveryMatchProposal> } | null;
 function scoreRequest(objective: string, material: DiscoveryReviewMaterial, rubric: string, prepared: ReturnType<typeof prepareScoreEvidence>, instructions: string | null = null) {
   const { raw, bundle } = prepared;
   let rules = instructions;
@@ -227,7 +227,8 @@ export class DiscoverySemanticMatcher {
     }
     const prepared = Object.freeze({ evidenceKey: key });
     const request = scoreRequest(campaign.brief, material, this.#rubric, evidence, instructions);
-    this.#prepared.set(prepared, { context, owned, input, material, modelIdentity, objective: campaign.brief, observationKey: reassess ? matchEvidenceKey(material, this.#rubric, false, modelIdentity, evidence.digest) : key, ...request });
+    const transport = this.#scoreTransport?.(material, request.bundle);
+    this.#prepared.set(prepared, { context, owned, input, material, modelIdentity, objective: campaign.brief, observationKey: reassess ? matchEvidenceKey(material, this.#rubric, false, modelIdentity, evidence.digest) : key, ...request, prompt: transport?.prompt ?? request.prompt, savedEvidence: transport?.savedEvidence ?? request.savedEvidence });
     return { state: "model", prepared };
   }
   async evaluate(context: AccountContext, prepared: PreparedSemanticDiscoveryMatch, onTiming?: (phase: SemanticTimingPhase | "commit" | "professional_review", elapsedMs: number) => void, onCorrection?: (code: string) => void, onUsage?: (usage: SemanticTokenUsage) => void, cancellation?: AbortSignal): Promise<DiscoveryReviewReceipt | null> {

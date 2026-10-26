@@ -1,0 +1,94 @@
+{
+  "private_source": ".scratch/compact-final-ad.log",
+  "source_sha256": "e87658db5c4653ced5d9952131c02464f2951521ee5e7d05f52c8c1602f947e8",
+  "passed": true,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "314K subscribers",
+        "nominal": "314000",
+        "lower": "313500",
+        "upper": "314500"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D",
+      "productSource": "manual_local_input",
+      "promptBytes": 2033,
+      "candidatePromptBytes": 1610,
+      "originalCandidatePromptBytes": 6043,
+      "rulesBytes": 2679,
+      "originalRulesBytes": 9992,
+      "evidenceCount": 4,
+      "selectedParagraphs": 4,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 6674,
+      "usage": [
+        {
+          "input": 1314,
+          "cached_input": 0,
+          "output": 29,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "insufficient_content_evidence",
+        "paragraph_id": "",
+        "creator": "unknown"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": null
+    },
+    {
+      "event": "cloud.saved_classification_checked",
+      "relation": "insufficient_content_evidence",
+      "selection": "insufficient",
+      "level": null,
+      "humanBatchAcceptance": false
+    },
+    {
+      "event": "cloud.saved_score_verified",
+      "elapsedMs": 6698,
+      "usage": [
+        {
+          "input": 1314,
+          "cached_input": 0,
+          "output": 29,
+          "reasoning_output": 0
+        }
+      ],
+      "selection": "insufficient",
+      "quality": "insufficient",
+      "level": null,
+      "rationale_sha256": "c25081344c37e21f861efa2805dad5028fe681da14019b622d4d6d005043b505",
+      "rationale_characters": 25,
+      "sourceExcerptVerified": true,
+      "keywords": [
+        "insulated water bottle review"
+      ],
+      "selectedParagraph": null,
+      "requirements": [
+        "insufficient"
+      ],
+      "modelCalls": 1,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalled": true,
+      "shopifyNetworkVerified": false,
+      "fullCampaignVerified": false
+    }
+  ]
+}

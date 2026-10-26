@@ -32,7 +32,7 @@ assert.equal(shops.length, 1, '必须使用只有一个本地验证归属的独�
 const shop = shops[0].shop;
 const id = resumeCampaign ?? randomUUID(), input = { id, product_id: product.id, platforms: [platform], min_followers: Number(minimum), max_followers: Number(maximum) };
 let jobId = id;
-const evidenceFile = join(directory, `workflow-${id}.json`);
+const evidenceFile = join(directory, `workflow-${id}-${Date.now()}.json`);
 await using ownership = new AsyncDisposableStack();
 const storage = await openCloudStorage(directory);
 ownership.defer(() => storage.close());
@@ -68,7 +68,8 @@ while (true) {
 }
 await writeFile(evidenceFile, stringifyApplicationJson({ product, status, failures, shopifyNetworkVerified: false }), { flag: 'wx', mode: 0o600 });
 assert.equal(status.job.state, 'completed', stringifyApplicationJson(status));
-const result = campaignResults.parse(parseApplicationJson(stringifyApplicationJson({ ...await data.results(shop, id, null, null), library: await library.campaignResults(shop, id) })));
+const savedResults = await data.results(shop, id, null, null), savedLibrary = await library.campaignResults(shop, id);
+const result = campaignResults.parse(parseApplicationJson(stringifyApplicationJson({ ...savedResults, library: savedLibrary })));
 await writeFile(evidenceFile, stringifyApplicationJson({ product, status, result, failures, shopifyNetworkVerified: false }), { mode: 0o600 });
 assert.equal(status.execution?.failure_code, null);
 assert.ok(['finished', 'needs_evidence'].includes(status.execution.stage));
@@ -92,9 +93,9 @@ const reopenedTables = await openCloudLibrary(reopened.lease, origin);
 persisted.defer(() => reopenedTables.close());
 persisted.defer(() => reopenedRuntimes.close());
 const reopenedData = new ShopDataService(reopened.lease, reopened.installations, reopenedRuntimes);
-assert.deepEqual((await reopenedData.results(shop, id, null, null)).counts, counts);
+assert.deepEqual(await reopenedData.results(shop, id, null, null), savedResults);
 assert.equal(reopened.campaignJobs.get(shop, jobId).state, 'completed');
 assert.ok(reopened.campaignTemplates.get(shop, template.id));
 const reopenedLibrary = new ShopLibraryService(reopenedTables, reopenedData, origin);
-assert.equal((await reopenedLibrary.campaignResults(shop, id)).table.id, tableId);
+assert.deepEqual(await reopenedLibrary.campaignResults(shop, id), savedLibrary);
 console.info(stringifyApplicationJson({ event: 'cloud.workflow_verified', id, counts, tableId, templateId: template.id, evidenceFile, persistedAfterReopen: true, realSearchAndModel: true, shopifyNetworkVerified: false }));

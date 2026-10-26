@@ -1,0 +1,4 @@
+642f13d6e276a7f591058c6aab0b97fe621a53f415cb1934b354be357adc30ad  onecrew_lite-app/src/cloud/campaign-scoring.ts
+6456bd3f265680fe1940d3d383bf5a478ce418c9c29e0fdd1ac53b2e7cb93ba0  onecrew_lite-app/src/cloud/campaign-service.ts
+2245df214474c059f03349e33daddc53d5ed52d6f9a429719a63a921e7c8a0e8  onecrew_lite-app/src/discovery/semantic-match.ts
+3092e9fd7ce21d302c2921e73a4eaa3ef9b887b62de24b26f8eb19cbd4cf8cc6  onecrew_lite-app/src/discovery/query-round-execution.ts

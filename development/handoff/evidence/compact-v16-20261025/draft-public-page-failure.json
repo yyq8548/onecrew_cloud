@@ -1,0 +1,62 @@
+{
+  "private_source": ".scratch/compact-input-bottlepro.log",
+  "source_sha256": "4a0619c1d594346b9f67f14fd0e6cc9d3f6b4264dbf0e0727f51028f49404c4a",
+  "passed": false,
+  "failure": "Error: selection_quality_author_evidence_required",
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "20K subscribers",
+        "nominal": "20000",
+        "lower": "19500",
+        "upper": "20500"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=qGOk6wH6yS8&pp=ygUeRnJlZVNpcMKuIHdhdGVyIGJvdHRsZSByZXZpZXdz",
+      "productSource": "manual_local_input",
+      "promptBytes": 2870,
+      "candidatePromptBytes": 2420,
+      "originalCandidatePromptBytes": 4968,
+      "rulesBytes": 4343,
+      "originalRulesBytes": 10007,
+      "evidenceCount": 15,
+      "selectedParagraphs": 10,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 14866,
+      "usage": [
+        {
+          "input": 2344,
+          "cached_input": 0,
+          "output": 24,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "related_product_use_case",
+        "paragraph_id": "p9",
+        "creator": "confirmed"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": {
+        "paragraph_id": "p9",
+        "evidence_id": "e4",
+        "quote_sha256": "c01d19506818bbbb2425687ea883e943303df767083401b81ce5a184c5ad310b",
+        "quote_characters": 9,
+        "keyword_matches": 0
+      }
+    }
+  ]
+}

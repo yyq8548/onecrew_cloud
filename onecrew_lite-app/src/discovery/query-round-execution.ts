@@ -87,6 +87,7 @@ export class DiscoveryQueryRoundExecutor {
     if (owned.owner.accountId !== context.principal.user.id || owned.owner.tenantId !== context.principal.tenantId || owned.owner.baseId !== context.principal.baseId) throw new Error("query_round_repository_owner_mismatch");
     const campaign = owned.repository.getPlan(campaignId);
     if (campaign.revision !== revision || campaign.approved_at === null || campaign.phase !== "active") throw new Error("query_round_campaign_changed");
+    if (campaign.criteria.automatic_query_expansion === false) return false;
     const counts = owned.repository.countCandidates(campaignId);
     if (owned.repository.remainingSlots(campaignId, excluded) === 0) return true;
     if (campaign.platform_runs.some(run => run.status === "searching")) throw new Error("query_round_read_active");

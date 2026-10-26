@@ -1,0 +1,94 @@
+{
+  "private_source": ".scratch/compact-final-unrelated.log",
+  "source_sha256": "3c7123683c532987f0c4ee89db469a91b8e37a55d2dd5e91728069d812c69daf",
+  "passed": true,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "545K subscribers",
+        "nominal": "545000",
+        "lower": "544500",
+        "upper": "545500"
+      }
+    },
+    {
+      "event": "cloud.saved_score_started",
+      "runtime": "macos-metal",
+      "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "source": "https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D",
+      "productSource": "manual_local_input",
+      "promptBytes": 1700,
+      "candidatePromptBytes": 1238,
+      "originalCandidatePromptBytes": 4481,
+      "rulesBytes": 3016,
+      "originalRulesBytes": 10007,
+      "evidenceCount": 3,
+      "selectedParagraphs": 4,
+      "compactModelInput": true,
+      "timeoutMs": 300000,
+      "savedResponseReplay": false
+    },
+    {
+      "event": "cloud.saved_score_received",
+      "elapsedMs": 5893,
+      "usage": [
+        {
+          "input": 1199,
+          "cached_input": 0,
+          "output": 27,
+          "reasoning_output": 0
+        }
+      ],
+      "output": {
+        "relation": "insufficient_content_evidence",
+        "paragraph_id": "",
+        "creator": "unknown"
+      }
+    },
+    {
+      "event": "cloud.saved_paragraph_selected",
+      "selected": null
+    },
+    {
+      "event": "cloud.saved_classification_checked",
+      "relation": "insufficient_content_evidence",
+      "selection": "insufficient",
+      "level": null,
+      "humanBatchAcceptance": false
+    },
+    {
+      "event": "cloud.saved_score_verified",
+      "elapsedMs": 5914,
+      "usage": [
+        {
+          "input": 1199,
+          "cached_input": 0,
+          "output": 27,
+          "reasoning_output": 0
+        }
+      ],
+      "selection": "insufficient",
+      "quality": "insufficient",
+      "level": null,
+      "rationale_sha256": "c25081344c37e21f861efa2805dad5028fe681da14019b622d4d6d005043b505",
+      "rationale_characters": 25,
+      "sourceExcerptVerified": true,
+      "keywords": [
+        "skincare"
+      ],
+      "selectedParagraph": null,
+      "requirements": [
+        "insufficient"
+      ],
+      "modelCalls": 1,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalled": true,
+      "shopifyNetworkVerified": false,
+      "fullCampaignVerified": false
+    }
+  ]
+}

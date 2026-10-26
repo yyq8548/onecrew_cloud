@@ -1,0 +1,34 @@
+1.19.534.561 I slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 2344
+2.39.237.769 I slot   operator(): id  0 | task 26 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1462
+3.19.843.323 I slot   operator(): id  0 | task 51 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1110
+5.32.257.810 I slot   operator(): id  0 | task 76 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1586
+5.41.512.079 I slot   operator(): id  0 | task 101 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1715
+5.51.646.866 I slot   operator(): id  0 | task 126 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1574
+5.59.009.791 I slot   operator(): id  0 | task 153 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1430
+6.06.788.147 I slot   operator(): id  0 | task 172 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1430
+7.34.619.509 I slot   operator(): id  0 | task 191 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1287
+7.44.581.502 I slot   operator(): id  0 | task 224 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1451
+7.53.457.443 I slot   operator(): id  0 | task 246 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1275
+8.00.200.538 I slot   operator(): id  0 | task 267 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1160
+8.07.990.825 I slot   operator(): id  0 | task 297 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1160
+9.51.641.471 I slot   operator(): id  0 | task 327 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1199
+11.35.418.440 I slot   operator(): id  0 | task 355 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 231
+12.06.973.435 I slot   operator(): id  0 | task 398 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1092
+12.33.480.086 I slot   operator(): id  0 | task 431 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1412
+12.50.495.848 I slot   operator(): id  0 | task 464 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1432
+13.07.316.705 I slot   operator(): id  0 | task 497 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1177
+13.22.870.519 I slot   operator(): id  0 | task 530 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 975
+14.52.564.793 I slot   operator(): id  0 | task 560 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1524
+15.29.368.407 I slot   operator(): id  0 | task 593 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 980
+16.01.786.002 I slot   operator(): id  0 | task 623 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1020
+16.23.683.922 I slot   operator(): id  0 | task 656 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1020
+24.53.284.906 I slot   operator(): id  0 | task 689 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 8216
+24.53.284.909 E srv    send_error: task id = 689, error: request (8216 tokens) exceeds the available context size (8192 tokens), try increasing it
+26.24.063.575 I slot   operator(): id  0 | task 692 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 8216
+26.24.063.576 E srv    send_error: task id = 692, error: request (8216 tokens) exceeds the available context size (8192 tokens), try increasing it
+27.34.788.306 I slot   operator(): id  0 | task 695 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 8216
+27.34.788.308 E srv    send_error: task id = 695, error: request (8216 tokens) exceeds the available context size (8192 tokens), try increasing it
+31.21.983.165 I slot   operator(): id  0 | task 698 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1322
+31.46.443.043 I slot   operator(): id  0 | task 731 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1002
+31.51.389.507 I slot   operator(): id  0 | task 753 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1314
+31.59.461.490 I slot   operator(): id  0 | task 783 | new prompt, n_ctx_slot = 8192, n_keep = 0, task.n_tokens = 1199

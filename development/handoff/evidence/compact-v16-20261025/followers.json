@@ -1,0 +1,29 @@
+{
+  "private_source": ".scratch/compact-final-followers.log",
+  "source_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+  "passed": true,
+  "failure": null,
+  "events": [
+    {
+      "event": "cloud.saved_native_followers",
+      "count": null,
+      "estimate": {
+        "display": "545K subscribers",
+        "nominal": "545000",
+        "lower": "544500",
+        "upper": "545500"
+      }
+    },
+    {
+      "event": "cloud.saved_count_prefilter_verified",
+      "selection": "contradicted",
+      "quality": "insufficient",
+      "level": null,
+      "modelCalled": false,
+      "noReviewCommitted": true,
+      "originalMaterialUnchanged": true,
+      "shopifyNetworkVerified": false,
+      "fullCampaignVerified": false
+    }
+  ]
+}

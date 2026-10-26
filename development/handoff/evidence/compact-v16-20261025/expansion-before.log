@@ -1,0 +1,9 @@
+file://$ONECREW_CLOUD/onecrew_lite-app/src/discovery/query-round-execution.ts:100
+    if (!this.dependencies) throw new Error("query_round_dependencies_unavailable");
+                                  ^
+
+Error: query_round_dependencies_unavailable
+    at DiscoveryQueryRoundExecutor.expand (file://$ONECREW_CLOUD/onecrew_lite-app/src/discovery/query-round-execution.ts:100:35)
+    at async file://$ONECREW_CLOUD/development/cloud/check-query-expansion-disabled.mjs:27:14
+
+Node.js v26.7.0
