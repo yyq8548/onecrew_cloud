@@ -28,6 +28,16 @@ test("cloud reader rejects foreign bindings, unsupported platforms and uninstall
     const other = new CloudDiscoveryReader({ data: second!, workspace: workspaces[1]!, browsers });
     const binding = reader.binding(first!.runtime.context, "cloud");
     const foreign = other.binding(second!.runtime.context, "cloud");
+    const cancellation = new AbortController();
+    const cancellable = binding.withSignal!(cancellation.signal);
+    await cancellable.assertCurrent();
+    await assert.rejects(other.checkBrowserProfile(cancellable), { code: "opencli_profile_unavailable" });
+    await assert.rejects(reader.checkBrowserProfile({ ...binding }), { code: "opencli_profile_unavailable" });
+    const cancelled = new Error("local_workflow_cancelled");
+    cancellation.abort(cancelled);
+    await assert.rejects(cancellable.assertCurrent(), error => error === cancelled);
+    await assert.rejects(reader.withDiagnostics(() => {}).checkBrowserProfile(cancellable), error => error === cancelled);
+    await binding.assertCurrent();
     await assert.rejects(reader.checkBrowserProfile(foreign), { code: "opencli_profile_unavailable" });
     assert.throws(() => reader.binding(second!.runtime.context, "cloud"));
     assert.throws(() => reader.binding(first!.runtime.context, "borrowed-profile"), { code: "opencli_profile_unavailable" });

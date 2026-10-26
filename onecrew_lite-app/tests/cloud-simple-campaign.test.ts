@@ -1,12 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { randomUUID } from "node:crypto";
-import { createCloudCampaign } from "../src/cloud/campaign-jobs.ts";
+import { readFileSync } from "node:fs";
+import { createCloudCampaign, shopifyProductSnapshot } from "../src/cloud/campaign-jobs.ts";
 import { cloudCampaignConditions } from "../src/cloud/campaign-parameters.ts";
-import { cloudKolPlan } from "../src/cloud/campaign-planner.ts";
+import { cloudKolPlan, cloudKeywordRequest } from "../src/cloud/campaign-planner.ts";
 import { cloudCampaignScoreInstructions } from "../src/cloud/campaign-scoring.ts";
 import { discoveryCriteria } from "../src/discovery/contracts.ts";
+import { discoveryJsonValue } from "../src/discovery/library-material.ts";
 import { assessDiscoveryProfile, discoveryScale, parseDiscoverySubscribers } from "../src/discovery/qualification.ts";
+
+test("keyword generation accepts the complete real product snapshot passed by Campaign service", async () => {
+  // 官方商店公开商品的真实快照，仅验证本地参数传递。
+  const product = shopifyProductSnapshot.parse(JSON.parse(readFileSync(new URL("./fixtures/cloud/freesip-product.json", import.meta.url), "utf8")));
+  const conditions = cloudCampaignConditions.parse({ platforms: ["youtube"], min_followers: 10000, max_followers: 1000000 });
+  const request = cloudKeywordRequest(product, conditions, new AbortController().signal, async () => {});
+  assert.ok(request.prompt.includes(product.title));
+  assert.ok(request.prompt.includes(product.description));
+  assert.equal(request.prompt.includes(product.id), false);
+  assert.equal(request.prompt.includes(product.onlineStoreUrl!), false);
+  assert.equal(request.decode.safeParse({ queries: [{ platform: "youtube", keywords: ["water bottle reviews"] }] }).success, true);
+  const plan = cloudKolPlan(randomUUID(), product, conditions, { queries: [{ platform: "youtube", keywords: ["FreeSip® water bottle reviews", "FreeSip® water bottle usage", "FreeSip® water bottle features"] }] });
+  const restored = { criteria: discoveryJsonValue(plan.criteria), approved_scopes: plan.scopes };
+  assert.ok(cloudCampaignScoreInstructions(restored), '真实仓储的规范化条件必须继续采用 Cloud 评分');
+});
 
 test("fixed KOL parameters require a product, supported unique platforms and a complete follower range", () => {
   const input = { id: randomUUID(), product_id: "gid://shopify/Product/1", platforms: ["youtube", "instagram"], min_followers: 10000, max_followers: 100000 };

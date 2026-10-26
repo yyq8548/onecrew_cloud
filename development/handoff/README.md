@@ -1,6 +1,6 @@
 # 换电脑开发交接
 
-交接日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，本次是源码与开发记录交接，尚未上架或部署生产。开发 goal 当前为 **paused**；用户本次只授权上传交接资料。
+更新日期：2026-10-25。仓库为 `https://github.com/yyq8548/onecrew_cloud.git`，源码与交接资料已上传，尚未上架或部署生产。用户已恢复基础功能开发，goal 当前为 **active**；优先完成最简单的本地搜索、评分与结果保存流程，线上环境暂缓。
 
 ## 先读这几份文件
 
@@ -8,6 +8,7 @@
 | --- | --- |
 | 完整目标、暂停状态、恢复条件 | [GOAL.md](GOAL.md) |
 | 当前有效总计划与实现进度 | [CLOUD-IMPLEMENTATION.md](../CLOUD-IMPLEMENTATION.md) |
+| 最简单版本的当前真实基础流程 | [BASIC-WORKFLOW.md](../cloud/BASIC-WORKFLOW.md) |
 | 用户提供的原始总方案 | [原方案归档](OneCrew-Shopify上架实施方案-2026-10-23.md) |
 | 当前问题、已处理失败与注意事项 | [ISSUES.md](ISSUES.md) |
 | 当前模型结果与限制 | [模型记录](../cloud/model/README.md#当前评分验证) |
@@ -50,7 +51,7 @@ docker run --rm --network none onecrew-cloud-service:linux-check
 ```
 
 4. 免费 4B 权重及 llama.cpp 运行包按 [模型文档](../cloud/model/README.md) 的固定版本、大小和 SHA256 重新准备。Mac ARM 使用已验证的 Metal 入口；Linux CPU 配置保留，但旧 CPU 测量慢，不能宣称性能达标。不要重新测试 8B。
-5. 用户明确恢复后，再按 [服务说明](../cloud/SERVICE.md) 初始化新的独立私有数据目录、配置真实 Shopify 应用和 HTTPS origin。密钥放受忽略配置；不要复制 Lite 数据目录。
+5. 按 [服务说明](../cloud/SERVICE.md) 使用独立私有数据目录。真实 Shopify 应用和 HTTPS origin 后续再配置；本地基础功能先用真实公开商品与原执行器验证。密钥放受忽略配置；不要复制 Lite 数据目录。
 
 ## Git 不携带的本机状态
 
@@ -58,8 +59,8 @@ docker run --rm --network none onecrew-cloud-service:linux-check
 
 仓库携带公开内容的模型输出、失败记录与脱敏验收日志，供审阅和追溯。现有 `check-score.mjs` 需要原私有材料数据库，不能只拿日志直接回放；可在恢复后重新采集，或通过私有渠道按停机一致性备份流程迁移整个数据目录和配套密钥。不要把这些运行数据上传 GitHub。
 
-## 恢复后的下一步
+## 当前下一步
 
-优先确认 Shopify 开发者账户/组织，再创建开发应用与测试店铺；这是前一轮已提出但未获信息的事项。随后验证真实安装、商品与成员权限、Webhook、卸载重装、四平台登录及完整搜索到 Library/模板流程。生产 HTTPS、备份、主体/政策/联系人与审核材料也仍需真实资源。
+先完成真实本地 Campaign 搜索、评分、Library/模板与停止恢复链路。真实 Shopify 安装、商品与成员权限、Webhook、卸载重装后续再验收；四平台账号验收仍按实际证据记录。生产 HTTPS、备份、主体/政策/联系人与审核材料继续作为上架条件。
 
-本次没有恢复 goal、改动 Lite/Access/Sync、购买服务或发送外部消息。代码上传后可以继续阅读资料；实际恢复开发需用户明确指示。
+仅修改 onecrew_cloud，不修改 Lite/Access/Sync，不购买服务。新电脑接续前检查最新提交、goal 和当前验证记录。

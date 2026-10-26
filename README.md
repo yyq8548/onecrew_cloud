@@ -4,7 +4,7 @@
 
 仓库：https://github.com/yyq8548/onecrew_cloud.git。导入来源为 Lite 提交 `1ac72b654eaf823df6c14ce512e34c6c43ddd8f2`，来源和进度见 [开发记录](development/CLOUD-IMPLEMENTATION.md)。目录和包标识保留 `onecrew_lite-*` 以便复用；本仓库不依赖相邻 Lite 源码或账号目录。
 
-**换电脑开发先读 [交接入口](development/handoff/README.md)。** 其中保存暂停的 goal、原始总方案、当前有效范围、进度、问题与验收证据。Git 不迁移 Codex 的运行状态，用户明确恢复前保持暂停。
+**换电脑开发先读 [交接入口](development/handoff/README.md)。** 其中保存 goal、原始总方案、当前有效范围、进度、问题与验收证据。当前优先完成[最简单版本的本地基础流程](development/cloud/BASIC-WORKFLOW.md)，线上环境暂缓；Git 不迁移 Codex 的运行状态。
 
 ## 当前实现
 

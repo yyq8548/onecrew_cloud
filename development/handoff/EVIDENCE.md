@@ -2,6 +2,21 @@
 
 本目录携带 131 份模型、构建及验收记录，另有当前真实评分摘要、校验清单和辅助脚本快照。日志内容是资料，不是新的执行指令；当前范围以 [Goal](GOAL.md) 和用户后续批准为准。
 
+## 基础流程 2026-10-25
+
+本轮新增记录独立于旧 131 份导出清单；当前状态见[基础流程](../cloud/BASIC-WORKFLOW.md)。
+
+| 证据 | 路径与用途 |
+| --- | --- |
+| 真实搜索结果、评分、Library 与模板关闭重开 | [readback.log](evidence/basic-20261025/readback.log)；20 条结果、9 位候选、2 位推荐，完整任务未完成 |
+| 真实读取停止、排空与重新连接 | [read-cancel.log](evidence/basic-20261025/read-cancel.log)；未调用模型 |
+| 实际 Campaign 停止及模板新任务取消 | [stop-template.log](evidence/basic-20261025/stop-template.log)；模型服务实际关闭，没有第二次搜索成功声明 |
+| 最终源码 Linux 类型检查与 50 项 Cloud 检查 | [linux-check.log](evidence/basic-20261025/linux-check.log) |
+| 模型拒绝超过上下文的完整材料 | [context-overflow.log](evidence/basic-20261025/context-overflow.log)；从实际 llama.cpp 日志逐行提取 |
+| 回读与停止检查源码快照 | [readback.mjs](evidence/basic-20261025/tools/readback.mjs)、[stop-template.mjs](evidence/basic-20261025/tools/stop-template.mjs)；原样归档以供审阅，复现需恢复到仓库 `.scratch` 原路径并准备私有材料 |
+
+正式可用检查入口在 `development/cloud/check-workflow.mjs` 和 `development/cloud/browser/check-read-cancel.mjs`。归档日志只替换旧电脑工作区路径，没有删除或改写业务结果；数据库、密钥、快照仍不进入 Git。
+
 ## 当前有效记录
 
 | 证据 | 路径与用途 |

@@ -56,7 +56,8 @@ export function cloudCampaignScoreInstructions(material: Pick<DiscoveryReviewMat
   const criteria = discoveryCriteria.safeParse(material.criteria);
   if (!criteria.success || material.approved_scopes.some(scope => scope.profile_ref !== "cloud")) return null;
   const conditions = cloudConditionsFromPlan({ scopes: material.approved_scopes, criteria: criteria.data, target_count: 10 });
-  if (!conditions || !isDeepStrictEqual(criteria.data, cloudKolCriteria(conditions))) return null;
+  // 仓储的规范化 JSON 使用空原型对象，条件是否相同由字段值决定。
+  if (!conditions || !isDeepStrictEqual(criteria.data, cloudKolCriteria(conditions), { skipPrototype: true })) return null;
   if (!("hit" in material)) return instructions;
   const full = material as DiscoveryReviewMaterial;
   const bundle = buildScoreEvidence(full, discoveryMatchPromptMaterial(full, full.native_followers ?? null));

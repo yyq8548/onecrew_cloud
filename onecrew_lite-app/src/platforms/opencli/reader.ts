@@ -39,6 +39,7 @@ export interface VerifiedOpenCliBrowserBinding {
   readonly profile: string;
   readonly signal: AbortSignal;
   assertCurrent(): Promise<void>;
+  withSignal?(signal: AbortSignal): VerifiedOpenCliBrowserBinding;
 }
 // 实现方须核对已保存的 Creator/Search 证据和预算，不能把请求中的 URL 当作授权。
 export interface VerifiedOpenCliPublicSource { readonly url: string; assertApproved(): Promise<void> }

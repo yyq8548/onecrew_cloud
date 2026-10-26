@@ -30,12 +30,17 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
 
   withDiagnostics(onFailure: (error: OpenCliError) => void) { return new CloudDiscoveryReader(this.#config, this.#shared, onFailure); }
 
-  binding(context: AccountContext, profile: string): VerifiedOpenCliBrowserBinding {
+  binding(context: AccountContext, profile: string, cancellation: AbortSignal = context.signal): VerifiedOpenCliBrowserBinding {
     const { data } = this.#config;
     data.runtime.accounts.assertCurrent(context);
     data.assertCurrent();
     if (profile !== "cloud") throw new OpenCliError("opencli_profile_unavailable");
-    const binding = Object.freeze({ profile, signal: context.signal, async assertCurrent() { data.runtime.accounts.assertCurrent(context); data.assertCurrent(); } });
+    const signal = AbortSignal.any([context.signal, cancellation]);
+    const binding: VerifiedOpenCliBrowserBinding = Object.freeze({
+      profile, signal,
+      async assertCurrent() { data.runtime.accounts.assertCurrent(context); data.assertCurrent(); signal.throwIfAborted(); },
+      withSignal: (next: AbortSignal) => this.binding(context, profile, AbortSignal.any([signal, next])),
+    });
     this.#shared.bindings.add(binding);
     return binding;
   }
@@ -51,16 +56,17 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
     };
     await assertCurrent();
     const signal = binding ? AbortSignal.any([binding.signal, data.runtime.context.signal]) : data.runtime.context.signal;
+    // 取消后仍等待底层浏览器排空，再放行下一项读取。
     return this.#shared.queue.add(async () => {
       await assertCurrent();
       signal.throwIfAborted();
       const result = await work(signal);
       await assertCurrent();
       return result;
-    }, { signal }).then(value => value, error => {
-      const failure = error instanceof OpenCliError ? error : signal.aborted ? new OpenCliError("opencli_cancelled") : error;
-      if (failure instanceof OpenCliError) this.#onFailure?.(failure);
-      throw failure;
+    }).then(value => value, error => {
+      signal.throwIfAborted();
+      if (error instanceof OpenCliError) this.#onFailure?.(error);
+      throw error;
     });
   }
 

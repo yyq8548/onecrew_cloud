@@ -2,6 +2,8 @@
 
 本入口属于本地实现阶段。已装配店铺浏览器、简化 KOL 搜索、Campaign 与内嵌页面代码；Shopify 真实安装、商品读取与有效 Webhook 尚未验收。模型单样本与平台断开组件已有真实验证，评分质量、完整搜索和四平台真实账号验收仍待完成。
 
+2026-10-25：当前优先[最简单版本的本地基础流程](BASIC-WORKFLOW.md)。实际任务已保存 20 条 YouTube 搜索结果、9 位候选、2 位已评分 Library 推荐，结果与模板关闭重开后保留；执行停止、模板创建和取消通过。商品输入、浏览器凭据、评分条件识别及读取取消排空已修复，当前 Linux 类型检查和 50 项 Cloud 检查通过。完整 10 人任务受长材料超过 8,192 上下文限制，窗口调整待批准；旧 v15 镜像未包含本轮修复，最终检查以只读挂载当前源码的记录为准。
+
 ## Shopify 应用配置
 
 待填写的 [shopify.app.toml.example](shopify.app.toml.example) 与当前代码一致：内嵌应用、managed installation、仅 `read_products` 权限、API 版本 `2026-10`，卸载及三个隐私事件投递到 `/webhooks/shopify`。配置格式依据 [Shopify 官方说明](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration)。

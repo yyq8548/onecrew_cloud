@@ -57,6 +57,7 @@ export class DiscoveryAdvanceExecutor {
       const environment = await this.dependencies.reads(context); this.accounts.assertCurrent(context); owned.assertOwned(); signal.throwIfAborted();
       const browsers: DiscoveryBrowserResolver = { resolve: async (owner, profile) => {
         const binding = await environment.browsers.resolve(owner, profile), combined = AbortSignal.any([binding.signal, signal]);
+        if (binding.withSignal) return binding.withSignal(combined);
         return { profile: binding.profile, signal: combined, assertCurrent: async () => { await binding.assertCurrent(); combined.throwIfAborted(); } };
       } };
       const reader = environment.reader.withDiagnostics(error => { if (error.diagnostics) result.provider_diagnostics = error.diagnostics; });
