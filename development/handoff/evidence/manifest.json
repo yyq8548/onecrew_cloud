@@ -1,0 +1,1103 @@
+{
+  "captured_on": "2026-10-25",
+  "note": "仅复制模型与构建验收记录；旧机工作区和用户目录分别替换为 $ONECREW_CLOUD、$HOME。未导出账号、密钥、Cookie、运行数据库或模型权重。",
+  "files": [
+    {
+      "source": ".scratch/cloud-4b-correction-score.log",
+      "published": "models/cloud-4b-correction-score.log",
+      "original_sha256": "d9b662651e121d14366c42c19efd22a1da6187191261b86540b6a60743759803",
+      "published_sha256": "2428ef4f6eec6b0463c60f8ad585f380f252b2a602191514bd76fb2d52aa029a",
+      "bytes": 2860,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-4b-correction-server.log",
+      "published": "models/cloud-4b-correction-server.log",
+      "original_sha256": "54c87661191f1062e030c26322f10eba2c5c446e3832a05a372e4fc46634c67d",
+      "published_sha256": "54c87661191f1062e030c26322f10eba2c5c446e3832a05a372e4fc46634c67d",
+      "bytes": 11422,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-4b-explicit-count-score.log",
+      "published": "models/cloud-4b-explicit-count-score.log",
+      "original_sha256": "aef46f60c05cb1cb55a4a7dd4422acb8b35f02b1b48303b7e157c6fae88339d5",
+      "published_sha256": "0d2e3206e930f7591d8c2c62d26fb91bef0e52d0738f06b1a8880575561b0a0b",
+      "bytes": 1861,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-4b-final-server.log",
+      "published": "models/cloud-4b-final-server.log",
+      "original_sha256": "4be9e31c57861573369d588a455457f813ab3830211772af447146d3757887b0",
+      "published_sha256": "4be9e31c57861573369d588a455457f813ab3830211772af447146d3757887b0",
+      "bytes": 6402,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-4b-keywords.log",
+      "published": "models/cloud-4b-keywords.log",
+      "original_sha256": "5ee55bd0b34ce269a973d484f9ed469770c82f17de401c7a81128ddeb9e00f0b",
+      "published_sha256": "5ee55bd0b34ce269a973d484f9ed469770c82f17de401c7a81128ddeb9e00f0b",
+      "bytes": 806,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-4b-product-score.log",
+      "published": "models/cloud-4b-product-score.log",
+      "original_sha256": "f292e40bd1125558c8d134271a396ae5a043fe66a7f544ef4814716a0e684d45",
+      "published_sha256": "7e68f6d116ab10cf1aaa4114c108bf5165668edcabd36900f1271937e9f0b670",
+      "bytes": 1051,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-4b-score-server.log",
+      "published": "models/cloud-4b-score-server.log",
+      "original_sha256": "4d0d4ce8d5780ba3655381b3c8300e88fa1bb19b1cca71e1addb981f9e846ddc",
+      "published_sha256": "4d0d4ce8d5780ba3655381b3c8300e88fa1bb19b1cca71e1addb981f9e846ddc",
+      "bytes": 3377,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-ad.log",
+      "published": "models/cloud-classification-ad.log",
+      "original_sha256": "74bffbf78f4acfd3be3d61f9955d24aa999ec64569ef8231056921875e292bab",
+      "published_sha256": "74bffbf78f4acfd3be3d61f9955d24aa999ec64569ef8231056921875e292bab",
+      "bytes": 1306,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-count-prefilter.log",
+      "published": "models/cloud-classification-count-prefilter.log",
+      "original_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "published_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "bytes": 401,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-eligible-wide.log",
+      "published": "models/cloud-classification-eligible-wide.log",
+      "original_sha256": "26a18202ee38ce4de807f18eb9f12c811467ceef32e11a4cd42ffb9cde15a462",
+      "published_sha256": "26a18202ee38ce4de807f18eb9f12c811467ceef32e11a4cd42ffb9cde15a462",
+      "bytes": 1361,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v2-ad.log",
+      "published": "models/cloud-classification-v2-ad.log",
+      "original_sha256": "cf2ac315fa8512cd6e847e4b969af548469ab795a36f3c7ed860a8904d28b611",
+      "published_sha256": "cf2ac315fa8512cd6e847e4b969af548469ab795a36f3c7ed860a8904d28b611",
+      "bytes": 1357,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v3-ad.log",
+      "published": "models/cloud-classification-v3-ad.log",
+      "original_sha256": "295ab2b27774b1b987872c72bee68f00e348c11b923aea9d8b3a180ae3843044",
+      "published_sha256": "232126a5229c129d6b66e1f8c2e2a6478311d91c4fb89da935e26950e461342e",
+      "bytes": 1765,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-acceptance.log",
+      "published": "models/cloud-classification-v4-acceptance.log",
+      "original_sha256": "3e2f56905fed4a3b4203514da8dcee9cff4644a142eff173dbeaa99208a0c794",
+      "published_sha256": "3e2f56905fed4a3b4203514da8dcee9cff4644a142eff173dbeaa99208a0c794",
+      "bytes": 1009,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-ad.log",
+      "published": "models/cloud-classification-v4-ad.log",
+      "original_sha256": "0caeae4a3d52b22a90b2b228ed7f9e084255015a3a590574f467e09e7a35f180",
+      "published_sha256": "0caeae4a3d52b22a90b2b228ed7f9e084255015a3a590574f467e09e7a35f180",
+      "bytes": 1485,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-bottlepro.log",
+      "published": "models/cloud-classification-v4-bottlepro.log",
+      "original_sha256": "d1b4d4554d823bcc563be3b2bd1168c8018c075e1822c393ca569cafb2794823",
+      "published_sha256": "d1b4d4554d823bcc563be3b2bd1168c8018c075e1822c393ca569cafb2794823",
+      "bytes": 1385,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-followers.log",
+      "published": "models/cloud-classification-v4-followers.log",
+      "original_sha256": "9c032741d6bfd1c50242726e783a9500c88a75c51a2d5e9a0320ee539bbcb313",
+      "published_sha256": "9c032741d6bfd1c50242726e783a9500c88a75c51a2d5e9a0320ee539bbcb313",
+      "bytes": 1444,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-routing.log",
+      "published": "models/cloud-classification-v4-routing.log",
+      "original_sha256": "e795092d98697fd1e00a775299df5e3143a03d70b6745a6f1a0f0309e91e3396",
+      "published_sha256": "e795092d98697fd1e00a775299df5e3143a03d70b6745a6f1a0f0309e91e3396",
+      "bytes": 918,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-stability.log",
+      "published": "models/cloud-classification-v4-stability.log",
+      "original_sha256": "aae7ba6537c76b585b21b68142827274619fb9002b11fb0cff67c134938e1265",
+      "published_sha256": "0e774e3e14c47948f4c63cbe3e7c79cdb0e2bcbf5553469504990a6ef06b939a",
+      "bytes": 2814,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-sunscreen.log",
+      "published": "models/cloud-classification-v4-sunscreen.log",
+      "original_sha256": "f8fc210b676fac56e97cff8342aa0b076bcf03127a9cab7f4f7b9a54fe126ad9",
+      "published_sha256": "f8fc210b676fac56e97cff8342aa0b076bcf03127a9cab7f4f7b9a54fe126ad9",
+      "bytes": 1377,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-tests.log",
+      "published": "models/cloud-classification-v4-tests.log",
+      "original_sha256": "0e4be6195ce75c12e184281e2a32c527864adaac05d4056320759b282dcd2041",
+      "published_sha256": "0e4be6195ce75c12e184281e2a32c527864adaac05d4056320759b282dcd2041",
+      "bytes": 682,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-unrelated.log",
+      "published": "models/cloud-classification-v4-unrelated.log",
+      "original_sha256": "2729a73ece9409810a8641aa28e908e05a4ff5e584de15467d5d5291889170fa",
+      "published_sha256": "2729a73ece9409810a8641aa28e908e05a4ff5e584de15467d5d5291889170fa",
+      "bytes": 1561,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v4-water.log",
+      "published": "models/cloud-classification-v4-water.log",
+      "original_sha256": "a42f9e37209cbe57f03a28c99521025fa6392dec4e9c1aa598b873cfcb2db922",
+      "published_sha256": "a42f9e37209cbe57f03a28c99521025fa6392dec4e9c1aa598b873cfcb2db922",
+      "bytes": 1409,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v5-ad.log",
+      "published": "models/cloud-classification-v5-ad.log",
+      "original_sha256": "5409d94dc57a493d77a1b59cc2e0a530c2ffd6f2b55159977d83575ac93ab086",
+      "published_sha256": "5409d94dc57a493d77a1b59cc2e0a530c2ffd6f2b55159977d83575ac93ab086",
+      "bytes": 1500,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v5-bottlepro.log",
+      "published": "models/cloud-classification-v5-bottlepro.log",
+      "original_sha256": "a41383645db1aa69c63db5479ef6863f88921b129956fafdf536883f73c4ed88",
+      "published_sha256": "a41383645db1aa69c63db5479ef6863f88921b129956fafdf536883f73c4ed88",
+      "bytes": 1517,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v5-sunscreen.log",
+      "published": "models/cloud-classification-v5-sunscreen.log",
+      "original_sha256": "daa1f3caa298150fa7636d6f9aeb28197e63fe369d604fe004c60954fd23041c",
+      "published_sha256": "daa1f3caa298150fa7636d6f9aeb28197e63fe369d604fe004c60954fd23041c",
+      "bytes": 1332,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v5-unrelated.log",
+      "published": "models/cloud-classification-v5-unrelated.log",
+      "original_sha256": "4a2d287706016b83b0289c500714de0347dc23c9a3e94cbc15dc3709d6a8797e",
+      "published_sha256": "5b73296711b8c0897db6e483f00a5276a13977ad9cae00ab257cbdd715773628",
+      "bytes": 1843,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-classification-v5-water.log",
+      "published": "models/cloud-classification-v5-water.log",
+      "original_sha256": "4749673d000c7aca97fcd3e8af8ae4c631ddf719977d84f6455e3b0f6b2c395c",
+      "published_sha256": "4749673d000c7aca97fcd3e8af8ae4c631ddf719977d84f6455e3b0f6b2c395c",
+      "bytes": 1384,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-v6-ad.log",
+      "published": "models/cloud-classification-v6-ad.log",
+      "original_sha256": "b92da4dfc809119645d6ab8483effbb475f40efa6d6c0fba31c11f9154d6e9bc",
+      "published_sha256": "6c9bd6b6d4db522e2d2e26ae547a9472675e76664ff1e3cf7bfcf1ff2467457b",
+      "bytes": 1966,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-classification-v6-water.log",
+      "published": "models/cloud-classification-v6-water.log",
+      "original_sha256": "7ddc36187cdcb7c00b310b736c70765efb9ed2212f9495ee071623ae28f35740",
+      "published_sha256": "7ddc36187cdcb7c00b310b736c70765efb9ed2212f9495ee071623ae28f35740",
+      "bytes": 1415,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-water-ready.log",
+      "published": "models/cloud-classification-water-ready.log",
+      "original_sha256": "8cd8d348804decd9a8c4f73ecc0e2e4d70fc1720cd719037490570d602d082a2",
+      "published_sha256": "8cd8d348804decd9a8c4f73ecc0e2e4d70fc1720cd719037490570d602d082a2",
+      "bytes": 1257,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-classification-water.log",
+      "published": "models/cloud-classification-water.log",
+      "original_sha256": "03091c1a8f7a74f9514271d64a8fb2ddc9eeec99f4fa0d337ac607b77b89ae72",
+      "published_sha256": "7e3446b763c6f9506cbad549114dd5ff1b751f6cc6dde5e048f00193a814abd9",
+      "bytes": 1116,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-compact-product-score.log",
+      "published": "models/cloud-compact-product-score.log",
+      "original_sha256": "60c8834005a4209d8af1d331f23418f42da3dcc862c33561bacbb33cc4bc75e2",
+      "published_sha256": "60c8834005a4209d8af1d331f23418f42da3dcc862c33561bacbb33cc4bc75e2",
+      "bytes": 445,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-four-platform-keywords.log",
+      "published": "models/cloud-four-platform-keywords.log",
+      "original_sha256": "16542925ea4a2d525b4cf1e66efeac2bf6f696ba0ca5eb274e7c299a19e637f8",
+      "published_sha256": "16542925ea4a2d525b4cf1e66efeac2bf6f696ba0ca5eb274e7c299a19e637f8",
+      "bytes": 752,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-8b-followers.log",
+      "published": "models/cloud-metal-8b-followers.log",
+      "original_sha256": "2782a8e7e027c95ec8367a78ce6c41bf9f6007f5c6a256c32f984c1f93b50f1a",
+      "published_sha256": "2782a8e7e027c95ec8367a78ce6c41bf9f6007f5c6a256c32f984c1f93b50f1a",
+      "bytes": 1452,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-8b-keywords.log",
+      "published": "models/cloud-metal-8b-keywords.log",
+      "original_sha256": "3fcdfdd2f455557abd4089d5f6e8f7c2e03b7f8be6809d070f3d44e628ce9c9d",
+      "published_sha256": "3fcdfdd2f455557abd4089d5f6e8f7c2e03b7f8be6809d070f3d44e628ce9c9d",
+      "bytes": 903,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-8b-related.log",
+      "published": "models/cloud-metal-8b-related.log",
+      "original_sha256": "c7b9fa53cdb0e83a58285c58fefc2e5b58942c81afeeac89a8cc7e0ae059856a",
+      "published_sha256": "9cc40e9b5ddef02ecaea344fe428da415ae22130d26e67085d8b5f84f4bf7458",
+      "bytes": 1733,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-metal-8b-unrelated.log",
+      "published": "models/cloud-metal-8b-unrelated.log",
+      "original_sha256": "6dc31089137aaa7b07e2bf2239ddd1c3e8bae7b466138ea4871568f617e51cf8",
+      "published_sha256": "84e3131841c66dd04516bdae7b952d771a8cac2438c4d08908d1cc1afaeb3c59",
+      "bytes": 1751,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-metal-keywords.log",
+      "published": "models/cloud-metal-keywords.log",
+      "original_sha256": "0f8de5189f476e5fa99218da14bd493fd435a1d7460ccdd9db5a955acb6fff09",
+      "published_sha256": "0f8de5189f476e5fa99218da14bd493fd435a1d7460ccdd9db5a955acb6fff09",
+      "bytes": 886,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-score-followers.log",
+      "published": "models/cloud-metal-score-followers.log",
+      "original_sha256": "55f96bad530902122a1653261d603571dd21c94d99d38f67adf23b237ebfc038",
+      "published_sha256": "55f96bad530902122a1653261d603571dd21c94d99d38f67adf23b237ebfc038",
+      "bytes": 1771,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-score-related.log",
+      "published": "models/cloud-metal-score-related.log",
+      "original_sha256": "822a21a31b4c800ba08b4145511597ef2399ffba5eb74044f539d0c244ec5562",
+      "published_sha256": "822a21a31b4c800ba08b4145511597ef2399ffba5eb74044f539d0c244ec5562",
+      "bytes": 1675,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-score-unrelated.log",
+      "published": "models/cloud-metal-score-unrelated.log",
+      "original_sha256": "ffcbd190a817245b7518cdb0ad7566084f872269b8b8a247117d6f810a8afe99",
+      "published_sha256": "ffcbd190a817245b7518cdb0ad7566084f872269b8b8a247117d6f810a8afe99",
+      "bytes": 1756,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v10-related.log",
+      "published": "models/cloud-metal-v10-related.log",
+      "original_sha256": "4189f33f9926e8977695f33fda9c17c0d8bb8d44136bdf76510e1b64f6183ccd",
+      "published_sha256": "4189f33f9926e8977695f33fda9c17c0d8bb8d44136bdf76510e1b64f6183ccd",
+      "bytes": 1668,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v11-related.log",
+      "published": "models/cloud-metal-v11-related.log",
+      "original_sha256": "69c70618919cee78770f74918c692abc8c5d097220d42f83d42ab79b3f95e41f",
+      "published_sha256": "7aa9b031c5b5351a15c336ca822a6de790346cc7ffec3fd971dadc74d68058d8",
+      "bytes": 2196,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-metal-v12-followers.log",
+      "published": "models/cloud-metal-v12-followers.log",
+      "original_sha256": "e145d6665c4b9f47b8b8901fdbf4325477046f2b72aadd152146e46c22f1d650",
+      "published_sha256": "e145d6665c4b9f47b8b8901fdbf4325477046f2b72aadd152146e46c22f1d650",
+      "bytes": 1687,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v12-related.log",
+      "published": "models/cloud-metal-v12-related.log",
+      "original_sha256": "070b9348b5296e9d65f8a15fc6bb61f1626d6a5b0df200f563f89d7b03e9f172",
+      "published_sha256": "070b9348b5296e9d65f8a15fc6bb61f1626d6a5b0df200f563f89d7b03e9f172",
+      "bytes": 1741,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v12-unrelated.log",
+      "published": "models/cloud-metal-v12-unrelated.log",
+      "original_sha256": "84712286e79721a889929995669f1b9fee379fbefaddfef9b4c73502138b67e0",
+      "published_sha256": "84712286e79721a889929995669f1b9fee379fbefaddfef9b4c73502138b67e0",
+      "bytes": 1536,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v4-followers.log",
+      "published": "models/cloud-metal-v4-followers.log",
+      "original_sha256": "4e388bfe866ff26e8647bbd8f5138a5c45a7b88284bac20833d1052d0672ec3a",
+      "published_sha256": "4e388bfe866ff26e8647bbd8f5138a5c45a7b88284bac20833d1052d0672ec3a",
+      "bytes": 1407,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v4-related.log",
+      "published": "models/cloud-metal-v4-related.log",
+      "original_sha256": "62f8c9fc2b4349c3872b23dcf2fc0f8e8febd7e532e65506a93a0bd3c64f3397",
+      "published_sha256": "62f8c9fc2b4349c3872b23dcf2fc0f8e8febd7e532e65506a93a0bd3c64f3397",
+      "bytes": 1434,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v5-related.log",
+      "published": "models/cloud-metal-v5-related.log",
+      "original_sha256": "72cd917e14c753883431b841503318dfef820091bfa4c4932aa88503a20845bc",
+      "published_sha256": "72cd917e14c753883431b841503318dfef820091bfa4c4932aa88503a20845bc",
+      "bytes": 1439,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v6-followers.log",
+      "published": "models/cloud-metal-v6-followers.log",
+      "original_sha256": "2ac6acc026b03c863fc9a586b1fc12133c884a310a434f2009b3acced314c32b",
+      "published_sha256": "91ab9e82b50d503e4ddff882e343de0d6015ade6fdcea89267d6bc7dc23e243c",
+      "bytes": 1088,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-metal-v7-related.log",
+      "published": "models/cloud-metal-v7-related.log",
+      "original_sha256": "d1d577d6a58bc2a3c71c391025c0f3bdd1693556c76c21b3bf70f19dfa96f187",
+      "published_sha256": "d1d577d6a58bc2a3c71c391025c0f3bdd1693556c76c21b3bf70f19dfa96f187",
+      "bytes": 1651,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v7-unrelated.log",
+      "published": "models/cloud-metal-v7-unrelated.log",
+      "original_sha256": "3477d1311c4bc2c527c84f8cb4280f11ebb6e48a23f14cfe09e552c4814aa4f9",
+      "published_sha256": "3477d1311c4bc2c527c84f8cb4280f11ebb6e48a23f14cfe09e552c4814aa4f9",
+      "bytes": 1500,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v8-followers.log",
+      "published": "models/cloud-metal-v8-followers.log",
+      "original_sha256": "4c2d1052a44c28d25466638fc839120b26b1df3935e7ed78fa044a9cfa298dd0",
+      "published_sha256": "4c2d1052a44c28d25466638fc839120b26b1df3935e7ed78fa044a9cfa298dd0",
+      "bytes": 1840,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v8-related.log",
+      "published": "models/cloud-metal-v8-related.log",
+      "original_sha256": "8a4a1fbf4b0623390e9303ececb661b6b364f7be2e27292a213e2470a0f8766f",
+      "published_sha256": "8a4a1fbf4b0623390e9303ececb661b6b364f7be2e27292a213e2470a0f8766f",
+      "bytes": 1789,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v9-related.log",
+      "published": "models/cloud-metal-v9-related.log",
+      "original_sha256": "353280f40597dc6d64fc88089037ea978c8b8a8603237f16e1196175aa201cc4",
+      "published_sha256": "353280f40597dc6d64fc88089037ea978c8b8a8603237f16e1196175aa201cc4",
+      "bytes": 1765,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-metal-v9-unrelated.log",
+      "published": "models/cloud-metal-v9-unrelated.log",
+      "original_sha256": "bf729c770d69544c0e15551dc4dd032936d6ea56b8e006539febbd7111344a83",
+      "published_sha256": "bf729c770d69544c0e15551dc4dd032936d6ea56b8e006539febbd7111344a83",
+      "bytes": 1503,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-ad-final.log",
+      "published": "models/cloud-paragraph-ad-final.log",
+      "original_sha256": "56d9d1aee32ebcb83837adebf086ab38847929716637255c08cb90ac6bf2c4e1",
+      "published_sha256": "d7e44ab858d557da742587f845c759c2840de683ac62e4faedc60bb8486eb907",
+      "bytes": 1289,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-ad-kind.log",
+      "published": "models/cloud-paragraph-ad-kind.log",
+      "original_sha256": "5f7db61e805cc3ba764846aec9cce14898eafcf6963a465ac56d8632b06b96ca",
+      "published_sha256": "623fbe7833eb299039c76fc43dfca32fba74c111fb00749224c18226c326e9be",
+      "bytes": 1327,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-ad-rule.log",
+      "published": "models/cloud-paragraph-ad-rule.log",
+      "original_sha256": "df1a5080be64b6e4e0fd49b85cda4b8505c49dca244567b25d967a24ab7dd44b",
+      "published_sha256": "7cd49ee9513868072868111e98f32f1c09d4f86c3d16b83f4a0c697ffaa3974a",
+      "bytes": 1323,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-ad.log",
+      "published": "models/cloud-paragraph-ad.log",
+      "original_sha256": "797d825d53e83c74d5fb29863554bd0490b5ded632bd66741ec1bcbfd6fdaefa",
+      "published_sha256": "d33e8902111996b4fd16fc40b8dbf3ab5c459bb02c18b902e496445221165607",
+      "bytes": 2033,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-linux-check.log",
+      "published": "models/cloud-paragraph-linux-check.log",
+      "original_sha256": "f6a9070741b8a6afee8f710cf9c066c291c164311e3a7b47779254c26dfc35c2",
+      "published_sha256": "f6a9070741b8a6afee8f710cf9c066c291c164311e3a7b47779254c26dfc35c2",
+      "bytes": 5300,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v10-unrelated.log",
+      "published": "models/cloud-paragraph-v10-unrelated.log",
+      "original_sha256": "644dcdb87264f30ef4a77edc42f7f3d5a1bc2a4b300e751a3b001607d32845d9",
+      "published_sha256": "4fb8eef079e81abc566b7c3707449ba3e6908ef76b7f23ebb0f8f91f54d8f0c6",
+      "bytes": 1520,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v11-unrelated.log",
+      "published": "models/cloud-paragraph-v11-unrelated.log",
+      "original_sha256": "386f39e6cf633f3034cf26bcb04a9d308a422c2f99381246af90372299772e10",
+      "published_sha256": "88b7690fac657cc5c1feae4d1f654d62919d719b61c0ed4e669eb8fdff2ef2e8",
+      "bytes": 1520,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v12-unrelated.log",
+      "published": "models/cloud-paragraph-v12-unrelated.log",
+      "original_sha256": "a85686002d5f81a5799e5524f0017d4c6c387e082218a29a06ee2c405398fae3",
+      "published_sha256": "2de3f4c774d63d76c7606957b45374f00366b6097a701b25ca24ca31f5c5e7d1",
+      "bytes": 1520,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v13-followers.log",
+      "published": "models/cloud-paragraph-v13-followers.log",
+      "original_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "published_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "bytes": 401,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v13-unrelated.log",
+      "published": "models/cloud-paragraph-v13-unrelated.log",
+      "original_sha256": "8a38c4b0419130dc25238b215a5d832f89c2c5545fb4ba019b095b64d8205722",
+      "published_sha256": "8a38c4b0419130dc25238b215a5d832f89c2c5545fb4ba019b095b64d8205722",
+      "bytes": 1520,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v13-water.log",
+      "published": "models/cloud-paragraph-v13-water.log",
+      "original_sha256": "88a2dabbafac46fb4a53c3d66c718a83783012b289df90564966fb3e0200047c",
+      "published_sha256": "a915f85e4499f8588f3abe86f59fa43685f0277d29f01c9f9fe4d00bef3ab84d",
+      "bytes": 2077,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-ad.log",
+      "published": "models/cloud-paragraph-v14-ad.log",
+      "original_sha256": "fcc5284651b1586fd9592682bed9ce1b658b5dfa39f2e799c51052035f6201cb",
+      "published_sha256": "7688f8ac0876934b87f183359bf7c6c35184ff9c99f956fd52636985e1efbf1a",
+      "bytes": 1766,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-followers.log",
+      "published": "models/cloud-paragraph-v14-followers.log",
+      "original_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "published_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "bytes": 401,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-sunscreen.log",
+      "published": "models/cloud-paragraph-v14-sunscreen.log",
+      "original_sha256": "f215120a6e895b0d8040a5b5b4bb71fe2eae12903896bf42830435838f3348e8",
+      "published_sha256": "f215120a6e895b0d8040a5b5b4bb71fe2eae12903896bf42830435838f3348e8",
+      "bytes": 1959,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-unrelated.log",
+      "published": "models/cloud-paragraph-v14-unrelated.log",
+      "original_sha256": "056dddbca61f4d14be604c91531cb9393c8a4e8634f2b1f7092e363459df66e2",
+      "published_sha256": "056dddbca61f4d14be604c91531cb9393c8a4e8634f2b1f7092e363459df66e2",
+      "bytes": 1548,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-water-final-replay.log",
+      "published": "models/cloud-paragraph-v14-water-final-replay.log",
+      "original_sha256": "21160464eec12160700adc9a94914ef3faf366ee2038e2872d0bdc31d9b12142",
+      "published_sha256": "21160464eec12160700adc9a94914ef3faf366ee2038e2872d0bdc31d9b12142",
+      "bytes": 1746,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-water-replay.log",
+      "published": "models/cloud-paragraph-v14-water-replay.log",
+      "original_sha256": "24acfae91f945f1b1305deeac5c33c4d83c506e90b7e75731619a114d77b65c2",
+      "published_sha256": "24acfae91f945f1b1305deeac5c33c4d83c506e90b7e75731619a114d77b65c2",
+      "bytes": 1758,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-water.log",
+      "published": "models/cloud-paragraph-v14-water.log",
+      "original_sha256": "ce4bfc6b53260c437c5e5fc396698f6857a1a3f7f94e73b88ff13b98a764bd08",
+      "published_sha256": "1d5301527f688a0ac9336e5900cb11b2abf44a6466160819f6a6078f66060263",
+      "bytes": 1579,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v9-ad-replay.log",
+      "published": "models/cloud-paragraph-v9-ad-replay.log",
+      "original_sha256": "cd0a361fba45960eb9ceebc7d05802c059c0611b5c363b2deca8d99184e86cef",
+      "published_sha256": "dd9896d926ad1ba701cc3469ccef45b9e9b0cdc632f37815922d84177fd0c348",
+      "bytes": 680,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v9-ad.log",
+      "published": "models/cloud-paragraph-v9-ad.log",
+      "original_sha256": "c43331d5e2c55350f40a99bd4885186926f4cb5ff8037cace30dfdd3a18b30cb",
+      "published_sha256": "9e750cec788885485b514ab612709b236677e048fcc3c6b07b34ad216347cbb0",
+      "bytes": 1324,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v9-unrelated.log",
+      "published": "models/cloud-paragraph-v9-unrelated.log",
+      "original_sha256": "f740ce6b2d6b1e616ef17c6acaa227a73da07980d80f5e838ef8aa567376f745",
+      "published_sha256": "d7fa94de86c6ffa74f227e57e72d3376a52e708ae3c8ffbe1f06384f383f145a",
+      "bytes": 1717,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v9-water-replay.log",
+      "published": "models/cloud-paragraph-v9-water-replay.log",
+      "original_sha256": "8388f5ee7f9fba4e5223756e516bdd0dc189c970fb795426f699d8037e58dd0e",
+      "published_sha256": "8388f5ee7f9fba4e5223756e516bdd0dc189c970fb795426f699d8037e58dd0e",
+      "bytes": 2107,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v9-water.log",
+      "published": "models/cloud-paragraph-v9-water.log",
+      "original_sha256": "5521d035ed3e29e3f845cf68a49a15d11f06c0f5947772f9bbb32d85e4f2f830",
+      "published_sha256": "7a10a8f475f54e9500ecd947768160b508546c82251b60ace64df2da237eaee9",
+      "bytes": 1472,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-paragraph-water-compact.log",
+      "published": "models/cloud-paragraph-water-compact.log",
+      "original_sha256": "05e4b54c882efb05a4f77af98300b675431184fb3a7626a7cdfc4f3e23b77710",
+      "published_sha256": "05e4b54c882efb05a4f77af98300b675431184fb3a7626a7cdfc4f3e23b77710",
+      "bytes": 1806,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-paragraph-water.log",
+      "published": "models/cloud-paragraph-water.log",
+      "original_sha256": "42e39b95eb8cb3964d43086b48efb1ac3fa7e076999fec080188132433d66e67",
+      "published_sha256": "42e39b95eb8cb3964d43086b48efb1ac3fa7e076999fec080188132433d66e67",
+      "bytes": 1701,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-ad-verified.log",
+      "published": "models/cloud-promo-ad-verified.log",
+      "original_sha256": "8f030b44a64802628ab4ff48ad8b4788445be9d65054a5f25bae2b90c5ded10d",
+      "published_sha256": "8f030b44a64802628ab4ff48ad8b4788445be9d65054a5f25bae2b90c5ded10d",
+      "bytes": 2493,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-followers-verified.log",
+      "published": "models/cloud-promo-followers-verified.log",
+      "original_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "published_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "bytes": 401,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-linux-check.log",
+      "published": "models/cloud-promo-linux-check.log",
+      "original_sha256": "18331e0f4f9abd585d5702c3bde49ed55285d4f5600c107eae8e09d380333806",
+      "published_sha256": "18331e0f4f9abd585d5702c3bde49ed55285d4f5600c107eae8e09d380333806",
+      "bytes": 5306,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-linux-check.log",
+      "published": "current/cloud-promo-linux-check.log",
+      "original_sha256": "18331e0f4f9abd585d5702c3bde49ed55285d4f5600c107eae8e09d380333806",
+      "published_sha256": "18331e0f4f9abd585d5702c3bde49ed55285d4f5600c107eae8e09d380333806",
+      "bytes": 5306,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-replay-check.log",
+      "published": "models/cloud-promo-replay-check.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-sunscreen-verified.log",
+      "published": "models/cloud-promo-sunscreen-verified.log",
+      "original_sha256": "b7bd8e15a1412d76d31dd03f3c2a23543cb32540b0069a1558a4a6ee3717b2bc",
+      "published_sha256": "b7bd8e15a1412d76d31dd03f3c2a23543cb32540b0069a1558a4a6ee3717b2bc",
+      "bytes": 1824,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-unrelated-verified.log",
+      "published": "models/cloud-promo-unrelated-verified.log",
+      "original_sha256": "bfcfc61ec41113e988ac1d4411a27c172aa2975908ee6932fda3dc62c1185f73",
+      "published_sha256": "bfcfc61ec41113e988ac1d4411a27c172aa2975908ee6932fda3dc62c1185f73",
+      "bytes": 1413,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-promo-water-verified.log",
+      "published": "models/cloud-promo-water-verified.log",
+      "original_sha256": "68a886fd5baad835c7cb20afbfab6b17aaef9b97cd5c9b420b88a1bf79a133be",
+      "published_sha256": "68a886fd5baad835c7cb20afbfab6b17aaef9b97cd5c9b420b88a1bf79a133be",
+      "bytes": 1746,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-sunscreen.log",
+      "published": "models/cloud-quoted-sunscreen.log",
+      "original_sha256": "062f97c2e6a01244bfbd615310e413aada5f2c7103566d677aac098b48667b18",
+      "published_sha256": "44f278ba09c7a23bf177f1b8445fc11cb5eb1bd65ecee9d489f1c63002d60ada",
+      "bytes": 1627,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-quoted-v2-sunscreen.log",
+      "published": "models/cloud-quoted-v2-sunscreen.log",
+      "original_sha256": "6e77de0a6bad011651e2b36d552dc472cf5da6b4603416c72e2bf0f826f3fffe",
+      "published_sha256": "6e77de0a6bad011651e2b36d552dc472cf5da6b4603416c72e2bf0f826f3fffe",
+      "bytes": 1310,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v3-ad.log",
+      "published": "models/cloud-quoted-v3-ad.log",
+      "original_sha256": "f782b6561a2c0629ef4cc47a8a1b60a120c594f0d1680cdfd17c8479d4c693da",
+      "published_sha256": "f782b6561a2c0629ef4cc47a8a1b60a120c594f0d1680cdfd17c8479d4c693da",
+      "bytes": 1884,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v3-sunscreen.log",
+      "published": "models/cloud-quoted-v3-sunscreen.log",
+      "original_sha256": "0b7f14dcd7f01125fb19f1550788daa07ab661e1b7c87be296d6cae716dda6a4",
+      "published_sha256": "0b7f14dcd7f01125fb19f1550788daa07ab661e1b7c87be296d6cae716dda6a4",
+      "bytes": 1684,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v3-water-repeat.log",
+      "published": "models/cloud-quoted-v3-water-repeat.log",
+      "original_sha256": "ba1fea167cf3179b54e589e28003410f81566427b8faec2de23b494aa3a9a518",
+      "published_sha256": "a9fc130ff1182c849a5c0ebf53ea433f4a1a3162d474be2691da5f7b2febcc28",
+      "bytes": 2162,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-quoted-v3-water.log",
+      "published": "models/cloud-quoted-v3-water.log",
+      "original_sha256": "e9879676388e80e9f9311b93c5c8dd45c3f199aa9a9e8b743eaff63482abe7b1",
+      "published_sha256": "cf89d9de1f34a007930f2529429057bc1bdacf7b70bf1045dd6518b0ec8a241f",
+      "bytes": 2245,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-quoted-v4-water.log",
+      "published": "models/cloud-quoted-v4-water.log",
+      "original_sha256": "54dcf206b4e8da8e4bc497050fa255922bb3b5b15782ad1a13a7f32bb8bd20ed",
+      "published_sha256": "54dcf206b4e8da8e4bc497050fa255922bb3b5b15782ad1a13a7f32bb8bd20ed",
+      "bytes": 1835,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v5-water.log",
+      "published": "models/cloud-quoted-v5-water.log",
+      "original_sha256": "ca46910d7d4c24051cc04f2850d8bc9b646f942b5da72541be26361c23c9ea90",
+      "published_sha256": "ca46910d7d4c24051cc04f2850d8bc9b646f942b5da72541be26361c23c9ea90",
+      "bytes": 1840,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v6-water.log",
+      "published": "models/cloud-quoted-v6-water.log",
+      "original_sha256": "7470c8896182d4dcac64a29969dc30388b909a555e14438c82bdc4b825f146bd",
+      "published_sha256": "7470c8896182d4dcac64a29969dc30388b909a555e14438c82bdc4b825f146bd",
+      "bytes": 1659,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-quoted-v7-water.log",
+      "published": "models/cloud-quoted-v7-water.log",
+      "original_sha256": "f6a5dec82a0547617a3b481811a3eca97d57fe9af6bffa61b869badfdf82c818",
+      "published_sha256": "91b77448ff11c1f3e807b0d1d073949a6d2452ded5ee95d97723de288cfa593c",
+      "bytes": 1721,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-score-quality-v3-server.log",
+      "published": "models/cloud-score-quality-v3-server.log",
+      "original_sha256": "6b1b5bfe25a67dad5f9f728a11cebf5b207be38d6a3f76dc5c66659acd8a4a41",
+      "published_sha256": "6b1b5bfe25a67dad5f9f728a11cebf5b207be38d6a3f76dc5c66659acd8a4a41",
+      "bytes": 27582,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-score-quality-v3-unrelated.log",
+      "published": "models/cloud-score-quality-v3-unrelated.log",
+      "original_sha256": "26bc242550d229241411ea73df94c71891400969f288279a63a693c0c5092c89",
+      "published_sha256": "26bc242550d229241411ea73df94c71891400969f288279a63a693c0c5092c89",
+      "bytes": 1470,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-score-quality-v3.log",
+      "published": "models/cloud-score-quality-v3.log",
+      "original_sha256": "7e70bce07c037696345294c86e89806291652222b406a4e68ebe0fa0bbfba036",
+      "published_sha256": "7e70bce07c037696345294c86e89806291652222b406a4e68ebe0fa0bbfba036",
+      "bytes": 1749,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-short-keywords.log",
+      "published": "models/cloud-short-keywords.log",
+      "original_sha256": "bfd376b82f0d7caed0012f6deaecdba085bd0745e8fff8810e36073e1adb08b0",
+      "published_sha256": "bfd376b82f0d7caed0012f6deaecdba085bd0745e8fff8810e36073e1adb08b0",
+      "bytes": 330,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-short-product-score-final.log",
+      "published": "models/cloud-short-product-score-final.log",
+      "original_sha256": "bcf52b75a7063e602743cfa6d39f6720e6dc8c8fb736b62b0595e3dfa97d51e3",
+      "published_sha256": "bcf52b75a7063e602743cfa6d39f6720e6dc8c8fb736b62b0595e3dfa97d51e3",
+      "bytes": 445,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-short-product-score.log",
+      "published": "models/cloud-short-product-score.log",
+      "original_sha256": "0429a3cc5da1e96a95026a9715c4a7d94de54a50656d45109c0b684d1e85140d",
+      "published_sha256": "0429a3cc5da1e96a95026a9715c4a7d94de54a50656d45109c0b684d1e85140d",
+      "bytes": 445,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v12-bottlepro-water-bottle.log",
+      "published": "models/cloud-v12-bottlepro-water-bottle.log",
+      "original_sha256": "b1b3a6f08d9eac9f2776f212af2c21937d5b92a70cdad28252ebe7b54230eec7",
+      "published_sha256": "b1b3a6f08d9eac9f2776f212af2c21937d5b92a70cdad28252ebe7b54230eec7",
+      "bytes": 1929,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v12-prudent-incidental-ad.log",
+      "published": "models/cloud-v12-prudent-incidental-ad.log",
+      "original_sha256": "fba37a350c81e5f58261f233fc64b01b7ab3ef8ecbc857c976f77d70c861b919",
+      "published_sha256": "fba37a350c81e5f58261f233fc64b01b7ab3ef8ecbc857c976f77d70c861b919",
+      "bytes": 1708,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v12-prudent-water-bottle.log",
+      "published": "models/cloud-v12-prudent-water-bottle.log",
+      "original_sha256": "092b31bd3a694c69b908b526fdc6268ce6343d4be890ca882f21f56900534814",
+      "published_sha256": "092b31bd3a694c69b908b526fdc6268ce6343d4be890ca882f21f56900534814",
+      "bytes": 1733,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v13-8b-prudent-water-bottle.log",
+      "published": "models/cloud-v13-8b-prudent-water-bottle.log",
+      "original_sha256": "17a40af2d3790a9a4d24e0fd36eb318adca7665d68d23ef6187966c8a2b461d1",
+      "published_sha256": "17a40af2d3790a9a4d24e0fd36eb318adca7665d68d23ef6187966c8a2b461d1",
+      "bytes": 1968,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v13-prudent-incidental-ad.log",
+      "published": "models/cloud-v13-prudent-incidental-ad.log",
+      "original_sha256": "0308ea2dc25cff9285b5acb273118bac856b4fb02dfc0a860acda78c24c0217e",
+      "published_sha256": "0308ea2dc25cff9285b5acb273118bac856b4fb02dfc0a860acda78c24c0217e",
+      "bytes": 1806,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v13-prudent-named-ad.log",
+      "published": "models/cloud-v13-prudent-named-ad.log",
+      "original_sha256": "199022ecfb4d92a7bbd9040ec8a2e74d71cc5728675302e15ae0e753d1ec8d48",
+      "published_sha256": "199022ecfb4d92a7bbd9040ec8a2e74d71cc5728675302e15ae0e753d1ec8d48",
+      "bytes": 1764,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v13-prudent-water-bottle.log",
+      "published": "models/cloud-v13-prudent-water-bottle.log",
+      "original_sha256": "dc2526eb4ca9bd6f9a5399f71ebcde1dd51251e20c377cd2c4b46bad7e89aa33",
+      "published_sha256": "dc2526eb4ca9bd6f9a5399f71ebcde1dd51251e20c377cd2c4b46bad7e89aa33",
+      "bytes": 1771,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v14-prudent-named-ad.log",
+      "published": "models/cloud-v14-prudent-named-ad.log",
+      "original_sha256": "f618fca0e99c4c60e4177e01738c8694cacd01f952857de786b3e502ad241be0",
+      "published_sha256": "f618fca0e99c4c60e4177e01738c8694cacd01f952857de786b3e502ad241be0",
+      "bytes": 1878,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-v14-prudent-water-bottle.log",
+      "published": "models/cloud-v14-prudent-water-bottle.log",
+      "original_sha256": "7fefd0d849d80faf8e9c9a362f535f8c340529ff343aaebd750cabdf4cdc413b",
+      "published_sha256": "7fefd0d849d80faf8e9c9a362f535f8c340529ff343aaebd750cabdf4cdc413b",
+      "bytes": 1840,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-water-bottle-material-resumed.log",
+      "published": "models/cloud-water-bottle-material-resumed.log",
+      "original_sha256": "4af76503a1fa92b7eae9248ce260c89cd1550a9ee3b862eea31cde00ae7e8a5d",
+      "published_sha256": "7e2c5daafa54e278cfedb1513531245963faae0df250e7ee44c7e25705ea29e0",
+      "bytes": 542,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/cloud-water-bottle-material-verified.log",
+      "published": "models/cloud-water-bottle-material-verified.log",
+      "original_sha256": "b0502291f080e57663cd3f56099adbda0e98b174f7d502ff544e472907cf6c2b",
+      "published_sha256": "b0502291f080e57663cd3f56099adbda0e98b174f7d502ff544e472907cf6c2b",
+      "bytes": 995,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/cloud-water-bottle-material.log",
+      "published": "models/cloud-water-bottle-material.log",
+      "original_sha256": "6e70ee938510ff742cd4cae45977bb41134a9d9087eb24f088d348a3da822b06",
+      "published_sha256": "0f788ab84f0329d2411af9d20b60a5d84853cc8a75d0c7fa7e7bc06a60b12f5a",
+      "bytes": 591,
+      "path_redacted": true
+    },
+    {
+      "source": ".scratch/model-envelope-capture.log",
+      "published": "models/model-envelope-capture.log",
+      "original_sha256": "1cc78dbfafb5b1463ba33b5281b17bcdf9561d321be2e427caf3f5b6c2b6a65d",
+      "published_sha256": "1cc78dbfafb5b1463ba33b5281b17bcdf9561d321be2e427caf3f5b6c2b6a65d",
+      "bytes": 142,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/model-envelope-timings.log",
+      "published": "models/model-envelope-timings.log",
+      "original_sha256": "1e726e0113c6812912e74cf6fc0757e3630c1aa179c6fb9866ec1e4bd19696db",
+      "published_sha256": "1e726e0113c6812912e74cf6fc0757e3630c1aa179c6fb9866ec1e4bd19696db",
+      "bytes": 1136,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/service-v15-artifact-check.log",
+      "published": "current/service-v15-artifact-check.log",
+      "original_sha256": "90b7b8ef7edf6af565cb7f583099452712d8caab6fab2e37559b13aa79742ec2",
+      "published_sha256": "90b7b8ef7edf6af565cb7f583099452712d8caab6fab2e37559b13aa79742ec2",
+      "bytes": 226,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/service-v15-build.log",
+      "published": "current/service-v15-build.log",
+      "original_sha256": "530e282df963cbd8f54c3250380b3171d04128f0128bcef7774866e044cd8b28",
+      "published_sha256": "530e282df963cbd8f54c3250380b3171d04128f0128bcef7774866e044cd8b28",
+      "bytes": 1814,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/service-v15-layer-check.jsonl",
+      "published": "current/service-v15-layer-check.jsonl",
+      "original_sha256": "1dbe24275c0f66271c575ab5a66da889c06ef6ca88c143d82cd4c94e3dd277db",
+      "published_sha256": "1dbe24275c0f66271c575ab5a66da889c06ef6ca88c143d82cd4c94e3dd277db",
+      "bytes": 5480,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/service-v15-old-images-cleanup.log",
+      "published": "current/service-v15-old-images-cleanup.log",
+      "original_sha256": "6b44c7b6623fdd8db5a0a9063cd86f26c27f05514b190eefba48e306b3948090",
+      "published_sha256": "6b44c7b6623fdd8db5a0a9063cd86f26c27f05514b190eefba48e306b3948090",
+      "bytes": 265,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/service-v15-validated.sha256",
+      "published": "current/service-v15-validated.sha256",
+      "original_sha256": "1b777cee49f757bfb1009fa8d8139b55cb66d677b6631b2de4df2f857606d90a",
+      "published_sha256": "1b777cee49f757bfb1009fa8d8139b55cb66d677b6631b2de4df2f857606d90a",
+      "bytes": 298,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a-status.log",
+      "published": "current/v15-live-20261024-a-status.log",
+      "original_sha256": "35a7ef2115ca73971b27484a0850df4a557ddfbd5a2c01c952d578fffa58b455",
+      "published_sha256": "35a7ef2115ca73971b27484a0850df4a557ddfbd5a2c01c952d578fffa58b455",
+      "bytes": 91,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/ad.log",
+      "published": "v15-live/ad.log",
+      "original_sha256": "bbbfd0a42ef1554de0c6c815156265fb3219b0334661b13a50b0350d7232d1cc",
+      "published_sha256": "bbbfd0a42ef1554de0c6c815156265fb3219b0334661b13a50b0350d7232d1cc",
+      "bytes": 2628,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/bottlepro.log",
+      "published": "v15-live/bottlepro.log",
+      "original_sha256": "2ed36f4171a8a827423e481f8e77a0ccf6581fb22b17c6a38286d221ff276381",
+      "published_sha256": "2ed36f4171a8a827423e481f8e77a0ccf6581fb22b17c6a38286d221ff276381",
+      "bytes": 2617,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/followers.log",
+      "published": "v15-live/followers.log",
+      "original_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "published_sha256": "d3fc8669f48f5b8f2b44a2992048d81297b7079466e799ed783c5524accec78a",
+      "bytes": 401,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/sunscreen.log",
+      "published": "v15-live/sunscreen.log",
+      "original_sha256": "7154fc0e0edfb969c43b39171ebc4e6aabf7f903f743b5c943f6029213e97215",
+      "published_sha256": "7154fc0e0edfb969c43b39171ebc4e6aabf7f903f743b5c943f6029213e97215",
+      "bytes": 1959,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/unrelated.log",
+      "published": "v15-live/unrelated.log",
+      "original_sha256": "8b0ca5ee8e5d57ea76f03a914ac6c81c790f16a2758c31b6178b80989e0634c9",
+      "published_sha256": "8b0ca5ee8e5d57ea76f03a914ac6c81c790f16a2758c31b6178b80989e0634c9",
+      "bytes": 1548,
+      "path_redacted": false
+    },
+    {
+      "source": ".scratch/v15-live-20261024-a/water.log",
+      "published": "v15-live/water.log",
+      "original_sha256": "0c24138c307b610a5e9f4fb859beb64411d4bd41aa9680b1be3b0b5210d3b79f",
+      "published_sha256": "0c24138c307b610a5e9f4fb859beb64411d4bd41aa9680b1be3b0b5210d3b79f",
+      "bytes": 1881,
+      "path_redacted": false
+    }
+  ],
+  "support_files": [
+    {
+      "source": ".scratch/check-v15-live.sh",
+      "published": "tools/check-v15-live.sh",
+      "sha256": "f78625c908eefb4ee0e07465d063160e6ad48d3584b59de09f4170b59d943b68"
+    },
+    {
+      "source": ".scratch/check-promotional-excerpt.sh",
+      "published": "tools/check-promotional-excerpt.sh",
+      "sha256": "d366cbab3a2de607f9fb26f2b932baf423134033a6794403e6bbacc69bd2fa6b"
+    },
+    {
+      "source": ".scratch/check-service-v15-artifact.sh",
+      "published": "tools/check-service-v15-artifact.sh",
+      "sha256": "91779931c709b43cdd3d50bbda50ca676a64b3d5d4370b12737dff87f6c493b9"
+    },
+    {
+      "source": ".scratch/Dockerfile-service-v15",
+      "published": "tools/Dockerfile-service-v15",
+      "sha256": "d33fa2ab236784184701050311c76b3afc5e625049359c55a236f35a2392998d"
+    },
+    {
+      "source": ".scratch/cloud-promo-ad-output.json",
+      "published": "fixtures/cloud-promo-ad-output.json",
+      "sha256": "c4d59343479ba6725476898cd1b9a30885166a9e128a612bf5ee296e6773651d"
+    },
+    {
+      "source": ".scratch/cloud-promo-sunscreen-output.json",
+      "published": "fixtures/cloud-promo-sunscreen-output.json",
+      "sha256": "aa02bc32353bfd39559b08daba147e3e7b54c5d00a3f268b95c6acdd3e5634d9"
+    },
+    {
+      "source": ".scratch/cloud-promo-unrelated-output.json",
+      "published": "fixtures/cloud-promo-unrelated-output.json",
+      "sha256": "5f0766732668c0ccc67e1cc5869c2c9218d33d5dda1c33cc4ccac8c4c0583032"
+    },
+    {
+      "source": ".scratch/cloud-paragraph-v14-water-output.json",
+      "published": "fixtures/cloud-paragraph-v14-water-output.json",
+      "sha256": "d5e8bb485af59b91a7b0887522fe1bd2a99b0dbc86c891b5d7bc8177685ffe68"
+    }
+  ],
+  "derived_files": [
+    {
+      "published": "current/v15-score-cases.json",
+      "sha256": "37ac252ed1eb4598a2dbc96206d301f95cab283c760f66231dc6d415e60c6e91",
+      "source": "v15-live/*.log"
+    }
+  ]
+}

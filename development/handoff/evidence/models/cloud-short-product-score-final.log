@@ -1,0 +1,8 @@
+{"event":"cloud.saved_score_started","source":"https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D","productSource":"manual_local_input","promptBytes":4481,"rulesBytes":2266,"originalRulesBytes":10000,"evidenceCount":3,"candidateInputUnchanged":true,"timeoutMs":300000}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[DOMException [TimeoutError]: The operation was aborted due to timeout]
+
+Node.js v26.7.0

@@ -1,0 +1,14 @@
+✔ Cloud score fields only accept the candidate's saved evidence IDs (3.37225ms)
+✔ correction schemas retain the evidence restriction and empty evidence permits no IDs (1.21475ms)
+✔ Cloud rejects the extra requirement returned by the real 4B model (4.59025ms)
+✔ Cloud follower merging includes exact bounds, rejects excess and preserves unknown counts (5.760333ms)
+✔ Cloud follower merging uses rounded bounds and never upgrades a content rejection (1.236375ms)
+✔ Cloud follower merging leaves legacy conditions and foreign profiles unchanged (1.526875ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 295.740291

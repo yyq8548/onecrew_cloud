@@ -1,0 +1,24 @@
+# 仅为待填写模板。创建真实开发应用后替换 client_id 和两处 HTTPS 地址。
+# 当前代码使用 Shopify managed installation 与 token exchange。
+name = "OneCrew Cloud"
+client_id = "REPLACE_WITH_SHOPIFY_CLIENT_ID"
+application_url = "https://replace-before-use.invalid/"
+embedded = true
+
+[access_scopes]
+scopes = "read_products"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = ["https://replace-before-use.invalid/"]
+
+[webhooks]
+api_version = "2026-10"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+uri = "/webhooks/shopify"
+
+[build]
+automatically_update_urls_on_dev = false

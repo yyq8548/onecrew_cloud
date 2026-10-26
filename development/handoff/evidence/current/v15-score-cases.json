@@ -1,0 +1,155 @@
+{
+  "note": "真实公开内容和实际模型输出的交接摘录，不是人工批量标注或新机验证。",
+  "cases": [
+    {
+      "case": "water",
+      "source_url": "https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D",
+      "model_revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "elapsed_ms": 17889,
+      "usage": [
+        {
+          "input": 2879,
+          "cached_input": 0,
+          "output": 22,
+          "reasoning_output": 0
+        }
+      ],
+      "actual_model_output": {
+        "relation": "related_product_use_case",
+        "paragraph_id": "p2",
+        "creator": "confirmed"
+      },
+      "selected_paragraph": {
+        "paragraph_id": "p2",
+        "evidence_id": "e2",
+        "quote": "Owala FreeSip Bottle: https://amzn.to/3BI1U4q (Amazon)",
+        "keyword_matches": 1
+      },
+      "final_selection": "supported",
+      "final_quality": "supported",
+      "final_level": "medium",
+      "rationale": "商品内容匹配等级：中；原文：“Owala FreeSip Bottle: https://amzn.to/3BI1U4q (Amazon)”",
+      "model_calls": 1,
+      "no_review_committed": true
+    },
+    {
+      "case": "bottlepro",
+      "source_url": "https://www.youtube.com/watch?v=s2JUrSHfdrE&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D",
+      "model_revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "elapsed_ms": 18758,
+      "usage": [
+        {
+          "input": 3301,
+          "cached_input": 0,
+          "output": 24,
+          "reasoning_output": 0
+        }
+      ],
+      "actual_model_output": {
+        "relation": "related_product_use_case",
+        "paragraph_id": "p7",
+        "creator": "confirmed"
+      },
+      "selected_paragraph": {
+        "paragraph_id": "p7",
+        "evidence_id": "e2",
+        "quote": "I tested and ranked 22 bottles, including Owala, YETI, Stanley, Hydro Flask, and over a dozen other brands.  The full list of criteria tested includes whether it's leak-free, best insulation, best durability, easiest to clean, best handle, least cumbersome, most affordable, most car-friendly, and mo",
+        "keyword_matches": 0
+      },
+      "final_selection": "supported",
+      "final_quality": "supported",
+      "final_level": "medium",
+      "rationale": "商品内容匹配等级：中；原文：“I tested and ranked 22 bottles, including Owala, YETI, Stanley, Hydro Flask, and over a dozen other brands.  The full list of criteria tested includes whether it's leak-free, best insulation, best durability, easiest to clean, best handle, least cumbersome, most affordable, most car-friendly, and mo”",
+      "model_calls": 1,
+      "no_review_committed": true
+    },
+    {
+      "case": "ad",
+      "source_url": "https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D",
+      "model_revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "elapsed_ms": 13818,
+      "usage": [
+        {
+          "input": 2858,
+          "cached_input": 0,
+          "output": 18,
+          "reasoning_output": 0
+        }
+      ],
+      "actual_model_output": {
+        "relation": "related_content_category",
+        "paragraph_id": "p6",
+        "creator": "confirmed"
+      },
+      "selected_paragraph": {
+        "paragraph_id": "p6",
+        "evidence_id": "e2",
+        "quote": "Thank you to Laundry Sauce for partnering with me! If you want to elevate your laundry experience, scan the QR code on screen or head to https://laundrysauce.yt.link/uvdLICr and use code PRUDENTREVIEWS15 to save 15% off Laundry Sauce products and enjoy that luxurious laundry day feeling!",
+        "keyword_matches": 0
+      },
+      "final_selection": "insufficient",
+      "final_quality": "insufficient",
+      "final_level": null,
+      "rationale": "所选依据包含合作或优惠信息，商品内容相关性待核验；原文：“Thank you to Laundry Sauce for partnering with me! If you want to elevate your laundry experience, scan the QR code on screen or head to https://laundrysauce.yt.link/uvdLICr and use code PRUDENTREVIEWS15 to save 15% off Laundry Sauce products and enjoy that luxurious laundry day feeling!”",
+      "model_calls": 1,
+      "no_review_committed": true
+    },
+    {
+      "case": "sunscreen",
+      "source_url": "https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D",
+      "model_revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "elapsed_ms": 14331,
+      "usage": [
+        {
+          "input": 2692,
+          "cached_input": 0,
+          "output": 18,
+          "reasoning_output": 0
+        }
+      ],
+      "actual_model_output": {
+        "relation": "weak_content_connection",
+        "paragraph_id": "p4",
+        "creator": "confirmed"
+      },
+      "selected_paragraph": {
+        "paragraph_id": "p4",
+        "evidence_id": "e3",
+        "quote": "how to get GLASS skin *for beginners* | affordable skincare routine + best korean skincare products",
+        "keyword_matches": 1
+      },
+      "final_selection": "supported",
+      "final_quality": "supported",
+      "final_level": "low",
+      "rationale": "商品内容匹配等级：低；原文：“how to get GLASS skin *for beginners* | affordable skincare routine + best korean skincare products”",
+      "model_calls": 1,
+      "no_review_committed": true
+    },
+    {
+      "case": "unrelated",
+      "source_url": "https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D",
+      "model_revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+      "elapsed_ms": 12657,
+      "usage": [
+        {
+          "input": 2694,
+          "cached_input": 0,
+          "output": 18,
+          "reasoning_output": 0
+        }
+      ],
+      "actual_model_output": {
+        "relation": "insufficient_content_evidence",
+        "paragraph_id": "",
+        "creator": "confirmed"
+      },
+      "selected_paragraph": null,
+      "final_selection": "insufficient",
+      "final_quality": "insufficient",
+      "final_level": null,
+      "rationale": "现有内容不足以判断与商品的关联。",
+      "model_calls": 1,
+      "no_review_committed": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6043,"rulesBytes":2821,"originalRulesBytes":10017,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+file://$ONECREW_CLOUD/onecrew_lite-contracts/src/json.ts:33
+    if (!isSafeNumber(raw)) throw new SyntaxError("JSON number cannot be represented without loss");
+                                  ^
+
+SyntaxError: JSON number cannot be represented without loss
+    at parseNumber (file://$ONECREW_CLOUD/onecrew_lite-contracts/src/json.ts:33:35)
+    at parseNumeric (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:195:14)
+    at parseValue (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:113:36)
+    at parseObject (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:57:23)
+    at parseValue (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:113:54)
+    at parseObject (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:57:23)
+    at parseValue (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:113:54)
+    at parse (file://$ONECREW_CLOUD/node_modules/.pnpm/lossless-json@4.3.1/node_modules/lossless-json/lib/esm/parse.js:32:17)
+    at parseApplicationJson (file://$ONECREW_CLOUD/onecrew_lite-contracts/src/json.ts:28:10)
+    at ServerSemanticClient.structured (file://$ONECREW_CLOUD/onecrew_lite-app/src/discovery/server-semantic-client.ts:87:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:70:114
+
+Node.js v26.7.0

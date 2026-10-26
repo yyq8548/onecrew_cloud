@@ -1,0 +1,269 @@
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+warn: LLAMA_ARG_PORT environment variable is set, but will be overwritten by command line argument --port
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.035.790 W Setting 'enable_thinking' via --chat-template-kwargs is deprecated. Use --reasoning on / --reasoning off instead.
+0.00.036.497 I srv  llama_server: initializing ...
+0.00.036.595 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.037.043 I srv  init_listene: The UI is disabled
+0.00.037.056 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.037.362 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.039.305 I srv    load_model: loading model '/models/Qwen3-4B-Q4_K_M.gguf'
+0.00.435.419 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.28.517.318 I cmn          init: llama threadpool init, n_threads = 6
+0.31.421.739 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.31.447.770 I srv  llama_server: model loaded
+0.31.447.804 I srv  llama_server: listening on http://0.0.0.0:8080
+0.36.271.640 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.36.273.428 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+3.06.294.632 I slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   2048, progress = 0.96, t = 149.91 s / 13.66 tokens per second
+3.39.085.260 I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   4.22 t/s, tg_3s =   4.27 t/s
+3.42.102.347 I slot print_timing: id  0 | task 0 | n_gen =    113, tg =   4.23 t/s, tg_3s =   4.31 t/s
+3.45.294.958 I slot print_timing: id  0 | task 0 | n_gen =    127, tg =   4.25 t/s, tg_3s =   4.39 t/s
+3.48.457.680 I slot print_timing: id  0 | task 0 | n_gen =    141, tg =   4.27 t/s, tg_3s =   4.43 t/s
+3.51.490.021 I slot print_timing: id  0 | task 0 | n_gen =    154, tg =   4.27 t/s, tg_3s =   4.29 t/s
+3.54.666.903 I slot print_timing: id  0 | task 0 | n_gen =    168, tg =   4.28 t/s, tg_3s =   4.41 t/s
+3.57.837.975 I slot print_timing: id  0 | task 0 | n_gen =    182, tg =   4.29 t/s, tg_3s =   4.41 t/s
+4.01.070.184 I slot print_timing: id  0 | task 0 | n_gen =    195, tg =   4.27 t/s, tg_3s =   4.02 t/s
+4.02.076.103 I slot print_timing: id  0 | task 0 | prompt eval time =  159262.11 ms /  2126 tokens (   74.91 ms per token,    13.35 tokens per second)
+4.02.076.116 I slot print_timing: id  0 | task 0 |        eval time =   46423.85 ms /   199 tokens (  234.46 ms per token,     4.27 tokens per second)
+4.02.076.117 I slot print_timing: id  0 | task 0 |       total time =  205685.96 ms /  2325 tokens
+4.02.076.147 I slot print_timing: id  0 | task 0 |    graphs reused =        197
+4.02.076.147 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.02.077.024 I slot      release: id  0 | task 0 | stop processing: n_tokens = 2324, truncated = 0
+4.32.364.715 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 2324, t_last = 3305023127
+4.33.118.794 I slot launch_slot_: id  0 | task 201 | processing task, is_child = 0
+4.58.974.990 I slot print_timing: id  0 | task 201 | n_gen =    100, tg =   6.64 t/s, tg_3s =   6.71 t/s
+5.02.000.420 I slot print_timing: id  0 | task 201 | n_gen =    119, tg =   6.58 t/s, tg_3s =   6.28 t/s
+5.05.085.589 I slot print_timing: id  0 | task 201 | prompt eval time =   10944.90 ms /   163 tokens (   67.15 ms per token,    14.89 tokens per second)
+5.05.085.598 I slot print_timing: id  0 | task 201 |        eval time =   21021.17 ms /   139 tokens (  152.33 ms per token,     6.56 tokens per second)
+5.05.085.599 I slot print_timing: id  0 | task 201 |       total time =   31966.07 ms /   302 tokens
+5.05.085.604 I slot print_timing: id  0 | task 201 |    graphs reused =        333
+5.05.085.604 I slot print_timing: id  0 | task 201 |   graph reallocs =          0    /     0        (same size) / (changed size)
+5.05.087.096 I slot      release: id  0 | task 201 | stop processing: n_tokens = 304, truncated = 0
+5.34.300.165 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 304, t_last = 3368031059
+5.34.387.038 I slot launch_slot_: id  0 | task 341 | processing task, is_child = 0
+8.12.069.439 I slot print_timing: id  0 | task 341 | prompt processing, n_tokens =   2048, progress = 0.96, t = 157.68 s / 12.99 tokens per second
+8.50.320.781 I slot print_timing: id  0 | task 341 | n_gen =    100, tg =   3.75 t/s, tg_3s =   3.78 t/s
+8.53.509.347 I slot print_timing: id  0 | task 341 | n_gen =    113, tg =   3.78 t/s, tg_3s =   4.08 t/s
+8.56.590.186 I slot print_timing: id  0 | task 341 | n_gen =    125, tg =   3.79 t/s, tg_3s =   3.89 t/s
+8.59.711.090 I slot print_timing: id  0 | task 341 | n_gen =    138, tg =   3.82 t/s, tg_3s =   4.17 t/s
+9.02.928.143 I slot print_timing: id  0 | task 341 | n_gen =    151, tg =   3.84 t/s, tg_3s =   4.04 t/s
+9.06.070.548 I slot print_timing: id  0 | task 341 | n_gen =    164, tg =   3.86 t/s, tg_3s =   4.14 t/s
+9.09.249.469 I slot print_timing: id  0 | task 341 | n_gen =    177, tg =   3.88 t/s, tg_3s =   4.09 t/s
+9.12.398.999 I slot print_timing: id  0 | task 341 | n_gen =    189, tg =   3.88 t/s, tg_3s =   3.81 t/s
+9.14.373.400 I slot print_timing: id  0 | task 341 | prompt eval time =  169499.14 ms /  2142 tokens (   79.13 ms per token,    12.64 tokens per second)
+9.14.373.410 I slot print_timing: id  0 | task 341 |        eval time =   50480.81 ms /   197 tokens (  257.56 ms per token,     3.88 tokens per second)
+9.14.373.411 I slot print_timing: id  0 | task 341 |       total time =  219979.96 ms /  2339 tokens
+9.14.373.416 I slot print_timing: id  0 | task 341 |    graphs reused =        527
+9.14.373.433 I slot print_timing: id  0 | task 341 |   graph reallocs =          0    /     0        (same size) / (changed size)
+9.14.383.229 I slot      release: id  0 | task 341 | stop processing: n_tokens = 2341, truncated = 0
+9.44.680.041 I srv    operator(): operator(): cleaning up before exit...
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+warn: LLAMA_ARG_PORT environment variable is set, but will be overwritten by command line argument --port
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.022.386 W Setting 'enable_thinking' via --chat-template-kwargs is deprecated. Use --reasoning on / --reasoning off instead.
+0.00.027.172 I srv  llama_server: initializing ...
+0.00.027.263 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.029.986 I srv  init_listene: The UI is disabled
+0.00.029.993 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.030.126 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.044.047 I srv    load_model: loading model '/models/Qwen3-4B-Q4_K_M.gguf'
+0.00.512.236 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.31.546.892 I cmn          init: llama threadpool init, n_threads = 6
+0.32.553.633 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.32.581.120 I srv  llama_server: model loaded
+0.32.581.150 I srv  llama_server: listening on http://0.0.0.0:8080
+0.47.319.587 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.47.321.141 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+3.09.018.079 I slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   2048, progress = 0.95, t = 141.69 s / 14.45 tokens per second
+3.42.567.279 I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   4.38 t/s, tg_3s =   4.42 t/s
+3.45.746.985 I slot print_timing: id  0 | task 0 | n_gen =    114, tg =   4.38 t/s, tg_3s =   4.40 t/s
+3.48.901.359 I slot print_timing: id  0 | task 0 | n_gen =    128, tg =   4.39 t/s, tg_3s =   4.44 t/s
+3.52.003.547 I slot print_timing: id  0 | task 0 | n_gen =    141, tg =   4.37 t/s, tg_3s =   4.19 t/s
+3.55.022.650 I slot print_timing: id  0 | task 0 | n_gen =    154, tg =   4.36 t/s, tg_3s =   4.31 t/s
+3.58.214.393 I slot print_timing: id  0 | task 0 | n_gen =    168, tg =   4.36 t/s, tg_3s =   4.39 t/s
+4.01.370.851 I slot print_timing: id  0 | task 0 | n_gen =    181, tg =   4.35 t/s, tg_3s =   4.12 t/s
+4.04.451.113 I slot print_timing: id  0 | task 0 | n_gen =    194, tg =   4.34 t/s, tg_3s =   4.22 t/s
+4.05.614.904 I slot print_timing: id  0 | task 0 | prompt eval time =  152616.88 ms /  2145 tokens (   71.15 ms per token,    14.05 tokens per second)
+4.05.614.917 I slot print_timing: id  0 | task 0 |        eval time =   45668.70 ms /   199 tokens (  230.65 ms per token,     4.34 tokens per second)
+4.05.614.917 I slot print_timing: id  0 | task 0 |       total time =  198285.58 ms /  2344 tokens
+4.05.614.950 I slot print_timing: id  0 | task 0 |    graphs reused =        197
+4.05.614.950 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.05.615.648 I slot      release: id  0 | task 0 | stop processing: n_tokens = 2343, truncated = 0
+4.05.654.172 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.940 (> 0.100 thold), f_keep = 0.898
+4.05.655.111 I slot launch_slot_: id  0 | task 201 | processing task, is_child = 0
+4.43.615.360 I slot print_timing: id  0 | task 201 | n_gen =    100, tg =   4.21 t/s, tg_3s =   4.25 t/s
+4.46.662.058 I slot print_timing: id  0 | task 201 | n_gen =    113, tg =   4.22 t/s, tg_3s =   4.27 t/s
+4.49.731.204 I slot print_timing: id  0 | task 201 | n_gen =    126, tg =   4.22 t/s, tg_3s =   4.24 t/s
+4.52.765.418 I slot print_timing: id  0 | task 201 | n_gen =    138, tg =   4.20 t/s, tg_3s =   3.95 t/s
+4.55.989.700 I slot print_timing: id  0 | task 201 | n_gen =    151, tg =   4.18 t/s, tg_3s =   4.03 t/s
+4.59.059.312 I slot print_timing: id  0 | task 201 | n_gen =    164, tg =   4.19 t/s, tg_3s =   4.24 t/s
+4.59.765.771 I slot print_timing: id  0 | task 201 | prompt eval time =   14457.52 ms /   135 tokens (  107.09 ms per token,     9.34 tokens per second)
+4.59.765.781 I slot print_timing: id  0 | task 201 |        eval time =   39652.56 ms /   167 tokens (  238.87 ms per token,     4.19 tokens per second)
+4.59.765.795 I slot print_timing: id  0 | task 201 |       total time =   54110.08 ms /   302 tokens
+4.59.765.801 I slot print_timing: id  0 | task 201 |    graphs reused =        361
+4.59.765.802 I slot print_timing: id  0 | task 201 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.59.766.396 I slot      release: id  0 | task 201 | stop processing: n_tokens = 2404, truncated = 0
+5.21.358.122 I srv    operator(): operator(): cleaning up before exit...
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+warn: LLAMA_ARG_PORT environment variable is set, but will be overwritten by command line argument --port
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.013.379 W Setting 'enable_thinking' via --chat-template-kwargs is deprecated. Use --reasoning on / --reasoning off instead.
+0.00.013.509 I srv  llama_server: initializing ...
+0.00.013.528 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.013.738 I srv  init_listene: The UI is disabled
+0.00.013.742 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.013.843 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.015.443 I srv    load_model: loading model '/models/Qwen3-4B-Q4_K_M.gguf'
+0.00.300.382 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.26.982.972 I cmn          init: llama threadpool init, n_threads = 6
+0.28.393.778 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.28.405.567 I srv  llama_server: model loaded
+0.28.405.580 I srv  llama_server: listening on http://0.0.0.0:8080
+0.44.986.711 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.44.989.655 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+3.13.927.515 I slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   2048, progress = 0.96, t = 148.93 s / 13.75 tokens per second
+3.56.591.039 I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   3.08 t/s, tg_3s =   3.11 t/s
+3.59.689.523 I slot print_timing: id  0 | task 0 | n_gen =    114, tg =   3.21 t/s, tg_3s =   4.52 t/s
+4.02.859.194 I slot print_timing: id  0 | task 0 | n_gen =    128, tg =   3.31 t/s, tg_3s =   4.42 t/s
+4.05.944.501 I slot print_timing: id  0 | task 0 | n_gen =    142, tg =   3.40 t/s, tg_3s =   4.54 t/s
+4.09.094.383 I slot print_timing: id  0 | task 0 | n_gen =    156, tg =   3.47 t/s, tg_3s =   4.44 t/s
+4.12.260.020 I slot print_timing: id  0 | task 0 | n_gen =    170, tg =   3.53 t/s, tg_3s =   4.42 t/s
+4.15.363.923 I slot print_timing: id  0 | task 0 | n_gen =    183, tg =   3.57 t/s, tg_3s =   4.19 t/s
+4.18.367.443 I slot print_timing: id  0 | task 0 | n_gen =    195, tg =   3.60 t/s, tg_3s =   4.00 t/s
+4.21.392.104 I slot print_timing: id  0 | task 0 | n_gen =    208, tg =   3.64 t/s, tg_3s =   4.30 t/s
+4.24.457.774 I slot print_timing: id  0 | task 0 | n_gen =    221, tg =   3.67 t/s, tg_3s =   4.24 t/s
+4.27.458.715 I slot print_timing: id  0 | task 0 | n_gen =    234, tg =   3.70 t/s, tg_3s =   4.33 t/s
+4.30.657.517 I slot print_timing: id  0 | task 0 | n_gen =    248, tg =   3.73 t/s, tg_3s =   4.38 t/s
+4.33.670.945 I slot print_timing: id  0 | task 0 | n_gen =    261, tg =   3.76 t/s, tg_3s =   4.31 t/s
+4.33.896.073 I slot print_timing: id  0 | task 0 | prompt eval time =  159451.28 ms /  2135 tokens (   74.68 ms per token,    13.39 tokens per second)
+4.33.896.084 I slot print_timing: id  0 | task 0 |        eval time =   69450.13 ms /   262 tokens (  266.09 ms per token,     3.76 tokens per second)
+4.33.896.084 I slot print_timing: id  0 | task 0 |       total time =  228901.41 ms /  2397 tokens
+4.33.896.132 I slot print_timing: id  0 | task 0 |    graphs reused =        260
+4.33.896.138 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.33.897.001 I slot      release: id  0 | task 0 | stop processing: n_tokens = 2396, truncated = 0
+5.20.511.306 I srv    operator(): operator(): cleaning up before exit...
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+warn: LLAMA_ARG_PORT environment variable is set, but will be overwritten by command line argument --port
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.018.588 W Setting 'enable_thinking' via --chat-template-kwargs is deprecated. Use --reasoning on / --reasoning off instead.
+0.00.019.289 I srv  llama_server: initializing ...
+0.00.019.426 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.020.034 I srv  init_listene: The UI is disabled
+0.00.020.038 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.020.424 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.023.104 I srv    load_model: loading model '/models/Qwen3-4B-Q4_K_M.gguf'
+0.00.295.591 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.26.062.707 I cmn          init: llama threadpool init, n_threads = 6
+0.27.394.576 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.27.404.396 I srv  llama_server: model loaded
+0.27.404.444 I srv  llama_server: listening on http://0.0.0.0:8080
+0.31.605.952 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.31.607.957 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+2.50.379.767 I slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   2048, progress = 0.95, t = 138.77 s / 14.76 tokens per second
+3.24.514.917 I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   4.59 t/s, tg_3s =   4.64 t/s
+3.27.559.441 I slot print_timing: id  0 | task 0 | n_gen =    114, tg =   4.59 t/s, tg_3s =   4.60 t/s
+3.30.704.817 I slot print_timing: id  0 | task 0 | n_gen =    128, tg =   4.58 t/s, tg_3s =   4.45 t/s
+3.33.791.494 I slot print_timing: id  0 | task 0 | n_gen =    142, tg =   4.57 t/s, tg_3s =   4.54 t/s
+3.36.817.802 I slot print_timing: id  0 | task 0 | n_gen =    155, tg =   4.55 t/s, tg_3s =   4.30 t/s
+3.39.985.925 I slot print_timing: id  0 | task 0 | n_gen =    168, tg =   4.51 t/s, tg_3s =   4.10 t/s
+3.43.176.228 I slot print_timing: id  0 | task 0 | n_gen =    180, tg =   4.45 t/s, tg_3s =   3.76 t/s
+3.46.276.861 I slot print_timing: id  0 | task 0 | n_gen =    192, tg =   4.41 t/s, tg_3s =   3.87 t/s
+3.49.365.762 I slot print_timing: id  0 | task 0 | n_gen =    204, tg =   4.37 t/s, tg_3s =   3.88 t/s
+3.52.449.637 I slot print_timing: id  0 | task 0 | n_gen =    217, tg =   4.36 t/s, tg_3s =   4.21 t/s
+3.55.523.079 I slot print_timing: id  0 | task 0 | n_gen =    230, tg =   4.36 t/s, tg_3s =   4.23 t/s
+3.58.736.383 I slot print_timing: id  0 | task 0 | n_gen =    244, tg =   4.36 t/s, tg_3s =   4.36 t/s
+4.01.915.316 I slot print_timing: id  0 | task 0 | n_gen =    257, tg =   4.34 t/s, tg_3s =   4.09 t/s
+4.04.982.024 I slot print_timing: id  0 | task 0 | n_gen =    270, tg =   4.34 t/s, tg_3s =   4.24 t/s
+4.07.993.843 I slot print_timing: id  0 | task 0 | n_gen =    283, tg =   4.34 t/s, tg_3s =   4.32 t/s
+4.11.023.527 I slot print_timing: id  0 | task 0 | prompt eval time =  151352.19 ms /  2167 tokens (   69.84 ms per token,    14.32 tokens per second)
+4.11.023.536 I slot print_timing: id  0 | task 0 |        eval time =   68060.47 ms /   295 tokens (  231.50 ms per token,     4.32 tokens per second)
+4.11.023.537 I slot print_timing: id  0 | task 0 |       total time =  219412.66 ms /  2462 tokens
+4.11.023.573 I slot print_timing: id  0 | task 0 |    graphs reused =        293
+4.11.023.573 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.11.024.229 I slot      release: id  0 | task 0 | stop processing: n_tokens = 2461, truncated = 0
+5.41.263.921 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 2461, t_last = 891951360
+5.41.773.208 I slot launch_slot_: id  0 | task 297 | processing task, is_child = 0
+8.24.307.556 I slot print_timing: id  0 | task 297 | n_gen =    100, tg =   4.50 t/s, tg_3s =   4.55 t/s
+8.27.381.127 I slot print_timing: id  0 | task 297 | n_gen =    114, tg =   4.51 t/s, tg_3s =   4.55 t/s
+8.30.475.172 I slot print_timing: id  0 | task 297 | n_gen =    128, tg =   4.51 t/s, tg_3s =   4.52 t/s
+8.33.687.413 I slot print_timing: id  0 | task 297 | n_gen =    142, tg =   4.50 t/s, tg_3s =   4.36 t/s
+8.36.710.817 I slot print_timing: id  0 | task 297 | n_gen =    155, tg =   4.48 t/s, tg_3s =   4.30 t/s
+8.39.728.554 I slot print_timing: id  0 | task 297 | n_gen =    168, tg =   4.47 t/s, tg_3s =   4.31 t/s
+8.42.751.556 I slot print_timing: id  0 | task 297 | n_gen =    181, tg =   4.45 t/s, tg_3s =   4.30 t/s
+8.45.767.904 I slot print_timing: id  0 | task 297 | n_gen =    194, tg =   4.44 t/s, tg_3s =   4.31 t/s
+8.48.797.153 I slot print_timing: id  0 | task 297 | n_gen =    207, tg =   4.43 t/s, tg_3s =   4.29 t/s
+8.52.020.339 I slot print_timing: id  0 | task 297 | n_gen =    221, tg =   4.43 t/s, tg_3s =   4.35 t/s
+8.55.214.745 I slot print_timing: id  0 | task 297 | n_gen =    235, tg =   4.42 t/s, tg_3s =   4.38 t/s
+8.58.420.918 I slot print_timing: id  0 | task 297 | n_gen =    249, tg =   4.42 t/s, tg_3s =   4.37 t/s
+9.01.482.858 I slot print_timing: id  0 | task 297 | n_gen =    262, tg =   4.41 t/s, tg_3s =   4.25 t/s
+9.02.473.855 I slot print_timing: id  0 | task 297 | prompt eval time =  140549.35 ms /  1967 tokens (   71.45 ms per token,    14.00 tokens per second)
+9.02.473.871 I slot print_timing: id  0 | task 297 |        eval time =   60144.48 ms /   266 tokens (  226.96 ms per token,     4.41 tokens per second)
+9.02.473.872 I slot print_timing: id  0 | task 297 |       total time =  200693.83 ms /  2233 tokens
+9.02.473.880 I slot print_timing: id  0 | task 297 |    graphs reused =        556
+9.02.473.881 I slot print_timing: id  0 | task 297 |   graph reallocs =          0    /     0        (same size) / (changed size)
+9.02.474.535 I slot      release: id  0 | task 297 | stop processing: n_tokens = 2445, truncated = 0
+9.41.781.652 I srv    operator(): operator(): cleaning up before exit...
+warn: LLAMA_ARG_HOST environment variable is set, but will be overwritten by command line argument --host
+warn: LLAMA_ARG_PORT environment variable is set, but will be overwritten by command line argument --port
+warning: no usable GPU found, --gpu-layers option will be ignored
+warning: one possible reason is that llama.cpp was compiled without GPU support
+warning: consult docs/build.md for compilation instructions
+0.00.037.208 W Setting 'enable_thinking' via --chat-template-kwargs is deprecated. Use --reasoning on / --reasoning off instead.
+0.00.037.487 I srv  llama_server: initializing ...
+0.00.037.546 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.037.765 I srv  init_listene: The UI is disabled
+0.00.037.768 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.037.975 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.040.328 I srv    load_model: loading model '/models/Qwen3-4B-Q4_K_M.gguf'
+0.00.311.514 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.29.005.806 I cmn          init: llama threadpool init, n_threads = 6
+0.31.407.177 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.31.414.497 I srv  llama_server: model loaded
+0.31.414.514 I srv  llama_server: listening on http://0.0.0.0:8080
+1.10.887.778 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+1.10.889.868 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+3.36.930.690 I slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   2048, progress = 0.92, t = 146.04 s / 14.02 tokens per second
+4.19.136.217 I slot print_timing: id  0 | task 0 | n_gen =    100, tg =   3.93 t/s, tg_3s =   3.97 t/s
+4.22.180.592 I slot print_timing: id  0 | task 0 | n_gen =    111, tg =   3.89 t/s, tg_3s =   3.61 t/s
+4.25.367.146 I slot print_timing: id  0 | task 0 | n_gen =    123, tg =   3.88 t/s, tg_3s =   3.77 t/s
+4.28.580.420 I slot print_timing: id  0 | task 0 | n_gen =    135, tg =   3.87 t/s, tg_3s =   3.73 t/s
+4.31.724.063 I slot print_timing: id  0 | task 0 | n_gen =    146, tg =   3.84 t/s, tg_3s =   3.50 t/s
+4.34.837.148 I slot print_timing: id  0 | task 0 | n_gen =    157, tg =   3.81 t/s, tg_3s =   3.53 t/s
+4.38.051.883 I slot print_timing: id  0 | task 0 | n_gen =    168, tg =   3.79 t/s, tg_3s =   3.42 t/s
+4.41.220.713 I slot print_timing: id  0 | task 0 | n_gen =    180, tg =   3.79 t/s, tg_3s =   3.79 t/s
+4.44.413.094 I slot print_timing: id  0 | task 0 | n_gen =    192, tg =   3.78 t/s, tg_3s =   3.76 t/s
+4.47.591.559 I slot print_timing: id  0 | task 0 | n_gen =    204, tg =   3.78 t/s, tg_3s =   3.78 t/s
+4.50.788.037 I slot print_timing: id  0 | task 0 | n_gen =    216, tg =   3.78 t/s, tg_3s =   3.75 t/s
+4.53.931.744 I slot print_timing: id  0 | task 0 | n_gen =    227, tg =   3.77 t/s, tg_3s =   3.50 t/s
+4.57.188.938 I slot print_timing: id  0 | task 0 | n_gen =    239, tg =   3.76 t/s, tg_3s =   3.69 t/s
+4.58.516.001 I slot print_timing: id  0 | task 0 | prompt eval time =  163034.87 ms /  2216 tokens (   73.57 ms per token,    13.59 tokens per second)
+4.58.516.012 I slot print_timing: id  0 | task 0 |        eval time =   64583.67 ms /   244 tokens (  265.78 ms per token,     3.76 tokens per second)
+4.58.516.013 I slot print_timing: id  0 | task 0 |       total time =  227618.54 ms /  2460 tokens
+4.58.516.097 I slot print_timing: id  0 | task 0 |    graphs reused =        242
+4.58.516.103 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+4.58.518.266 I slot      release: id  0 | task 0 | stop processing: n_tokens = 2459, truncated = 0
+5.45.529.205 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.186 (> 0.100 thold), f_keep = 0.169
+5.46.324.296 I slot launch_slot_: id  0 | task 246 | processing task, is_child = 0
+9.16.579.031 I slot print_timing: id  0 | task 246 | n_gen =    100, tg =   2.01 t/s, tg_3s =   2.03 t/s
+9.19.787.740 I slot print_timing: id  0 | task 246 | n_gen =    113, tg =   2.13 t/s, tg_3s =   4.05 t/s
+9.23.021.748 I slot print_timing: id  0 | task 246 | n_gen =    125, tg =   2.22 t/s, tg_3s =   3.71 t/s
+9.26.245.637 I slot print_timing: id  0 | task 246 | n_gen =    138, tg =   2.32 t/s, tg_3s =   4.07 t/s
+9.29.437.852 I slot print_timing: id  0 | task 246 | n_gen =    151, tg =   2.41 t/s, tg_3s =   4.07 t/s
+9.32.642.983 I slot print_timing: id  0 | task 246 | n_gen =    164, tg =   2.49 t/s, tg_3s =   4.06 t/s
+9.35.671.695 I slot print_timing: id  0 | task 246 | n_gen =    176, tg =   2.56 t/s, tg_3s =   3.96 t/s
+9.38.820.944 I slot print_timing: id  0 | task 246 | n_gen =    188, tg =   2.61 t/s, tg_3s =   3.81 t/s
+9.39.644.763 I slot print_timing: id  0 | task 246 | prompt eval time =  160946.92 ms /  1812 tokens (   88.82 ms per token,    11.26 tokens per second)
+9.39.644.773 I slot print_timing: id  0 | task 246 |        eval time =   72365.41 ms /   191 tokens (  380.87 ms per token,     2.63 tokens per second)
+9.39.644.774 I slot print_timing: id  0 | task 246 |       total time =  233312.33 ms /  2003 tokens
+9.39.644.780 I slot print_timing: id  0 | task 246 |    graphs reused =        430
+9.39.644.781 I slot print_timing: id  0 | task 246 |   graph reallocs =          0    /     0        (same size) / (changed size)
+9.39.647.172 I slot      release: id  0 | task 246 | stop processing: n_tokens = 2417, truncated = 0

@@ -1,0 +1,45 @@
+{"sample":"ad","elapsedMs":16926,"outputTokens":55,"relation":"sponsor_or_discount_mention_only","level":null,"selection":"insufficient","humanBatchAcceptance":false}
+{"sample":"water","elapsedMs":16384,"outputTokens":78,"relation":"related_product_use_case","level":"medium","selection":"supported","humanBatchAcceptance":false}
+{"sample":"bottlepro","elapsedMs":17415,"outputTokens":70,"relation":"same_product_type_content","level":"excellent","selection":"supported","humanBatchAcceptance":false}
+{"sample":"sunscreen","elapsedMs":16144,"outputTokens":81,"relation":"same_product_type_content","level":"excellent","selection":"supported","humanBatchAcceptance":false}
+{"sample":"unrelated","elapsedMs":16532,"outputTokens":82,"relation":"insufficient_content_evidence","level":null,"selection":"insufficient","humanBatchAcceptance":false}
+{"sample":"followers","elapsedMs":18827,"outputTokens":97,"relation":"weak_content_connection","level":"low","selection":"contradicted","humanBatchAcceptance":false}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 仅改变粉丝筛选要求时，内容分类和理由应保持一致
++ actual - expected
+
+  {
+    creator: 'confirmed',
+    evidence_ids: [
+      'e2',
+      'e3'
+    ],
++   rationale: "内容中明确提到了'best korean skincare products'，并且在描述中提及了多个护肤产品，包括SPF产品，这表明内容与商品「Daily sunscreen SPF 50」有直接的关联。",
++   relation: 'same_product_type_content'
+-   rationale: '内容中明确提到了‘spf’并列举了多个品牌链接，其中包含‘beauty of joseon’和‘round lab’等品牌，虽然未直接提及‘Daily sunscreen SPF 50’，但内容属于与防晒产品相关的护肤内容，因此与商品存在弱关联。',
+-   relation: 'weak_content_connection'
+  }
+
+    at file://$ONECREW_CLOUD/.scratch/check-classification-results.mjs:38:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    evidence_ids: [ 'e2', 'e3' ],
+    rationale: "内容中明确提到了'best korean skincare products'，并且在描述中提及了多个护肤产品，包括SPF产品，这表明内容与商品「Daily sunscreen SPF 50」有直接的关联。",
+    creator: 'confirmed',
+    relation: 'same_product_type_content'
+  },
+  expected: {
+    evidence_ids: [ 'e2', 'e3' ],
+    rationale: '内容中明确提到了‘spf’并列举了多个品牌链接，其中包含‘beauty of joseon’和‘round lab’等品牌，虽然未直接提及‘Daily sunscreen SPF 50’，但内容属于与防晒产品相关的护肤内容，因此与商品存在弱关联。',
+    creator: 'confirmed',
+    relation: 'weak_content_connection'
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

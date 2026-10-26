@@ -1,0 +1,24 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6043,"rulesBytes":2148,"originalRulesBytes":9992,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":16788,"usage":[{"input":2414,"cached_input":0,"output":57,"reasoning_output":0}],"output":{"evidence_ids":["e2"],"rationale":"内容中明确提到Laundry Sauce作为合作伙伴，并提供了优惠码和链接，表明作者与Laundry Sauce有直接的商业合作关系。","creator":"confirmed","relation":"direct"}}
+{"event":"cloud.saved_score_verified","elapsedMs":16801,"usage":[{"input":2414,"cached_input":0,"output":57,"reasoning_output":0}],"selection":"supported","quality":"supported","level":"excellent","requirements":["supported"],"corrections":0,"originalMaterialUnchanged":true,"noReviewCommitted":true,"modelCalled":true,"shopifyNetworkVerified":false,"fullCampaignVerified":false}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 分类与本次真实材料的预期关系不符
++ actual - expected
+
++ 'direct'
+- 'ad_only'
+
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:87:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'direct',
+  expected: 'ad_only',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

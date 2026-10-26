@@ -1,0 +1,28 @@
+{
+  "selection": {
+    "evidence_ids": ["e2", "e3"],
+    "outcome": "supported",
+    "rationale": "视频描述中提到的护肤内容与商品的日常防晒用途相关，且视频标题直接提及护肤产品，符合商品相关性要求。"
+  },
+  "quality": {
+    "evidence_ids": ["e2", "e3"],
+    "outcome": "supported",
+    "rationale": "视频描述中明确提及护肤产品，且视频标题直接与护肤相关，符合商品相关性要求。",
+    "score": 95
+  },
+  "language_only_pending": false,
+  "requirements": [
+    {
+      "evidence_ids": ["e2", "e3"],
+      "outcome": "supported",
+      "rationale": "视频描述中提到的护肤内容与商品的日常防晒用途相关，且视频标题直接提及护肤产品，符合商品相关性要求。",
+      "index": 0
+    },
+    {
+      "evidence_ids": ["e2", "e3"],
+      "outcome": "supported",
+      "rationale": "视频描述中明确提及护肤产品，且视频标题直接与护肤相关，符合商品相关性要求。",
+      "index": 1
+    }
+  ]
+}

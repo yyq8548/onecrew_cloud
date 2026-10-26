@@ -1,0 +1,50 @@
+diff --git a/extension/manifest.json b/extension/manifest.json
+--- a/extension/manifest.json
++++ b/extension/manifest.json
+@@ -1,7 +1,7 @@
+ {
+   "manifest_version": 3,
+   "name": "OpenCLI",
+-  "version": "1.0.24",
++  "version": "1.0.24.1",
+   "description": "Browser automation bridge for the OpenCLI CLI tool. Executes commands in Chrome tab leases via a local daemon.",
+   "permissions": [
+     "debugger",
+diff --git a/extension/src/background.ts b/extension/src/background.ts
+--- a/extension/src/background.ts
++++ b/extension/src/background.ts
+@@ -2037,6 +2037,24 @@ function isOneCrewCloudCleanup(cmd: Command, leaseKey: string): boolean {
+   return domains.some(domain => url.hostname === domain || url.hostname.endsWith(`.${domain}`));
+ }
+ 
++// OneCrew Cloud：补齐限定原点范围内的域 Cookie 删除，不接收 Cookie 值。
++async function clearOneCrewCloudOriginCookies(origin: string): Promise<void> {
++  const host = new URL(origin).hostname;
++  for (const cookie of await chrome.cookies.getAll({ domain: host })) {
++    const domain = cookie.domain.replace(/^\./, '');
++    if (domain !== host && !domain.endsWith(`.${host}`)) {
++      throw new Error('ONECREW_SESSION_COOKIE_SCOPE_INVALID');
++    }
++    const url = new URL(`${cookie.secure ? 'https' : 'http'}://${domain}`);
++    url.pathname = cookie.path;
++    const removed = await chrome.cookies.remove({
++      url: url.href, name: cookie.name, storeId: cookie.storeId,
++      ...(cookie.partitionKey ? { partitionKey: cookie.partitionKey } : {}),
++    });
++    if (!removed) throw new Error('ONECREW_SESSION_COOKIE_REMOVE_FAILED');
++  }
++}
++
+ async function handleCdp(cmd: Command, leaseKey: string): Promise<Result> {
+   if (!cmd.cdpMethod) return { id: cmd.id, ok: false, error: 'Missing cdpMethod' };
+   if (!CDP_ALLOWLIST.has(cmd.cdpMethod) && !isOneCrewCloudCleanup(cmd, leaseKey)) {
+@@ -2064,6 +2082,9 @@ async function handleCdp(cmd: Command, leaseKey: string): Promise<Result> {
+         stripOpenCliFrameRoutingParams(params, false),
+         commandCdpTimeoutMs(cmd),
+       );
++    if (isOneCrewCloudCleanup(cmd, leaseKey)) {
++      await clearOneCrewCloudOriginCookies(cmd.cdpParams!.origin as string);
++    }
+     return pageScopedResult(cmd.id, tabId, data);
+   } catch (err) {
+     return errorResult(cmd.id, err);

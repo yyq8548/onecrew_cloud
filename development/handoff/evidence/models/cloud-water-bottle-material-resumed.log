@@ -1,0 +1,19 @@
+{"event":"cloud.real_score_material_reading","campaignId":"score-samples-fb17e7bd-d9da-4e09-af41-2bbc5ba9014a","mode":"resume"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(material.video_description?.length)
+
+    at file://$ONECREW_CLOUD/.scratch/collect-score-material.mjs:69:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

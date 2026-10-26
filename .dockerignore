@@ -1,0 +1,16 @@
+.git
+**/node_modules
+**/dist
+.scratch
+**/.scratch
+**/*.tsbuildinfo
+.artifacts
+mac_installer
+windows_installer
+**/*.log
+.env
+.env.*
+.dev.vars
+**/*.sqlite
+!onecrew_lite-app/tests/fixtures/discovery-identity/merged.sqlite
+**/*.db

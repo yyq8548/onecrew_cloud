@@ -1,0 +1,24 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6466,"candidatePromptBytes":6043,"rulesBytes":3600,"originalRulesBytes":9992,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":14066,"usage":[{"input":2852,"cached_input":0,"output":18,"reasoning_output":0}],"output":{"relation":"related_content_category","paragraph_id":"p6","creator":"confirmed"}}
+{"event":"cloud.saved_paragraph_selected","selected":{"paragraph_id":"p6","evidence_id":"e2","quote":"Thank you to Laundry Sauce for partnering with me! If you want to elevate your laundry experience, scan the QR code on screen or head to https://laundrysauce.yt.link/uvdLICr and use code PRUDENTREVIEWS15 to save 15% off Laundry Sauce products and enjoy that luxurious laundry day feeling!","keyword_matches":0}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 分类与本次真实材料的预期关系不符
++ actual - expected
+
++ 'related_content_category'
+- 'sponsor_or_discount_mention_only'
+
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:103:32 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'related_content_category',
+  expected: 'sponsor_or_discount_mention_only',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

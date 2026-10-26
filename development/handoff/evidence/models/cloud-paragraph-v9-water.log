@@ -1,0 +1,19 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6043,"rulesBytes":7666,"originalRulesBytes":10017,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":15396,"usage":[{"input":3978,"cached_input":0,"output":24,"reasoning_output":0}],"output":{"paragraph_id":"p7","creator":"confirmed","relation":"same_product_type_content"}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 所选原文必须支持本次商品判断
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:88:38
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'how they hold up. I share what I love about Owala, the major issues I found in my testing, and whether these bottles with over 90,000 five-star reviews are actually worth buying.',
+  expected: /water bottles?|travel mugs?|insulat|leak/iu,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

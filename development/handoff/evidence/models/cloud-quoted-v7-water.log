@@ -1,0 +1,13 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6043,"rulesBytes":2734,"originalRulesBytes":10017,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":19259,"usage":[{"input":2536,"cached_input":0,"output":81,"reasoning_output":0}],"output":{"evidence_ids":["e2"],"creator":"confirmed","relation":"related_product_use_case","source_excerpt":"Thank you to Laundry Sauce for partnering with me! If you want to elevate your laundry experience, scan the QR code on screen or head to https://laundrysauce.yt.link/uvdLICr and use code PRUDENTREVIES"}}
+file://$ONECREW_CLOUD/onecrew_lite-app/src/cloud/campaign-scoring.ts:49
+    if (sourceExcerpt && (!sourceExcerpt.trim() || !citations.some(citation => citation.quote.includes(sourceExcerpt)))) throw new Error("cloud.score_source_excerpt_invalid");
+                                                                                                                               ^
+
+Error: cloud.score_source_excerpt_invalid
+    at Object.expand (file://$ONECREW_CLOUD/onecrew_lite-app/src/cloud/campaign-scoring.ts:49:128)
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:75:98
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.7.0

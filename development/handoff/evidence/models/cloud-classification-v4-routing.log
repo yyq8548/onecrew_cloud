@@ -1,0 +1,6 @@
+{"sample":"ad","elapsedMs":16926,"outputTokens":55,"relation":"sponsor_or_discount_mention_only","level":null,"selection":"insufficient","humanBatchAcceptance":false}
+{"sample":"water","elapsedMs":16384,"outputTokens":78,"relation":"related_product_use_case","level":"medium","selection":"supported","humanBatchAcceptance":false}
+{"sample":"bottlepro","elapsedMs":17415,"outputTokens":70,"relation":"same_product_type_content","level":"excellent","selection":"supported","humanBatchAcceptance":false}
+{"sample":"sunscreen","elapsedMs":16144,"outputTokens":81,"relation":"same_product_type_content","level":"excellent","selection":"supported","humanBatchAcceptance":false}
+{"sample":"unrelated","elapsedMs":16532,"outputTokens":82,"relation":"insufficient_content_evidence","level":null,"selection":"insufficient","humanBatchAcceptance":false}
+{"event":"cloud.classification_follower_prefilter_checked","version":"v4"}

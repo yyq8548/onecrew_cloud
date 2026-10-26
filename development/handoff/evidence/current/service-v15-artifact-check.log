@@ -1,0 +1,4 @@
+src/cloud/campaign-scoring.ts: OK
+src/cloud/campaign-service.ts: OK
+src/discovery/server-semantic-client.ts: OK
+{"event":"cloud.storage_initialized","directory":"/opt/onecrew/onecrew_lite-app/.scratch/service-v15-initialize"}

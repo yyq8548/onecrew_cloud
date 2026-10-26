@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'https://www.youtube.com/watch?v=CK3bVG1Jtl0&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D'
+- undefined
+
+    at file://$ONECREW_CLOUD/.scratch/collect-score-material.mjs:59:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'https://www.youtube.com/watch?v=CK3bVG1Jtl0&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D',
+  expected: undefined,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

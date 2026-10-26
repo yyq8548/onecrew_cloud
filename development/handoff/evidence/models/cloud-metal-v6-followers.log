@@ -1,0 +1,14 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"545K subscribers","nominal":"545000","lower":"544500","upper":"545500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D","productSource":"manual_local_input","promptBytes":4481,"rulesBytes":2539,"originalRulesBytes":10000,"evidenceCount":3,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+file://$ONECREW_CLOUD/onecrew_lite-app/src/discovery/server-semantic-client.ts:69
+      throw new DiscoverySemanticError("semantic_failed");
+            ^
+
+DiscoverySemanticError: semantic_failed
+    at ServerSemanticClient.structured (file://$ONECREW_CLOUD/onecrew_lite-app/src/discovery/server-semantic-client.ts:69:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:58:114 {
+  code: 'semantic_failed'
+}
+
+Node.js v26.7.0

@@ -1,0 +1,24 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"545K subscribers","nominal":"545000","lower":"544500","upper":"545500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-7c41481f-Q4_K_M:d98cdcbd:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D","productSource":"manual_local_input","promptBytes":4481,"rulesBytes":2301,"originalRulesBytes":10002,"evidenceCount":3,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":35773,"usage":[{"input":2216,"cached_input":0,"output":140,"reasoning_output":0}],"output":{"selection":{"outcome":"insufficient","rationale":"缺乏与商品相关的真实内容证据。","evidence_ids":[]},"quality":{"outcome":"insufficient","rationale":"缺乏与商品相关的真实内容证据。","evidence_ids":[],"score":null},"language_only_pending":false,"requirements":[{"outcome":"contradicted","rationale":"缺乏与商品相关的真实内容证据。","evidence_ids":[],"index":0}]}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'review_requirement_citation_invalid'
+- 'selection_quality_required_count_invalid'
+
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:70:10
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'review_requirement_citation_invalid',
+  expected: 'selection_quality_required_count_invalid',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

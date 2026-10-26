@@ -1,0 +1,13 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"545K subscribers","nominal":"545000","lower":"544500","upper":"545500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=nabwuTwtlnM&pp=ygUIc2tpbmNhcmU%3D","productSource":"manual_local_input","promptBytes":4481,"rulesBytes":2676,"originalRulesBytes":10001,"evidenceCount":3,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":16432,"usage":[{"input":2316,"cached_input":0,"output":59,"reasoning_output":0}],"output":{"evidence_ids":["e2"],"source_excerpt":"products mentioned: 🤍 oil cleansers: manyo https://go.shopmy.us/p-26816454","creator":"confirmed","relation":"same_product_type_content"}}
+file://$ONECREW_CLOUD/onecrew_lite-app/src/cloud/campaign-scoring.ts:47
+    if (value.source_excerpt !== "" && (!value.source_excerpt.trim() || !citations.some(citation => citation.quote.includes(value.source_excerpt)))) throw new Error("cloud.score_source_excerpt_invalid");
+                                                                                                                                                           ^
+
+Error: cloud.score_source_excerpt_invalid
+    at Object.expand (file://$ONECREW_CLOUD/onecrew_lite-app/src/cloud/campaign-scoring.ts:47:156)
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:75:98
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.7.0

@@ -1,0 +1,12 @@
+file://$ONECREW_CLOUD/onecrew_lite-app/src/service/instance-lock.ts:19
+    if (!nativeLock.tryLock(handle.fd)) throw Object.assign(new Error("The data directory already has a running owner"), { code: "runtime.already_owned" });
+                                                            ^
+
+Error: The data directory already has a running owner
+    at acquireInstanceLock (file://$ONECREW_CLOUD/onecrew_lite-app/src/service/instance-lock.ts:19:61)
+    at async openCloudStorage (file://$ONECREW_CLOUD/onecrew_lite-app/src/cloud/storage.ts:20:17)
+    at async file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:21:17 {
+  code: 'runtime.already_owned'
+}
+
+Node.js v26.7.0

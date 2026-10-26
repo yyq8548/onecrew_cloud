@@ -1,0 +1,3 @@
+FROM onecrew-cloud-service:linux-quoted-client
+COPY --chown=node:node onecrew_lite-app/src/cloud/campaign-scoring.ts /opt/onecrew/onecrew_lite-app/src/cloud/campaign-scoring.ts
+COPY --chown=node:node onecrew_lite-app/src/cloud/campaign-service.ts /opt/onecrew/onecrew_lite-app/src/cloud/campaign-service.ts

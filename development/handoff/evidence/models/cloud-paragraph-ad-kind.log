@@ -1,0 +1,23 @@
+{"event":"cloud.saved_native_followers","count":null,"estimate":{"display":"314K subscribers","nominal":"314000","lower":"313500","upper":"314500"}}
+{"event":"cloud.saved_score_started","runtime":"macos-metal","revision":"Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal","source":"https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdaW5zdWxhdGVkIHdhdGVyIGJvdHRsZSByZXZpZXc%3D","productSource":"manual_local_input","promptBytes":6043,"rulesBytes":7944,"originalRulesBytes":9992,"evidenceCount":4,"candidateInputUnchanged":true,"timeoutMs":300000,"savedResponseReplay":false}
+{"event":"cloud.saved_score_received","elapsedMs":25978,"usage":[{"input":4082,"cached_input":0,"output":25,"reasoning_output":0}],"output":{"paragraph_id":"p6","creator":"confirmed","content":{"kind":"有相关内容","relation":"相关品类内容"}}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 分类与本次真实材料的预期关系不符
++ actual - expected
+
++ '相关品类内容'
+- '仅合作感谢或促销'
+
+    at file://$ONECREW_CLOUD/development/cloud/model/check-score.mjs:100:32 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '相关品类内容',
+  expected: '仅合作感谢或促销',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

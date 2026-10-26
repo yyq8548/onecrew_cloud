@@ -1,0 +1,53 @@
+import assert from "node:assert/strict";
+import { randomBytes, randomUUID } from "node:crypto";
+import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+import { Session } from "@shopify/shopify-api";
+import { openCloudStorage } from "../src/cloud/storage.ts";
+import { ShopRuntimeRegistry } from "../src/cloud/shop-runtime-registry.ts";
+import { ShopDataService } from "../src/cloud/shop-data.ts";
+import { openCloudLibrary, ShopLibraryService } from "../src/cloud/shop-library.ts";
+import { ShopBrowserManager } from "../src/cloud/shop-browser-manager.ts";
+import { CloudCampaignService } from "../src/cloud/campaign-service.ts";
+import { ServerSemanticClient } from "../src/discovery/server-semantic-client.ts";
+
+test("Campaign confirmation reuses real repositories, is idempotent and cannot approve another store or excluded platform", async () => {
+  const scratch = fileURLToPath(new URL("../../.scratch/", import.meta.url));
+  await mkdir(scratch, { recursive: true });
+  const root = await mkdtemp(join(scratch, "campaign-service-")), directory = join(root, "private");
+  const storage = await openCloudStorage(directory, true);
+  const tables = await openCloudLibrary(storage.lease, "https://cloud.example.com");
+  const runtimes = new ShopRuntimeRegistry(), failures: unknown[] = [];
+  try {
+    const data = new ShopDataService(storage.lease, storage.installations, runtimes);
+    const browsers = new ShopBrowserManager({ image: "onecrew-cloud-browser:worker", dataDirectory: directory, seccompProfile: fileURLToPath(new URL("../../development/cloud/browser/seccomp-profile.json", import.meta.url)) }, storage.installations, storage.browserSnapshots);
+    const service = new CloudCampaignService({ data, installations: storage.installations, jobs: storage.campaignJobs, templates: storage.campaignTemplates, browsers, library: new ShopLibraryService(tables, data, "https://cloud.example.com"), model: new ServerSemanticClient({ endpoint: "http://127.0.0.1:8789/v1/chat/completions", model: "onecrew-qwen3-8b-q4", revision: "Qwen-7c41481f-Q4_K_M:d98cdcbd:llama-8c74db29", timeoutMs: 600000, maximumOutputTokens: 4096, maximumResponseBytes: 1048576 }), reportFailure: failure => { failures.push(failure); }, onFatal: failure => { failures.push(failure); } });
+    for (const shop of ["first.myshopify.com", "second.myshopify.com"]) storage.installations.install(new Session({ id: `offline_${shop}`, shop, state: "", isOnline: false, accessToken: randomBytes(32).toString("hex"), scope: "read_products" }), 0);
+    const owner = await data.resolve("first.myshopify.com");
+    const owned = await owner.databases.discoveryResolver().resolve(owner.runtime.context);
+    const id = randomUUID();
+    owned.repository.create({ id, brief: "寻找护肤 KOL", opencli_version: "1.8.8", criteria: { min_subscribers: 10000, max_subscribers: 100000 }, scopes: [{ platform: "youtube", profile_ref: "cloud", keywords: ["skincare"] }], target_count: 10 });
+    const templateInput = { id: randomUUID(), name: "商品测评", campaign_id: id, expected_revision: 1 };
+    await assert.rejects(service.saveTemplate("first.myshopify.com", templateInput), /approval_required/u);
+    assert.equal((await service.approve("first.myshopify.com", id, 1)).phase, "active");
+    assert.equal((await service.approve("first.myshopify.com", id, 1)).revision, 1);
+    await assert.rejects(service.approve("second.myshopify.com", id, 1), { status: 404 });
+    await assert.rejects(service.approve("first.myshopify.com", id, 2), /revision_changed/u);
+    const saved = await service.saveTemplate("first.myshopify.com", templateInput);
+    assert.deepEqual(saved.conditions, { platforms: ["youtube"], min_followers: 10000, max_followers: 100000, target_count: 10 });
+    assert.equal((await service.saveTemplate("first.myshopify.com", templateInput)).id, saved.id);
+    assert.equal((await service.template("first.myshopify.com", saved.id)).reference_plan.target_count, 10);
+    assert.deepEqual(await service.templates("second.myshopify.com"), []);
+    await assert.rejects(service.template("second.myshopify.com", saved.id), { status: 404 });
+    await assert.rejects(service.saveTemplate("second.myshopify.com", templateInput), { status: 404 });
+    await assert.rejects(service.saveTemplate("first.myshopify.com", { ...templateInput, id: randomUUID(), expected_revision: 2 }), /revision_changed/u);
+    await assert.rejects(service.createFromTemplate("second.myshopify.com", saved.id, { id: randomUUID(), product_id: "gid://shopify/Product/1" }, () => assert.fail("其他店铺模板不能触发商品读取")), { status: 404 });
+    const excluded = randomUUID();
+    owned.repository.create({ id: excluded, brief: "寻找作者", opencli_version: "1.8.8", criteria: {}, scopes: [{ platform: "facebook", profile_ref: "cloud", keywords: ["skincare"] }], target_count: 2 });
+    await assert.rejects(service.approve("first.myshopify.com", excluded, 1), /scope_invalid/u);
+    await assert.rejects(service.saveTemplate("first.myshopify.com", { ...templateInput, id: randomUUID(), campaign_id: excluded }), /scope_invalid/u);
+    assert.deepEqual(failures, []);
+  } finally { await runtimes.close(); await tables.close(); await storage.close(); await rm(root, { recursive: true }); }
+});

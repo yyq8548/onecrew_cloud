@@ -1,0 +1,30 @@
+node_modules/
+target/
+.agent-check/
+.artifacts/
+.scratch/
+.env
+.env.*
+!.env.example
+.dev.vars
+cloud.key
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.log
+/dist/
+/onecrew_lite-web/dist/
+/onecrew_lite-web/dist-cloud/
+/onecrew_lite-mcp-ui/dist/
+**/.schema-codegen-*/
+/audits/
+
+# Also ignore local dependency symlinks (not only directories).
+**/node_modules
+
+# Cloud 交接只携带源码，保留测试夹具 ZIP。
+/mac_installer/*.zip
+/windows_installer/*.zip
+!development/handoff/evidence/**/*.log
