@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cloudApi, products, platform, platformLabels, type Platform } from './api';
 import CampaignPlan from './CampaignPlan';
+import CampaignIssues from './CampaignIssues';
 import Results from './Results';
 import { campaignConditions, campaignJob, campaignJobStatus, campaignTemplate, campaignTemplateSummary, type CampaignJob, type CampaignJobStatus, type CampaignTemplateSummary } from './campaign-contracts';
 
@@ -144,6 +145,7 @@ export default function Campaign({ catalog, disabled, loadingProducts, onMorePro
     {jobs.length > 0 && <div className="space-y-4 rounded-lg border p-4 sm:p-6">
       <div className="flex flex-col gap-2"><label htmlFor="campaign-job" className="text-sm font-medium">最近任务</label><select id="campaign-job" value={selected} disabled={mutating} onChange={event => select(event.target.value)} className="h-10 min-w-0 rounded-md border border-input bg-background px-3 text-sm">{jobs.map(job => <option key={job.id} value={job.id}>{new Date(job.created_at).toLocaleString()} · {job.product?.title ?? job.brief.slice(0, 60)}</option>)}</select></div>
       {status && <><p role="status" className="text-sm">{status.job.state === 'running' ? '正在运行：' : ''}{phases[phase ?? ''] ?? phase}</p>{status.job.product && <p className="text-sm">商品：{status.job.product.title}</p>}{code && <p role="alert" className="text-sm text-destructive">{failureMessages[code] ?? '任务未完成，请检查平台连接后重试。'}（{code}）</p>}
+        {campaign && <CampaignIssues runs={campaign.platform_runs} deferredScores={status.execution?.deferred_scores ?? 0} />}
         {status.job.state === 'running' && <Button variant="outline" disabled={mutating || status.job.phase === 'cancelling'} onClick={() => void stop()}>停止寻找</Button>}
         {campaign && <div className="space-y-3 text-sm"><details><summary className="cursor-pointer">查看搜索条件</summary><div className="pt-3"><CampaignPlan plan={campaign} /></div></details>
           {!!status.counts && <p>已匹配 {status.counts.qualified} / {campaign.target_count} 位 KOL；待核验 {status.counts.pending} 位；未匹配 {status.counts.rejected} 位。</p>}

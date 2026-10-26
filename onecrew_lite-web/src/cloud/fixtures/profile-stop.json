@@ -1,0 +1,6 @@
+{
+  "job": { "state": "completed" },
+  "counts": { "qualified": 0 },
+  "platform_runs": [{ "platform": "youtube", "profile_ref": "cloud", "status": "technical_stop", "calls_used": 1, "stop_code": "opencli_profile_unavailable", "updated_at": 1792978958 }],
+  "deferred_scores": 0
+}

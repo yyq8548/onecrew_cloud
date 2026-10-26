@@ -12,6 +12,8 @@
 | 真实读取停止、排空与重新连接 | [read-cancel.log](evidence/basic-20261025/read-cancel.log)；未调用模型 |
 | 实际 Campaign 停止及模板新任务取消 | [stop-template.log](evidence/basic-20261025/stop-template.log)；模型服务实际关闭，没有第二次搜索成功声明 |
 | 最终源码 Linux 类型检查与 50 项 Cloud 检查 | [linux-check.log](evidence/basic-20261025/linux-check.log) |
+| 真实任务问题提示渲染与 Cloud 网页构建 | [task-issues-test.log](evidence/basic-20261025/task-issues-test.log)、[task-issues-build.log](evidence/basic-20261025/task-issues-build.log)；2 项检查通过，状态摘录位于前端 `src/cloud/fixtures` |
+| 隔离测试会话的四平台实际登录检测 | [four-auth.log](evidence/basic-20261025/four-auth.log)；YouTube/Instagram 未登录，TikTok/X 状态未知，不代表完整搜索通过 |
 | 模型拒绝超过上下文的完整材料 | [context-overflow.log](evidence/basic-20261025/context-overflow.log)；从实际 llama.cpp 日志逐行提取 |
 | 回读与停止检查源码快照 | [readback.mjs](evidence/basic-20261025/tools/readback.mjs)、[stop-template.mjs](evidence/basic-20261025/tools/stop-template.mjs)；原样归档以供审阅，复现需恢复到仓库 `.scratch` 原路径并准备私有材料 |
 

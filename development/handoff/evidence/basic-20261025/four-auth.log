@@ -1,0 +1,4 @@
+{"event":"cloud.actual_auth_status","platform":"youtube","status":"not_logged_in","method":"full","issue":null,"elapsedMs":12181,"modelCalled":false,"fullSearchVerified":false}
+{"event":"cloud.actual_auth_status","platform":"tiktok","status":"unknown","method":"full","issue":"auth_signal_unavailable","elapsedMs":18980,"modelCalled":false,"fullSearchVerified":false}
+{"event":"cloud.actual_auth_status","platform":"instagram","status":"not_logged_in","method":"full","issue":null,"elapsedMs":13253,"modelCalled":false,"fullSearchVerified":false}
+{"event":"cloud.actual_auth_status","platform":"twitter","status":"unknown","method":"full","issue":"auth_signal_unavailable","elapsedMs":13402,"modelCalled":false,"fullSearchVerified":false}

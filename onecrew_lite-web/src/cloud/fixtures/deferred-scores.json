@@ -1,0 +1,6 @@
+{
+  "job": { "state": "failed" },
+  "counts": { "qualified": 2 },
+  "platform_runs": [{ "platform": "youtube", "profile_ref": "cloud", "status": "technical_stop", "calls_used": 1, "stop_code": "interrupted_video_read", "updated_at": 1792979396 }],
+  "deferred_scores": 2
+}

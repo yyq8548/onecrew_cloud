@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 $ONECREW_CLOUD/onecrew_lite-web
+
+ ✓ src/cloud/CampaignIssues.test.tsx (2 tests) 7ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:01:31
+   Duration  441ms (transform 65ms, setup 0ms, collect 152ms, tests 7ms, environment 0ms, prepare 63ms)
+
