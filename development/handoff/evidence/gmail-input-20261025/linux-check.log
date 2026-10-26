@@ -1,0 +1,73 @@
+
+> onecrew_lite-app@0.9.1 typecheck /opt/onecrew/onecrew_lite-app
+> tsc --noEmit
+
+✔ cloud application recovers persisted uninstall and privacy work before HTTP starts and releases storage on shutdown (1097.123875ms)
+✔ cloud read boundary rejects unsupported platform selectors and arbitrary commands (4.4565ms)
+✔ private public-page grants are outside the browser-facing read whitelist (0.494083ms)
+✔ the worker error envelope preserves original error identity and redacted diagnostics (4.13475ms)
+✔ read result envelope keeps exact integer evidence through the inherited JSON codec (0.464ms)
+✔ snapshot publication checks store ownership and lifecycle and retains current and previous files (45.308916ms)
+✔ session cleanup can discard every previous encrypted generation and its previous pointer (46.503792ms)
+✔ snapshot storage restores real file bytes after restart and authenticates before releasing plaintext (28.830125ms)
+✔ durable Campaign jobs isolate stores, reject changed replay and recover only unfinished work (41.685125ms)
+✔ Campaign confirmation reuses real repositories, is idempotent and cannot approve another store or excluded platform (2665.26396ms)
+✔ real template storage isolates stores, retains exact rules and reopens with its original plan (45.029916ms)
+✔ legacy plans without the new follower range are preserved without inventing template conditions (0.31575ms)
+✔ customer requests export their actual received data, clear personal fields and redact only the matching store (39.518833ms)
+✔ cloud reader rejects foreign bindings, unsupported platforms and uninstalled owners before opening a browser (1558.487001ms)
+✔ real cloud HTTP listener rejects unauthenticated store APIs and unsigned webhooks (574.614917ms)
+✔ offline session storage survives reopen, encrypts tokens and separates store ownership (29.155292ms)
+✔ mail pairing persists encrypted PKCE, consumes once and invalidates replaced or disconnected flows (24.571125ms)
+✔ mail draft with an unknown mailbox fails as input error without creating send records (252.665625ms)
+✔ real 4B response retains content and integer usage (3.901625ms)
+✔ extra decimal metadata cannot invalidate otherwise valid completion (2.777791ms)
+✔ usage and completion status remain strict (2.379041ms)
+✔ strict JSON, duplicate keys and invalid Unicode remain rejected (0.915917ms)
+✔ generated business JSON retains its original numeric checks (0.429042ms)
+✔ cloud discovery exposes exactly the four approved platforms (2.460375ms)
+{"event":"cloud.cold_backup_restore_verified","sqliteRestored":true,"libraryRestored":true,"snapshotAuthenticated":true,"redactedShopAbsent":true,"replaySafeAfterReinstall":true}
+✔ privacy queue removes shop data and a cold backup restores the other store without restoring deleted data (4807.351919ms)
+✔ Cloud score fields only accept the candidate's saved evidence IDs (3.414417ms)
+✔ correction schemas retain the evidence restriction and empty evidence permits no IDs (1.288833ms)
+✔ Cloud rejects the extra requirement returned by the real 4B model (9.484542ms)
+✔ Cloud follower merging includes exact bounds, rejects excess and preserves unknown counts (3.518375ms)
+✔ Cloud follower merging uses rounded bounds and never upgrades a content rejection (1.270083ms)
+✔ Cloud follower merging leaves legacy conditions and foreign profiles unchanged (0.987542ms)
+✔ cloud model contract retains schema, rules and saved evidence (3.4355ms)
+✔ model endpoint rejects embedded credentials, invalid protocols and invalid limits (0.622958ms)
+✔ shop Campaign databases isolate identical IDs, persist across restart and close on uninstall (3198.563418ms)
+✔ uninstall during empty database initialization leaves a complete store that can reopen (703.550708ms)
+✔ Shopify ownership does not weaken the Access email requirement (0.875833ms)
+✔ a real supervised filesystem failure still closes the store database during removal (741.246251ms)
+✔ shared real PGlite keeps Shopify Library tenants separate and persistent without Access email (4154.559002ms)
+✔ real store databases and encrypted snapshot generations can be removed without affecting another store (1599.661251ms)
+✔ two stores owned by one user retain independent contexts and execution gates (3.128375ms)
+✔ store storage and ownership cannot be reassigned through resolve (0.499208ms)
+✔ Shopify official verifier rejects absent and unsigned browser sessions (4.664666ms)
+✔ Shopify application URL must be a dedicated HTTPS origin (0.182917ms)
+✔ keyword generation accepts the complete real product snapshot passed by Campaign service (11.552959ms)
+✔ fixed KOL parameters require a product, supported unique platforms and a complete follower range (0.82025ms)
+✔ keyword output cannot change fixed KOL conditions or add a platform (2.820542ms)
+✔ follower ranges reject definite excess and retain uncertainty at rounded boundaries (0.567208ms)
+✔ cloud storage initializes private persistent files, reopens and refuses replacement keys (28.825167ms)
+✔ uninstall cancels only its shop, waits for real execution drain and blocks reinstall until completion (10.075042ms)
+✔ a real failed operation keeps uninstall pending and reports processor failure (2.210875ms)
+✔ recovery handles uninstall receipts without marking privacy work complete (3.099292ms)
+✔ encrypted inbox deduplicates local storage inputs and persists uninstall revision before acknowledgement (24.276416ms)
+✔ 冻结正文，按 Rust 地址规则规范、去重并保留首个来源 (1.324834ms)
+✔ 指纹包含发件人收件人主题正文，来源不影响指纹 (0.158042ms)
+✔ 人数按去重前验证，主题正文和来源限制计算 UTF-8 字节 (0.89475ms)
+✔ 发送邮箱必须匹配并具备 Gmail 可用性及发送回读能力 (0.148708ms)
+✔ 草稿不领取，确认启动，暂停恢复，取消只影响待发送项 (0.587458ms)
+✔ 中断保留未知项，恢复仅允许 pending，尝试标记阻止重新发送 (0.184792ms)
+✔ 跨批次查重只阻止已经尝试的效果状态 (0.131167ms)
+✔ 成功、接受、失败和未知结果分别保存，completed 不代表全成功 (0.163708ms)
+ℹ tests 60
+ℹ suites 0
+ℹ pass 60
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 32422.866473

@@ -8,7 +8,9 @@
 
 每位店铺成员通过已验证的 Access 映射使用独立邮件数据库；完整 Google refresh token 留在 Access，Cloud 加密保存本应用安装凭据。卸载即时停用并排空，店铺数据删除覆盖邮件数据库。Lite 原目录不变。
 
-最终 Linux 类型检查和 51 项 Cloud 检查通过，Cloud 页面构建通过。Access/Sync 本地补丁、检查和待审批范围见 [Gmail 接入](ACCESS-CLOUD-APPROVAL.md)。公司网络连接超时，补丁基于本机缓存主分支；实际 Shopify 成员、Access 批准、Linux 远端登记和真实 Gmail 发送尚未验收，目前没有发送邮件。
+当前 Linux 类型检查和相关检查通过，Cloud 页面构建通过，记录见[验收证据](../handoff/EVIDENCE.md)。邮件主题、正文、收件人和发件邮箱沿用原规则；无效输入返回 HTTP 400，页面提示检查后重新预览，人数只在原邮件规则中校验。
+
+Access/Sync 本地补丁、检查和待审批范围见 [Gmail 接入](ACCESS-CLOUD-APPROVAL.md)。公司网络连接超时，补丁基于本机缓存主分支；实际 Shopify 成员、Access 批准、Linux 远端登记和真实 Gmail 发送尚未验收，目前没有发送邮件。
 
 ## 2026-10-25 真实运行结果
 

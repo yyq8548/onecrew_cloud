@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { DatabaseSync } from "node:sqlite";
 import { z } from "zod";
-import { bulkIdempotencyKey, controlBulk, prepareBulk } from "./gmail-bulk.ts";
+import { GmailBulkInputError, bulkIdempotencyKey, controlBulk, prepareBulk } from "./gmail-bulk.ts";
 import type { BulkBatch, BulkControl, BulkItem, BulkMailbox, BulkRecipient, PrepareBulkInput } from "./gmail-bulk.ts";
 import { reserveOriginalGmailSend, settleOriginalGmailSend, stageOriginalGmailReceipt, stagedOriginalGmailReceipt } from "./gmail-send-history.ts";
 import type { GmailBulkMessage, VerifiedGmailSendReceipt } from "./gmail-mime.ts";
@@ -86,7 +86,7 @@ export class GmailBulkRepository {
   create(input: PrepareBulkInput): BulkBatch {
     return this.#transaction(() => {
       const row = this.#db.prepare("SELECT id,provider,email_address,available,capabilities_json FROM mailbox_refs WHERE id=?").get(input.mailbox_ref_id);
-      if (!row) throw new Error("mailbox reference missing");
+      if (!row) throw new GmailBulkInputError("mailbox reference missing");
       const stored = z.object({ id: z.string(), provider: z.string(), email_address: z.string(), available: z.union([z.literal(0), z.literal(1)]), capabilities_json: z.string() }).parse(row);
       const mailbox: BulkMailbox = { ...stored, available: stored.available === 1, capabilities: z.array(z.string()).parse(JSON.parse(stored.capabilities_json)) };
       const prepared = prepareBulk(input, mailbox);

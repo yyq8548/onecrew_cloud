@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { test } from "node:test";
-import { bulkIdempotencyKey, claimBulkItem, completeIfSettled, controlBulk, duplicateAttempt, interruptBulk, mailFingerprint, normalizeEmailAddress, prepareBulk, recordBulkResult, requireFreshGmailAttempt } from "../src/mail/gmail-bulk.ts";
+import { GmailBulkInputError, bulkIdempotencyKey, claimBulkItem, completeIfSettled, controlBulk, duplicateAttempt, interruptBulk, mailFingerprint, normalizeEmailAddress, prepareBulk, recordBulkResult, requireFreshGmailAttempt } from "../src/mail/gmail-bulk.ts";
 import type { BulkBatch, BulkItem, BulkItemState, BulkMailbox, PrepareBulkInput } from "../src/mail/gmail-bulk.ts";
 
 const mailbox: BulkMailbox = { id: "mailbox", provider: "gmail", email_address: "Sender@Example.com", available: true, capabilities: ["send", "sent_readback"] };
@@ -37,7 +37,12 @@ test("人数按去重前验证，主题正文和来源限制计算 UTF-8 字节"
   assert.throws(() => prepareBulk({ ...input(), recipients: [] }, mailbox), /1–100/);
   assert.throws(() => prepareBulk({ ...input(), recipients: Array.from({ length: 101 }, () => input().recipients[0]!) }, mailbox), /1–100/);
   assert.equal(prepareBulk({ ...input(), recipients: Array.from({ length: 100 }, () => input().recipients[0]!) }, mailbox).items.length, 1);
-  for (const subject of [" ", "a\nb", "a\rb", "中".repeat(333)]) assert.throws(() => prepareBulk({ ...input(), subject }, mailbox), /subject or body/);
+  for (const subject of [" ", "a\nb", "a\rb", "中".repeat(333)]) assert.throws(() => prepareBulk({ ...input(), subject }, mailbox), error => {
+    assert(error instanceof GmailBulkInputError);
+    assert.equal(error.code, "gmail_bulk_invalid_input");
+    assert.match(error.message, /subject or body/u);
+    return true;
+  });
   assert.doesNotThrow(() => prepareBulk({ ...input(), subject: "a".repeat(998), body: "a".repeat(100000) }, mailbox));
   for (const body of [" ", "a".repeat(100001)]) assert.throws(() => prepareBulk({ ...input(), body }, mailbox), /subject or body/);
   assert.throws(() => prepareBulk({ ...input(), recipients: [{ email: "a@b", source: "中".repeat(683) }] }, mailbox), /source/);

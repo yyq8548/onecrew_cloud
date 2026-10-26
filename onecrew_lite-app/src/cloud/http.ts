@@ -28,6 +28,7 @@ import { AccountChangedError } from "../identity/account-context.ts";
 import { AccessVerificationError } from "../identity/access-verification.ts";
 import { MailAccessError } from "../mail/access-mail-client.ts";
 import type { CloudMailService } from "./mail-service.ts";
+import { GmailBulkInputError } from "../mail/gmail-bulk.ts";
 
 interface CloudHttpOptions {
   readonly shopify: ShopifyConfiguration;
@@ -46,7 +47,7 @@ interface CloudHttpOptions {
 type HttpEnvironment = { Variables: { requestId: string; identity: VerifiedShopifySession } };
 const productsQuery = z.strictObject({ first: z.coerce.number().int().min(1).max(100).default(25), after: z.string().min(1).max(4096).optional() });
 const mailDraft = z.strictObject({ mailbox_ref_id: z.string().min(1), subject: z.string(), body: z.string(),
-  recipients: z.array(z.strictObject({ email: z.string(), source: z.string() })).min(1).max(100) });
+  recipients: z.array(z.strictObject({ email: z.string(), source: z.string() })) });
 
 export function createCloudHttpApp(options: CloudHttpOptions) {
   const client = createShopifyClient(options.shopify);
@@ -391,8 +392,8 @@ export function createCloudHttpApp(options: CloudHttpOptions) {
   });
   app.notFound(context => context.json({ error: { code: "request.not_found" }, request_id: context.get("requestId") }, 404));
   app.onError((error, context) => {
-    const status = error instanceof CloudHttpError ? error.status : error instanceof AccessVerificationError ? error.status as ContentfulStatusCode : error instanceof MailAccessError ? 502 : error instanceof AccountChangedError ? 409 : error instanceof OpenCliError ? error.code === "opencli_cancelled" ? 409 : 502 : error instanceof TableDataError ? error.status as ContentfulStatusCode : error instanceof z.ZodError || error instanceof SyntaxError ? 400 : 500;
-    const code = error instanceof CloudHttpError ? error.message : error instanceof AccountChangedError ? "shopify.installation_changed" : error instanceof OpenCliError || error instanceof TableDataError || error instanceof AccessVerificationError || error instanceof MailAccessError ? error.code : status === 400 ? "request.invalid_input" : "cloud.request_failed";
+    const status = error instanceof CloudHttpError ? error.status : error instanceof AccessVerificationError ? error.status as ContentfulStatusCode : error instanceof MailAccessError ? 502 : error instanceof AccountChangedError ? 409 : error instanceof OpenCliError ? error.code === "opencli_cancelled" ? 409 : 502 : error instanceof TableDataError ? error.status as ContentfulStatusCode : error instanceof GmailBulkInputError || error instanceof z.ZodError || error instanceof SyntaxError ? 400 : 500;
+    const code = error instanceof CloudHttpError ? error.message : error instanceof AccountChangedError ? "shopify.installation_changed" : error instanceof OpenCliError || error instanceof TableDataError || error instanceof AccessVerificationError || error instanceof MailAccessError || error instanceof GmailBulkInputError ? error.code : status === 400 ? "request.invalid_input" : "cloud.request_failed";
     if (status >= 500) options.reportFailure({ requestId: context.get("requestId"), code, errorClass: error.name });
     return context.json({ error: { code }, request_id: context.get("requestId") }, status);
   });

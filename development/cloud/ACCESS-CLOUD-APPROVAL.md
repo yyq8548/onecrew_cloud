@@ -45,6 +45,6 @@ Cloud 本地已完成以下接入，真实授权与发送仍依赖公司补丁�
 
 ## 必要验证
 
-已通过最终 Cloud Linux 类型检查及 51 项 Cloud 检查，无跳过；Cloud 页面类型检查和构建、Access Worker/网页类型检查、Cloud 配对合同检查及 Access 页面构建、Sync Worker/管理端类型检查通过。九个 Sync 迁移在隔离本地 D1 执行成功，完整性检查正常，外键违规为零。
+Cloud Linux 类型检查及相关检查通过，无跳过，当前记录见[验收证据](../handoff/EVIDENCE.md)；Cloud 页面类型检查和构建、Access Worker/网页类型检查、Cloud 配对合同检查及 Access 页面构建、Sync Worker/管理端类型检查通过。九个 Sync 迁移在隔离本地 D1 执行成功，完整性检查正常，外键违规为零。
 
 D1 使用空数据库，尚未验证公司存量数据迁移。真实桌面配对兼容、Cloud 批准与回调、Linux 远端登记、Shopify 成员归属、Gmail 授权/撤销、确认后真实发送与回执、重启与卸载集成验收仍待完成。实际邮箱测试需使用经用户授权的账号、明确收件人和发送内容。

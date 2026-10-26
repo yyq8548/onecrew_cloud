@@ -1,5 +1,10 @@
 import { createHash } from "node:crypto";
 
+export class GmailBulkInputError extends Error {
+  readonly code = "gmail_bulk_invalid_input";
+  constructor(message: string) { super(message); this.name = "GmailBulkInputError"; }
+}
+
 export type BulkBatchState = "draft" | "running" | "paused" | "cancelled" | "completed";
 export type BulkItemState = "pending" | "attempting" | "accepted" | "sent" | "failed" | "unknown" | "cancelled";
 export type BulkControl = "confirm" | "pause" | "resume" | "cancel";
@@ -31,7 +36,7 @@ export type PreparedBulk = Pick<BulkBatch, "mailbox_ref_id" | "subject" | "body"
 
 // Rust str::trim 使用 Unicode White_Space，不包含 JavaScript trim 接受的 BOM。
 function rustTrim(value: string): string {
-  if (!value.isWellFormed()) throw new Error("invalid Unicode string");
+  if (!value.isWellFormed()) throw new GmailBulkInputError("invalid Unicode string");
   return value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, "");
 }
 
@@ -42,7 +47,7 @@ export function normalizeEmailAddress(value: string): string {
   const address = rustTrim(start >= 0 && end >= 0 && start < end ? trimmed.slice(start + 1, end) : trimmed)
     .replace(/[A-Z]/g, letter => letter.toLowerCase());
   const parts = address.split("@");
-  if (parts.length !== 2 || parts[0] === "" || parts[1] === "") throw new Error("email address is invalid");
+  if (parts.length !== 2 || parts[0] === "" || parts[1] === "") throw new GmailBulkInputError("email address is invalid");
   return address;
 }
 
@@ -56,15 +61,15 @@ export function mailFingerprint(sender: string, recipient: string, subject: stri
 export function prepareBulk(input: PrepareBulkInput, mailbox: BulkMailbox): PreparedBulk {
   const subject = rustTrim(input.subject);
   const body = rustTrim(input.body);
-  if (input.recipients.length === 0 || input.recipients.length > 100) throw new Error("Select 1–100 email recipients");
+  if (input.recipients.length === 0 || input.recipients.length > 100) throw new GmailBulkInputError("Select 1–100 email recipients");
   if (subject === "" || Buffer.byteLength(subject) > 998 || /[\r\n]/u.test(subject) || body === "" || Buffer.byteLength(body) > 100_000) {
-    throw new Error("Invalid email subject or body");
+    throw new GmailBulkInputError("Invalid email subject or body");
   }
-  if (mailbox.id !== input.mailbox_ref_id) throw new Error("mailbox reference mismatch");
-  if (mailbox.provider !== "gmail") throw new Error("Bulk mail requires a Gmail mailbox");
-  if (!mailbox.available) throw new Error("mailbox is unavailable");
+  if (mailbox.id !== input.mailbox_ref_id) throw new GmailBulkInputError("mailbox reference mismatch");
+  if (mailbox.provider !== "gmail") throw new GmailBulkInputError("Bulk mail requires a Gmail mailbox");
+  if (!mailbox.available) throw new GmailBulkInputError("mailbox is unavailable");
   for (const capability of ["send", "sent_readback"]) {
-    if (!mailbox.capabilities.includes(capability)) throw new Error(`mailbox does not support ${capability}`);
+    if (!mailbox.capabilities.includes(capability)) throw new GmailBulkInputError(`mailbox does not support ${capability}`);
   }
   const seen = new Set<string>();
   const items: PreparedBulk["items"][number][] = [];
@@ -73,8 +78,8 @@ export function prepareBulk(input: PrepareBulkInput, mailbox: BulkMailbox): Prep
     const key = email.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
-    if (!recipient.source.isWellFormed()) throw new Error("invalid Unicode string");
-    if (Buffer.byteLength(recipient.source) > 2048) throw new Error("Recipient source is too long");
+    if (!recipient.source.isWellFormed()) throw new GmailBulkInputError("invalid Unicode string");
+    if (Buffer.byteLength(recipient.source) > 2048) throw new GmailBulkInputError("Recipient source is too long");
     items.push({ recipient: email, source: recipient.source, fingerprint: mailFingerprint(mailbox.email_address, email, subject, body) });
   }
   return { mailbox_ref_id: mailbox.id, subject, body, items };

@@ -1,11 +1,14 @@
 import assert from "node:assert/strict";
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { CloudMailStore } from "../src/cloud/mail-store.ts";
+import { GmailBulkInputError } from "../src/mail/gmail-bulk.ts";
+import { GmailBulkRepository } from "../src/mail/gmail-bulk-repository.ts";
+import { initializeNewCreatorDatabase } from "../src/storage/creator-schema.ts";
 
 test("mail pairing persists encrypted PKCE, consumes once and invalidates replaced or disconnected flows", async () => {
   const scratch = fileURLToPath(new URL("../../.scratch/", import.meta.url));
@@ -37,4 +40,19 @@ test("mail pairing persists encrypted PKCE, consumes once and invalidates replac
     assert.throws(() => store.consume(uninstalled.state), /pairing_invalid/u);
     assert.deepEqual(store.owners(shop), []);
   } finally { store.close(); db.close(); key.fill(0); await rm(root, { recursive: true }); }
+});
+
+test("mail draft with an unknown mailbox fails as input error without creating send records", async () => {
+  const scratch = fileURLToPath(new URL("../../.scratch/", import.meta.url));
+  await mkdir(scratch, { recursive: true });
+  const root = await mkdtemp(join(scratch, "cloud-mail-input-")), path = join(root, "creator.sqlite");
+  await initializeNewCreatorDatabase(path);
+  const db = new DatabaseSync(path);
+  try {
+    db.exec("PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL");
+    const repository = new GmailBulkRepository(db);
+    assert.throws(() => repository.create({ mailbox_ref_id: randomUUID(), subject: "", body: "", recipients: [] }), GmailBulkInputError);
+    assert.deepEqual(repository.list(), []);
+    assert.equal(repository.claim(), null);
+  } finally { db.close(); await rm(root, { recursive: true }); }
 });

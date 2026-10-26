@@ -1,0 +1,6 @@
+5ae6c9af1eac2b9c23547194a33492a6f6b58df89c2e1cf5b5af6109792f4594  onecrew_lite-app/src/mail/gmail-bulk.ts
+b6b3444c76483d12f058582a86d3b79b9c0512d833144e7a15d9c7f7bc6e6787  onecrew_lite-app/src/mail/gmail-bulk-repository.ts
+b36f0ac9024bc5513a80a29fc8985ca6b425ffc297c13f8122823b5935551afa  onecrew_lite-app/src/cloud/http.ts
+35ae4103fd322dbce7ece28e125005b2a83d1d3fcddf9c669103fd387fa18e1d  onecrew_lite-app/tests/cloud-mail.test.ts
+3a9163a8a29528c14e983e874b8eebcf89835ced26123e3c5a89ca4abedf3fe2  onecrew_lite-app/tests/gmail-bulk.test.ts
+02d58f3621c8ed6ce7353a025312a566dd51f0c817d0aa8524862f0aa80b0185  onecrew_lite-web/src/cloud/api.ts

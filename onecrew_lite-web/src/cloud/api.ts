@@ -22,6 +22,7 @@ export async function cloudApi<S extends z.ZodTypeAny>(path: string, schema: S, 
     if (failure.error.code === 'cloud.mail_pairing_required') throw new Error('请先连接 OneCrew 账号。');
     if (failure.error.code === 'cloud.mail_binding_changed') throw new Error('邮箱连接已变更，请刷新后重新连接。');
     if (failure.error.code === 'cloud.mail_not_configured') throw new Error('邮箱服务尚未配置。');
+    if (failure.error.code === 'gmail_bulk_invalid_input') throw new Error('请检查发件邮箱、收件人和邮件内容后重新预览。');
     if (failure.error.code.startsWith('mail_access_') || failure.error.code.startsWith('access.')) throw new Error('OneCrew 邮箱授权不可用，请检查账号连接后重试。');
     if (failure.error.code === 'discovery.review_material_unavailable') throw new Error('这条来源的原始证据尚未准备完成，请完成核验后再查看。');
     if (failure.error.code === 'discovery.revision_changed') throw new Error('任务条件已更新，请刷新结果后再查看证据。');

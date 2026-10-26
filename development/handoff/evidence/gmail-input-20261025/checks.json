@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-25",
+  "kind": "derived_local_verification_summary",
+  "linux": { "typecheck": "passed", "cloud_tests": 52, "mail_rule_tests": 8, "total": 60, "passed": 60, "failed": 0, "skipped": 0, "duration_ms": 32422.866473, "log": "linux-check.log" },
+  "web": { "typecheck": "passed", "build": "passed", "log": "web-build.log" },
+  "scope": "existing Gmail input validation error classification; HTTP recipient count validation removed in favor of original domain validation",
+  "unknown_mailbox_check": "real empty Creator SQLite rejects draft as GmailBulkInputError; no saved batch and no claimable send",
+  "mail_rules": "existing trim, byte limits, recipient normalization, deduplication, mailbox capabilities and send-state rules retained",
+  "company_git_contacted_this_turn": false,
+  "company_patch_changed_this_turn": false,
+  "email_sent": false,
+  "real_shopify_mail_integration_verified": false
+}
