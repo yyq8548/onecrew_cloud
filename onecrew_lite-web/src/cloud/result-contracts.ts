@@ -7,7 +7,7 @@ const quality = z.enum(['excellent', 'good', 'medium', 'low']);
 const creators = z.object({
   state: z.enum(['missing', 'current', 'sources_changed']),
   projection: z.object({ table_id: z.string(), campaign_id: z.string(), criteria_revision: z.number(), groups: z.array(z.object({ group_id: z.string(), members: z.array(z.object({ source_hit_ids: z.array(z.string()) })) })) }).nullable(),
-  sources: z.array(z.object({ search_hit_id: z.string(), verdict: z.string(), contacts: z.array(z.object({ normalized_value: z.string(), source_url: z.string().url(), source_excerpt: z.string(), attribution: z.string() })) })),
+  sources: z.array(z.object({ search_hit_id: z.string(), verdict: z.string(), contacts: z.array(z.object({ kind: z.string(), normalized_value: z.string(), source_url: z.string().url(), source_excerpt: z.string(), attribution: z.string() })) })),
   recommendations: z.array(z.object({ id: z.string(), values: z.object({ name: z.object({ name: z.string(), url: z.string().url().optional() }), category: z.string().nullable(), platform: z.string(), score: z.object({ level: quality, reason: z.string().optional() }).nullable(), contacts: z.string() }) })),
 });
 export const campaignResults = z.object({

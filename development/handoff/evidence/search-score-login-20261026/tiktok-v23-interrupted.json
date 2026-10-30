@@ -1,0 +1,19 @@
+{
+  "campaign": "dd7cd4ba-68da-46b1-ab6f-7bc4b2b6c7b7",
+  "scoringVersion": "v23",
+  "keywordVersion": "category-use-v2",
+  "state": "interrupted",
+  "stoppedBy": "agent_after_confirmed_quality_errors",
+  "programVerdictCounts": { "qualified": 8, "pending": 5, "rejected": 34 },
+  "jobElapsedMs": 428391,
+  "savedRecommendationEvidenceReviewed": 8,
+  "knownMerchantMisclassificationCount": 2,
+  "knownUnrelatedWeakMisclassificationCount": 2,
+  "remainingAfterKnownExclusions": 4,
+  "fullWorkflowVerificationPassed": false,
+  "recommendationQualityAuditPassed": false,
+  "proposedAdjustment": "../../../cloud/WEAK-EVIDENCE-TIKTOK-MERCHANT-APPROVAL.md",
+  "dataRetained": true,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false
+}

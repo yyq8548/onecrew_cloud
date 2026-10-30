@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-26T22:30:22.076Z",
+  "scoringVersion": "v20",
+  "campaign": "f03a5552-9782-4919-bd2b-3063175af072",
+  "target": 10,
+  "programVerdictCounts": {
+    "qualified": 10,
+    "pending": 2,
+    "rejected": 19
+  },
+  "searches": 4,
+  "savedSources": 80,
+  "keywordRequests": 1,
+  "unusedReserveQueries": 2,
+  "stoppedAtTarget": true,
+  "jobElapsedMs": 240725,
+  "contactPageAttempts": 10,
+  "maximumContactPagesPerAuthor": 2,
+  "contactFailures": 0,
+  "creatorsWithPublicEmail": 6,
+  "creatorsWithOtherPublishedContact": 10,
+  "contactsComplete": true,
+  "jobPhase": "finished",
+  "persistedAfterReopen": true,
+  "templateAndIdempotencyVerified": true,
+  "identityCases": [
+    {
+      "role": "retailer",
+      "verdict": "rejected",
+      "selection": "contradicted",
+      "quality": null
+    },
+    {
+      "role": "individual_affiliate",
+      "verdict": "qualified",
+      "selection": "supported",
+      "quality": "medium"
+    },
+    {
+      "role": "review_media",
+      "verdict": "qualified",
+      "selection": "supported",
+      "quality": "good"
+    }
+  ],
+  "finalColdRestore": {
+    "event": "cloud.restored_login_checked",
+    "platform": "youtube",
+    "status": "logged_in",
+    "issue": null,
+    "checkedAt": 1793053785,
+    "encryptedSnapshotSaved": true,
+    "modelCalls": 0,
+    "shopifyNetworkVerified": false
+  },
+  "agentReviewedSavedRecommendationEvidence": true,
+  "knownRetailerRemoved": true,
+  "independentHumanQualityAuditComplete": false,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false
+}

@@ -13,6 +13,10 @@ test("cloud storage initializes private persistent files, reopens and refuses re
   try {
     const initialized = await openCloudStorage(directory, true);
     assert.deepEqual(initialized.installations.pendingWebhooks(), []);
+    const login = initialized.accounts.begin(), installationKey = initialized.accounts.installationKey;
+    assert.equal(initialized.accounts.hasPairing(login.state), true);
+    assert.throws(() => initialized.accounts.consume(login.state, "invalid", "different-browser"), /account_pairing_invalid/u);
+    assert.deepEqual(initialized.accounts.pending(), []);
     await initialized.close();
     const keyPath = join(directory, "cloud.key");
     const key = await readFile(keyPath);
@@ -23,6 +27,9 @@ test("cloud storage initializes private persistent files, reopens and refuses re
     await assert.rejects(openCloudStorage(directory, true), /storage_already_exists/u);
     assert.deepEqual(await readFile(keyPath), key);
     const reopened = await openCloudStorage(directory);
+    assert.equal(reopened.accounts.installationKey, installationKey);
+    assert.equal(reopened.accounts.hasPairing(login.state), true);
+    assert.deepEqual(reopened.accounts.pending(), []);
     await reopened.close();
     await rename(keyPath, `${keyPath}.saved`);
     await assert.rejects(openCloudStorage(directory));

@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-10-26T22:59:30.039Z",
+  "campaign": "18c74f1a-1790-4dc9-8dfa-cee585042b2b",
+  "scoringVersion": "v21-before-instagram-merchant-guard",
+  "historicalOnly": true,
+  "programCounts": { "qualified": 9, "pending": 1, "rejected": 13 },
+  "target": 10,
+  "savedSources": 23,
+  "searchesExecuted": 6,
+  "knownMerchantMisclassificationCount": 5,
+  "creatorRegressionCaseCount": 4,
+  "qualityAuditPassed": false,
+  "resultsOmittedAfterQualityReview": true,
+  "originalTaskChanged": false,
+  "currentRuleVerification": "instagram-merchant-regressions.json",
+  "libraryTemplateIdempotencyAndReopenPassed": true,
+  "platformCallsAdded": 0,
+  "modelCallsAdded": 0,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "independentHumanQualityAuditComplete": false
+}

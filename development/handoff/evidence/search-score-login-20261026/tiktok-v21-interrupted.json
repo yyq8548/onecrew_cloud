@@ -1,0 +1,20 @@
+{
+  "campaign": "ea1ca0cb-97ee-4dd2-965a-534de3f38e9a",
+  "scoringVersion": "v21-with-instagram-merchant-and-promotion-only-guards",
+  "state": "interrupted",
+  "stoppedBy": "agent_after_confirmed_identity_misclassification",
+  "programVerdictCounts": { "qualified": 6, "pending": 6, "rejected": 16 },
+  "savedSources": 40,
+  "knownWholesaleMerchantMisclassificationCount": 1,
+  "observedIdentityExcerpt": "WHOLESALE/RETAIL\nBack-to-school\nSouvenirs\nPls join the wholesale group below 👇",
+  "originalExcerptVerified": true,
+  "fullWorkflowVerificationPassed": false,
+  "recommendationQualityAuditPassed": false,
+  "additionalRuleApproval": "../../../cloud/TIKTOK-WHOLESALE-IDENTITY-APPROVAL.md",
+  "additionalRuleImplementedInOriginalTask": false,
+  "currentRuleApproved": true,
+  "currentRuleScoringVersion": "v22",
+  "dataRetained": true,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false
+}

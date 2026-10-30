@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-26T21:47:25.186Z",
+  "identity": {
+    "event": "cloud.identity_evidence_verified",
+    "source": "https://www.instagram.com/kitan.isawumi/",
+    "identityParagraph": "i1",
+    "productParagraph": "p1",
+    "selection": "supported",
+    "level": "good",
+    "modelCalls": 0,
+    "platformCalls": 0,
+    "originalMaterialUnchanged": true,
+    "noReviewCommitted": true
+  },
+  "profiles": {
+    "event": "cloud.profile_identity_verified",
+    "checked": 13,
+    "modelCalls": 0,
+    "platformCalls": 0
+  },
+  "realSavedModelReplay": true,
+  "independentHumanQualityAuditComplete": false
+}

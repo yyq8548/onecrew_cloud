@@ -1,0 +1,17 @@
+{
+  "scoringVersion": "v22",
+  "role": "explicit_wholesale_profile",
+  "modelCreator": "not_creator",
+  "selection": "contradicted",
+  "quality": "insufficient",
+  "level": null,
+  "elapsedMs": 13375,
+  "modelCalls": 1,
+  "originalAuditPassed": true,
+  "originalMaterialUnchanged": true,
+  "noReviewCommitted": true,
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "allChecksPassed": true,
+  "independentHumanQualityAuditComplete": false
+}

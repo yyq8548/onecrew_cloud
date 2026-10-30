@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OneCrew Cloud · Sign in</title>
+    <style>
+      @font-face {
+        font-family: Geist;
+        src: url('/fonts/geist/Geist-Variable.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #f5f6f7; color: #17191c; font: 16px/1.65 Geist, system-ui, sans-serif; }
+      main { width: min(36rem, calc(100% - 3rem)); margin: 12vh auto; padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid #e5e7eb; border-radius: 0.5rem; background: #fff; }
+      .brand { margin: 0 0 2rem; font-size: 1rem; font-weight: 650; }
+      .entry-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+      select { padding: 0.35rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: #fff; color: inherit; font: inherit; font-size: 0.875rem; }
+      h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.25rem); line-height: 1.3; font-weight: 650; text-wrap: balance; }
+      .instruction { margin: 1rem 0 1.75rem; }
+      button { display: inline-flex; align-items: center; justify-content: center; min-height: 3rem; padding: 0.65rem 1.25rem; border: 0; border-radius: 0.5rem; background: #17191c; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+      button:hover { background: #30343a; }
+      button:focus-visible { outline: 2px solid #6b7280; outline-offset: 4px; }
+      .help { margin: 1.5rem 0 0; color: #686c73; font-size: 0.875rem; }
+      nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; font-size: 0.875rem; }
+      a { color: inherit; text-underline-offset: 0.2em; }
+      a:focus-visible { outline: 2px solid #6b7280; outline-offset: 4px; }
+      .error { color: #b42318; }
+      .error:empty { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="entry-header"><p class="brand">OneCrew Cloud</p><select id="entry-language" aria-label="语言 / Language"><option value="en-US">English</option><option value="zh-CN">中文</option></select></div>
+      <h1 data-zh="为你的商品寻找 KOL">Find creators for your product</h1>
+      <p class="instruction" data-zh="填写商品，选择平台和最低粉丝数，寻找 10 位匹配的创作者。">Enter a product, choose platforms and a minimum audience size, and find 10 matching creators.</p>
+      <p class="error" role="alert">__ONECREW_LOGIN_ERROR__</p>
+      <form method="post" action="/auth/login"><button type="submit" data-zh="登录 / 注册 OneCrew">Sign in / Create OneCrew account</button></form>
+      <p class="help" data-zh="支持 YouTube、TikTok、Instagram，可手动填写商品。登录后继续使用个人工作区。">Supports YouTube, TikTok and Instagram. Enter products manually and continue in your personal workspace after signing in.</p>
+      <nav aria-label="Help and privacy"><a href="/support" data-zh="使用与支持">Help and support</a><a href="/privacy" data-zh="隐私政策预览">Privacy policy preview</a></nav>
+    </main>
+    <script>
+      const languageSelect = document.getElementById('entry-language');
+      const copy = [...document.querySelectorAll('[data-zh]')].map(element => ({ element, english: element.textContent }));
+      const error = document.querySelector('.error');
+      const hasError = error.textContent.trim().length > 0;
+      function showLanguage(language) {
+        document.documentElement.lang = language;
+        languageSelect.value = language;
+        document.title = language === 'zh-CN' ? 'OneCrew Cloud · 登录' : 'OneCrew Cloud · Sign in';
+        for (const item of copy) item.element.textContent = language === 'zh-CN' ? item.element.dataset.zh : item.english;
+        if (hasError) error.textContent = language === 'zh-CN' ? '登录没有完成，请重新登录。' : 'Sign-in was not completed. Please try again.';
+      }
+      let language = 'en-US';
+      try { if (localStorage.getItem('onecrew-locale') === 'zh-CN') language = 'zh-CN'; } catch {}
+      showLanguage(language);
+      languageSelect.addEventListener('change', () => {
+        showLanguage(languageSelect.value);
+        try { localStorage.setItem('onecrew-locale', languageSelect.value); } catch {}
+      });
+    </script>
+  </body>
+</html>

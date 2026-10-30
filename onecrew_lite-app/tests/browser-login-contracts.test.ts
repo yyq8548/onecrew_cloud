@@ -25,5 +25,5 @@ test("local session rejection and machine diagnostics never imply remote login o
   await assert.rejects(verifyBrowserLoginIdentity("instagram", base, { timezone: null, accept_language: null }, new AbortController().signal, async () => {}, true), InstagramLoginSessionError);
   const error = instagramLoginResponseError(403, JSON.stringify({ error_type: "challenge_required", message: "Bearer SENTINEL", challenge: { url: "https://secret.invalid/SENTINEL" } })); assert.ok(error instanceof InstagramLoginResponseError); assert.equal(error.code, "challenge_required"); assert.equal(error.status, 403); assert.ok(!JSON.stringify(error).includes("SENTINEL")); assert.ok(!error.message.includes("SENTINEL"));
   assert.equal(instagramLoginResponseError(429, '{"error_type":"https://secret.invalid/SENTINEL"}').code, null);
-  assert.equal(openCliLoginPage("twitter"), "https://x.com/"); assert.throws(() => openCliLoginPage("https://evil.invalid/")); assert.throws(() => openCliLoginPage("--profile other"));
+  assert.equal(openCliLoginPage("youtube"), "https://www.youtube.com/"); assert.throws(() => openCliLoginPage("twitter")); assert.throws(() => openCliLoginPage("https://evil.invalid/")); assert.throws(() => openCliLoginPage("--profile other"));
 });

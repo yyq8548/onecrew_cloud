@@ -1,22 +1,24 @@
 import { inspect } from "node:util";
+import PQueue from "p-queue";
 import { AccountContextService } from "../identity/account-context.ts";
 import { AccountDatabases } from "../identity/account-databases.ts";
 import { ACCESS_AUTHORIZE_ORIGIN, enrollAccessInstallation } from "../identity/access-enrollment.ts";
-import { AccessInstallationVerifier } from "../identity/access-verification.ts";
+import { AccessInstallationVerifier, AccessVerificationError, type VerifiedMigrationCredential } from "../identity/access-verification.ts";
 import { AccessGmailProvider, type VerifiedMailIdentity, type VerifiedMailIdentityProvider } from "../mail/gmail-access.ts";
 import { GmailBulkWorker } from "../mail/gmail-bulk-worker.ts";
 import type { BulkControl, PrepareBulkInput } from "../mail/gmail-bulk.ts";
 import { gmailMailboxId } from "../mail/gmail-mailbox-repository.ts";
 import type { InstanceLease } from "../service/instance-lock.ts";
-import type { ShopifyInstallationStore } from "../shopify/installation-store.ts";
+import type { LocalWorkspace, WorkspaceStore } from "./workspaces.ts";
 import { CloudHttpError } from "./http-error.ts";
-import { CloudMailStore } from "./mail-store.ts";
+import { CloudMailStore, type CloudMailPairing } from "./mail-store.ts";
+import { revokeCloudMailInstallation } from "./mail-revocation.ts";
 import type { ShopData, ShopDataService } from "./shop-data.ts";
 
 interface CloudMailOptions {
   readonly lease: InstanceLease;
   readonly store: CloudMailStore;
-  readonly installations: ShopifyInstallationStore;
+  readonly installations: WorkspaceStore;
   readonly data: ShopDataService;
   readonly applicationUrl: string;
   readonly onFailure: (failure: { requestId: string; code: string; errorClass: string }) => void;
@@ -26,6 +28,7 @@ interface CloudMailOptions {
 export class CloudMailService {
   readonly #options: CloudMailOptions;
   readonly #sessions = new Map<string, Promise<MailSession>>();
+  readonly #mutations = new PQueue({ concurrency: 1 });
   readonly #callback: string;
   readonly #platform: "macos" | "linux" = process.platform === "darwin" ? "macos" : "linux";
   constructor(options: CloudMailOptions) {
@@ -42,28 +45,81 @@ export class CloudMailService {
     });
   }
   begin(shop: string, member: string) {
-    const { installations, store } = this.#options;
-    const workspace = installations.workspace(shop);
-    if (!workspace || workspace.uninstalled_at !== null) throw new CloudHttpError("shopify.installation_required", 409);
-    const pending = store.begin(shop, member, installations.lifecycleRevision(shop));
-    const url = new URL("/pairing/authorize", ACCESS_AUTHORIZE_ORIGIN);
-    url.search = new URLSearchParams({ app_version: "0.9.1", callback_url: this.#callback, code_challenge: pending.challenge, code_challenge_method: "S256",
-      label: "OneCrew Cloud", platform: this.#platform, product: "onecrew_lite", state: pending.state }).toString();
-    return { authorize_url: url.toString() };
+    return this.#mutations.add(async () => {
+      await this.#recoverPairings(shop, member);
+      this.#options.store.disconnect(shop, member);
+      await this.#disconnect(shop, member);
+      const { installations, store } = this.#options;
+      const workspace = installations.workspace(shop);
+      if (!workspace || workspace.uninstalled_at !== null) throw new CloudHttpError("shopify.installation_required", 409);
+      const pending = store.begin(shop, member, installations.lifecycleRevision(shop));
+      const url = new URL("/pairing/authorize", ACCESS_AUTHORIZE_ORIGIN);
+      url.search = new URLSearchParams({ app_version: "0.9.1", callback_url: this.#callback, code_challenge: pending.challenge, code_challenge_method: "S256",
+        label: "OneCrew Cloud", platform: this.#platform, product: "onecrew_lite", state: pending.state }).toString();
+      return { authorize_url: url.toString() };
+    });
   }
   async complete(code: string, state: string): Promise<void> {
-    const { store, data, installations } = this.#options;
-    const pending = store.consume(state), parent = await data.resolve(pending.shop);
-    if (installations.lifecycleRevision(pending.shop) !== pending.revision) throw new CloudHttpError("shopify.installation_changed", 409);
-    await this.#track(parent, async () => {
-      const candidate = { installationId: pending.installationId, credentialId: pending.credentialId, bearer: Buffer.from(pending.bearer), platform: this.#platform, appVersion: "0.9.1" };
+    await this.#mutations.add(async () => {
+      const { store, data, installations } = this.#options;
+      const pending = store.consume(state, code);
+      let parent: ShopData;
       try {
-        const proof = await enrollAccessInstallation(candidate, code, pending.verifier, state, pending.idempotency);
+        parent = await data.resolve(pending.shop);
+        if (installations.lifecycleRevision(pending.shop) !== pending.revision) throw new CloudHttpError("shopify.installation_changed", 409);
+      } catch (error) { store.forgetPairing(pending.id); throw error; }
+      await this.#track(parent, async () => {
+        const proof = await this.#enroll(pending);
         using release = { [Symbol.dispose]() { proof.dispose(); } };
-        parent.assertCurrent();
-        store.bind(pending, parent.runtime.context.principal.tenantId, proof);
-      } finally { candidate.bearer.fill(0); }
+        try {
+          parent.assertCurrent();
+          store.bind(pending, parent.runtime.context.principal.tenantId, proof);
+        } catch (error) { store.revokePairing(pending, proof); throw error; }
+      });
     });
+  }
+  bindAccount(workspace: LocalWorkspace, proof: VerifiedMigrationCredential): Promise<void> {
+    return this.#mutations.add(async () => {
+      const session = this.#sessions.get(JSON.stringify([workspace.shop, proof.user.id]));
+      if (session) await (await session).close();
+      // Access 已撤销同一稳定设备的旧凭据；此处只替换当前凭据，不撤销刚批准的设备。
+      this.#options.store.bindAccount(workspace, proof);
+    });
+  }
+  async #enroll(pending: CloudMailPairing) {
+    if (!pending.code || !pending.state) throw new CloudHttpError("cloud.mail_pairing_recovery_required", 409);
+    const candidate = { installationId: pending.installationId, credentialId: pending.credentialId, bearer: Buffer.from(pending.bearer), platform: this.#platform, appVersion: "0.9.1" };
+    try { return await enrollAccessInstallation(candidate, pending.code, pending.verifier, pending.state, pending.idempotency); }
+    finally { candidate.bearer.fill(0); }
+  }
+  async #recoverPairings(shop?: string, member?: string): Promise<void> {
+    for (const pending of this.#options.store.pendingPairings(shop, member)) {
+      try {
+        const proof = await this.#enroll(pending);
+        using release = { [Symbol.dispose]() { proof.dispose(); } };
+        this.#options.store.revokePairing(pending, proof);
+      } catch (error) {
+        if (!(error instanceof AccessVerificationError) || error.code !== "access.pairing_rejected") throw error;
+        this.#options.store.forgetPairing(pending.id);
+      }
+    }
+  }
+  async #revoke(shop?: string, member?: string, deferUnavailable = false): Promise<void> {
+    for (const request of this.#options.store.revocations(shop, member)) {
+      try { await revokeCloudMailInstallation(request); }
+      catch (error) {
+        if (deferUnavailable && error instanceof CloudHttpError && error.message === "cloud.mail_revocation_incomplete") continue;
+        throw error;
+      }
+      this.#options.store.completeRevocation(request.metadata.installation_id);
+    }
+  }
+  disableShop(shop: string): void { this.#options.store.disableShop(shop); }
+  revokeShop(shop: string): Promise<void> {
+    return this.#mutations.add(async () => { await this.#recoverPairings(shop); await this.#revoke(shop); });
+  }
+  recover(): Promise<void> {
+    return this.#mutations.add(async () => { await this.#recoverPairings(); await this.#revoke(undefined, undefined, true); });
   }
   async #session(shop: string, member: string): Promise<MailSession> {
     const key = JSON.stringify([shop, member]);
@@ -166,10 +222,21 @@ export class CloudMailService {
     return { batch: session.repositories.bulk.get(id) };
   }
   async readback(shop: string, member: string, id: string) { const session = await this.#session(shop, member); await session.readback(id); return { batch: session.repositories.bulk.get(id) }; }
-  async disconnect(shop: string, member: string) {
-    this.#options.store.disconnect(shop, member);
+  async #disconnect(shop: string, member: string) {
     const session = this.#sessions.get(JSON.stringify([shop, member]));
     if (session) await (await session).close();
+    await this.#revoke(shop, member);
+  }
+  disconnect(shop: string, member: string): Promise<void> {
+    return this.#mutations.add(async () => {
+      this.#options.store.disconnect(shop, member);
+      await this.#recoverPairings(shop, member);
+      await this.#disconnect(shop, member);
+    });
+  }
+  async close(): Promise<void> {
+    await this.#mutations.onIdle();
+    for (const session of this.#sessions.values()) await (await session).close();
   }
 }
 

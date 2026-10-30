@@ -1,0 +1,51 @@
+{
+  "matchingVersion": "v33",
+  "cases": [
+    {
+      "role": "bottle_used_as_training_weight",
+      "sourceVersion": "v32",
+      "originalModelDecision": "符合",
+      "selection": "insufficient",
+      "immediateResult": true,
+      "expectedMatch": false,
+      "correctProductExcerptVerified": false,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalls": 0
+    },
+    {
+      "role": "filter_bottle_review",
+      "sourceVersion": "v31",
+      "originalModelDecision": "符合",
+      "selection": "supported",
+      "immediateResult": false,
+      "expectedMatch": true,
+      "correctProductExcerptVerified": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalls": 0
+    },
+    {
+      "role": "bottle_review_not_accessory_links",
+      "sourceVersion": "v31",
+      "originalModelDecision": "符合",
+      "selection": "supported",
+      "immediateResult": false,
+      "expectedMatch": true,
+      "correctProductExcerptVerified": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "modelCalls": 0
+    }
+  ],
+  "allChecksPassed": true,
+  "modelCalls": 0,
+  "platformCalls": 0,
+  "emailsSent": 0,
+  "originalModelFailurePreserved": true,
+  "fullCampaignRerun": false,
+  "independentHumanQualityAuditComplete": false
+}

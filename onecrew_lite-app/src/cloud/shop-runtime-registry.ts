@@ -2,6 +2,7 @@ import { z } from "zod";
 import { AccountContextService, type AccountContext, type VerifiedPrincipal } from "../identity/account-context.ts";
 import { DiscoveryAdmissionGate } from "../discovery/admission-gate.ts";
 import { DiscoveryExecutionSupervisor } from "../discovery/execution-supervisor.ts";
+import { workspaceKeySchema } from "./workspaces.ts";
 
 export const shopDomainSchema = z.string().regex(/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/u);
 export interface ShopRuntime {
@@ -21,7 +22,7 @@ export class ShopRuntimeRegistry {
   #stopping = false;
 
   resolve(shop: string, principal: VerifiedPrincipal): ShopRuntime {
-    shopDomainSchema.parse(shop);
+    workspaceKeySchema.parse(shop);
     if (principal.source === "shopify" && principal.shop !== shop) throw new Error("cloud.shop_owner_changed");
     if (this.#stopping || this.#suspended.has(shop) || this.#closing.has(shop)) throw new Error("cloud.shop_stopping");
     const existing = this.#shops.get(shop);
@@ -46,7 +47,7 @@ export class ShopRuntimeRegistry {
   }
 
   suspend(shop: string): void {
-    shopDomainSchema.parse(shop);
+    workspaceKeySchema.parse(shop);
     this.#suspended.add(shop);
     const runtime = this.#shops.get(shop);
     if (!runtime) return;
@@ -55,7 +56,7 @@ export class ShopRuntimeRegistry {
   }
 
   remove(shop: string): Promise<void> {
-    shopDomainSchema.parse(shop);
+    workspaceKeySchema.parse(shop);
     const closing = this.#closing.get(shop);
     if (closing) return closing;
     this.suspend(shop);

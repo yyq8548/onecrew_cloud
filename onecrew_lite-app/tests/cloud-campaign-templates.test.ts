@@ -54,7 +54,8 @@ test("real template storage isolates stores, retains exact rules and reopens wit
   } finally { await rm(root, { recursive: true }); }
 });
 
-test("legacy plans without the new follower range are preserved without inventing template conditions", () => {
-  assert.equal(cloudConditionsFromPlan({ scopes: [{ platform: "youtube" }], criteria: { min_subscribers: 10000 }, target_count: 10 }), null);
+test("minimum-only plans retain an unrestricted upper bound while invalid conditions remain rejected", () => {
+  assert.deepEqual(cloudConditionsFromPlan({ scopes: [{ platform: "youtube" }], criteria: { min_subscribers: 10000 }, target_count: 10 }), { platforms: ["youtube"], min_followers: 10000, max_followers: Number.MAX_SAFE_INTEGER, target_count: 10 });
   assert.equal(cloudConditionsFromPlan({ scopes: [{ platform: "youtube" }], criteria: { min_subscribers: 10000, max_subscribers: 1000 }, target_count: 10 }), null);
+  assert.equal(cloudConditionsFromPlan({ scopes: [{ platform: "twitter" }], criteria: { min_subscribers: 10000, max_subscribers: 100000 }, target_count: 10 }), null);
 });

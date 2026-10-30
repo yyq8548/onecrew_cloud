@@ -1,0 +1,70 @@
+{
+  "matchingVersion": "v29",
+  "sourceCampaign": "77c1a614-818c-4965-ad9c-6a63565a6f7c",
+  "vendorFromRealProduct": true,
+  "cases": [
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "regional_official_brand",
+      "before": "supported",
+      "after": "insufficient",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "originalAuditPassed": true,
+      "exactOfficialQuotePreserved": null
+    }
+  ],
+  "changedOfficialAccounts": 1,
+  "unchangedOtherCreators": 7,
+  "modelCalls": 0,
+  "platformCalls": 0,
+  "originalStoredReviewsUnchanged": true,
+  "allChecksPassed": true,
+  "fullNewCampaignRerun": false
+}

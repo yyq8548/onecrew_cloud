@@ -160,8 +160,6 @@ export function createDiscoveryLibraryProjection(accounts: AccountContextService
       currentMaterial();
       const receipt = await libraryCall(() => tables.data.publishDiscoveryIdentity(selected, projection), true); assertCurrent();
       if (!isDeepStrictEqual(receipt, expectedIdentity)) throw new LibraryProjectionError("library_readback_incomplete");
-      const readback = await libraryCall(() => tables.data.getDiscoveryIdentity(selected, { table_id: table.id, campaign_id: campaign })); assertCurrent();
-      if (!isDeepStrictEqual(readback, expectedIdentity)) throw new LibraryProjectionError("library_readback_incomplete");
       currentMaterial();
       return { campaign_id: campaign, table_id: table.id, web_url: `${origin}/library/${encodeURIComponent(table.id)}`, total_hits: snapshot.rows.length, inserted_rows: finalRows.size - known.size };
     },

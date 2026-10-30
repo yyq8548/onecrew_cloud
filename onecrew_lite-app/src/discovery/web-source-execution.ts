@@ -19,7 +19,6 @@ export class DiscoveryWebSourceExecutor {
     if (this.reader.version !== "1.8.8" || campaign.opencli_version !== this.reader.version) throw new OpenCliError("opencli_version_changed");
     const browser = await this.browsers.resolve(context, source.profile_ref); await browser.assertCurrent();
     if (browser.profile !== source.profile_ref) throw new Error("discovery_browser_profile_mismatch");
-    if (target.platform === "youtube") await this.reader.checkYoutubeEvidenceProfile(browser); else await this.reader.checkBrowserProfile(browser);
     this.accounts.assertCurrent(context); owned.assertOwned();
     const claim = owned.repository.claimWebSource(input.campaign_id, input.expected_revision, input.search_hit_id), started = performance.now();
     const timings: Record<"identity_ms" | "profile_ms" | "content_ms", number | null> = { identity_ms: null, profile_ms: null, content_ms: null };

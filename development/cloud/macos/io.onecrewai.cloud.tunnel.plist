@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>io.onecrewai.cloud.tunnel</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/guanliyuan/Documents/ChatGPT/Onecrew/onecrew_cloud/.scratch/shopify-live-20261027/cloudflared</string>
+    <string>tunnel</string>
+    <string>--no-autoupdate</string>
+    <string>run</string>
+    <string>--token-file</string>
+    <string>/Users/guanliyuan/Documents/ChatGPT/Onecrew/onecrew_cloud/.scratch/mail-pairing-20261027/tunnel.token</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/guanliyuan/Documents/ChatGPT/Onecrew/onecrew_cloud</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/guanliyuan/Documents/ChatGPT/Onecrew/onecrew_cloud/.scratch/macos-startup/tunnel.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/guanliyuan/Documents/ChatGPT/Onecrew/onecrew_cloud/.scratch/macos-startup/tunnel.log</string>
+</dict>
+</plist>

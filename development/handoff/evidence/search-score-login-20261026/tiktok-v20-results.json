@@ -1,0 +1,179 @@
+{
+  "checkedAt": "2026-10-26T22:49:01.578Z",
+  "campaign": "ac0a1c33-c8ff-462d-8a6e-5bb07f22bbf1",
+  "counts": {
+    "qualified": 10,
+    "pending": 2,
+    "rejected": 23
+  },
+  "target": 10,
+  "savedSources": 76,
+  "recommendations": 10,
+  "assessments": [
+    {
+      "creator": "Home Finds",
+      "profile": "https://www.tiktok.com/@home.finds93",
+      "verdict": "qualified",
+      "followers": 11300,
+      "source": "https://www.tiktok.com/@home.finds93/video/7688862262408334606",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Kayli- Travel Agent ✨",
+      "profile": "https://www.tiktok.com/@kayli.travel",
+      "verdict": "qualified",
+      "followers": 18400,
+      "source": "https://www.tiktok.com/@kayli.travel/video/7652217257422114078",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Olivego",
+      "profile": "https://www.tiktok.com/@olivego_us",
+      "verdict": "qualified",
+      "followers": 10400,
+      "source": "https://www.tiktok.com/@olivego_us/video/7632499592185089293",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Official 👑 Doctoras B",
+      "profile": "https://www.tiktok.com/@drjulia8",
+      "verdict": "qualified",
+      "followers": 321800,
+      "source": "https://www.tiktok.com/@drjulia8/video/7578601550663126285",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Reese",
+      "profile": "https://www.tiktok.com/@thereeseco",
+      "verdict": "qualified",
+      "followers": 48400,
+      "source": "https://www.tiktok.com/@thereeseco/video/7675134123467443470",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Tamica Simone",
+      "profile": "https://www.tiktok.com/@tamica_simone_",
+      "verdict": "qualified",
+      "followers": 15700,
+      "source": "https://www.tiktok.com/@tamica_simone_/video/7683916855920037151",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "andydeals",
+      "profile": "https://www.tiktok.com/@andydeals",
+      "verdict": "qualified",
+      "followers": 23100,
+      "source": "https://www.tiktok.com/@andydeals/video/7641288697547181325",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Erik Flannery",
+      "profile": "https://www.tiktok.com/@the_reluctant_foreman",
+      "verdict": "qualified",
+      "followers": 86400,
+      "source": "https://www.tiktok.com/@the_reluctant_foreman/video/7667997747970067726",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Gideon Gear",
+      "profile": "https://www.tiktok.com/@how_to_dad",
+      "verdict": "qualified",
+      "followers": 18500,
+      "source": "https://www.tiktok.com/@how_to_dad/video/7647969476364782861",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Bonnie",
+      "profile": "https://www.tiktok.com/@l3onnie",
+      "verdict": "pending",
+      "followers": 15100,
+      "source": "https://www.tiktok.com/@l3onnie/video/7637655212357946655",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Michaela | IVF | SAHM",
+      "profile": "https://www.tiktok.com/@michaela_motherhood",
+      "verdict": "pending",
+      "followers": 118600,
+      "source": "https://www.tiktok.com/@michaela_motherhood/video/7661076806367251742",
+      "savedMaterialAuthorVerified": true
+    }
+  ],
+  "contacts": [
+    {
+      "creator": "Reese",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "Olivego",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 0,
+      "profileOnly": true
+    },
+    {
+      "creator": "Gideon Gear",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 0,
+      "profileOnly": true
+    },
+    {
+      "creator": "Official 👑 Doctoras B",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 0,
+      "profileOnly": true
+    },
+    {
+      "creator": "Kayli- Travel Agent ✨",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "Home Finds",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "andydeals",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 0,
+      "profileOnly": true
+    },
+    {
+      "creator": "Erik Flannery",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "Tamica Simone",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 2,
+      "profileOnly": false
+    }
+  ],
+  "platformCallsAdded": 0,
+  "modelCallsAdded": 0,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "independentHumanQualityAuditComplete": false,
+  "qualityAudit": {
+    "programVerdictsOnly": true,
+    "knownPromotionOnlyMisclassificationCount": 1,
+    "codeRuleApprovalPending": true,
+    "knownPromotionOnlyRowOmitted": true,
+    "correction": "v21"
+  }
+}

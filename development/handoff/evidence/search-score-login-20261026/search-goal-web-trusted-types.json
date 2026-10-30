@@ -1,0 +1,49 @@
+{
+  "userDate": "2026-10-26",
+  "sourceCampaign": "18b6299f-09be-4df2-9f1e-5988a4e4a1d9",
+  "requestedUrl": "https://forms.gle/bcR82Dg14S4D8oCQ9",
+  "before": {
+    "status": "failed",
+    "elapsedMs": 13840,
+    "code": "opencli_command_failed",
+    "stage": "process_exit",
+    "error": "Failed to execute 'setAttribute' on 'Element': This document requires 'TrustedScriptURL' assignment."
+  },
+  "after": {
+    "status": "completed",
+    "elapsedMs": 11819,
+    "documentUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdGU0CN5jW4A-B9SKMPMBOOf2Tgu9ds8glxLJ4idbcHi4PSFw/viewform",
+    "title": "Contact Information",
+    "markdownBytes": 663,
+    "truncated": false,
+    "publicEmailCount": 0
+  },
+  "baseImage": "sha256:3afa092013f7923d10b297e43830ddef68fdf44b661fc6166e6d866f159404d4",
+  "currentLocalImage": "sha256:9dab78adb0929115298c6e5eb5135b8d5348a3e8df8446027173dda4d9aa5a07",
+  "patch": "development/cloud/browser/opencli-web-trusted-types.patch",
+  "patchScope": "Skip script elements when absolutizing src on the detached page clone; retain the existing later script removal and the page's Trusted Types policy.",
+  "nodeSyntaxCheckPassed": true,
+  "canonicalDockerfileUpdated": true,
+  "unchangedFiles": [
+    { "path": "/opt/onecrew/browser-worker.mjs", "sha256": "88886e73894bedbcab248bfd960552cf57ea3bb8b94e1e3ca1476a6f8718f1fb" },
+    { "path": "/opt/onecrew/linux-browser-host.mjs", "sha256": "ba42db0b8ad920551b969c6bb177693172dea5a68fb8c6863354b576ff96b2b3" },
+    { "path": "/opt/onecrew/addons/onecrew-browser-search/instagram-search.js", "sha256": "497b52102b399af559a334ef2b91f391e7609136e64a7b699b2744b8dce64147" }
+  ],
+  "webModuleBeforeSha256": "55f43fe7ecda6b249a5925522aa9e4714bcc8b9ea597162b0f632e91926e3404",
+  "webModuleAfterSha256": "1f736573d7f28d9f3ca5da5ee339ca8a9f5db214997a2d9136cc064342db08f5",
+  "afterUpgradeColdAuth": [
+    { "platform": "tiktok", "status": "logged_in", "issue": null, "checkedAt": 1793077024, "encryptedSnapshotSaved": true },
+    { "platform": "youtube", "status": "logged_in", "issue": null, "checkedAt": 1793077036, "encryptedSnapshotSaved": true },
+    { "platform": "instagram", "status": "logged_in", "issue": null, "checkedAt": 1793077049, "encryptedSnapshotSaved": true }
+  ],
+  "historicalCampaignOrReviewsChanged": false,
+  "historicalContactFailureRetained": true,
+  "formSubmitted": false,
+  "modelCalls": 0,
+  "newFullCampaignRun": false,
+  "emailsSent": 0,
+  "newPermissions": false,
+  "remoteDeploymentPerformed": false,
+  "previousImageReferencesPreserved": true,
+  "channelCountingConfirmedByUser": true
+}

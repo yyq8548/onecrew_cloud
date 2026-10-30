@@ -17,6 +17,8 @@ export interface AccessPairingCandidate { installationId: string; credentialId: 
 type HttpResult = { status: number; body: unknown } | { status: "transport" };
 const fail = (code = "access.enrollment_recovery_required") => new AccessVerificationError(code);
 
+export { installationSchema as accessInstallationSchema, request as requestAccessInstallation };
+
 async function request(path: string, init: RequestInit): Promise<HttpResult> {
   const response = await fetch(`${API_ORIGIN}${path}`, { ...init, redirect: "manual", signal: AbortSignal.timeout(20_000) })
     .then(value => value, () => undefined);

@@ -4,7 +4,7 @@ import { ShopRuntimeRegistry } from "../cloud/shop-runtime-registry.ts";
 import { ShopifyInstallationStore, type ShopifyWebhookReceipt, type VerifiedWebhookEnvelope } from "./installation-store.ts";
 import type { ShopBrowserManager } from "../cloud/shop-browser-manager.ts";
 import type { ShopifyPrivacyService } from "./privacy-service.ts";
-import type { CloudMailStore } from "../cloud/mail-store.ts";
+import type { CloudMailService } from "../cloud/mail-service.ts";
 
 // 单写进程内串行排空，持久收件负责崩溃后的恢复。
 export class ShopifyUninstallProcessor {
@@ -15,11 +15,11 @@ export class ShopifyUninstallProcessor {
   readonly #onFailure: (error: unknown) => void;
   readonly #browsers: ShopBrowserManager | undefined;
   readonly #privacy: ShopifyPrivacyService | undefined;
-  readonly #mail: CloudMailStore | undefined;
+  readonly #mail: CloudMailService | undefined;
   #failure: unknown;
   #closed = false;
 
-  constructor(store: ShopifyInstallationStore, runtimes: ShopRuntimeRegistry, onFailure: (error: unknown) => void, browsers?: ShopBrowserManager, privacy?: ShopifyPrivacyService, mail?: CloudMailStore) {
+  constructor(store: ShopifyInstallationStore, runtimes: ShopRuntimeRegistry, onFailure: (error: unknown) => void, browsers?: ShopBrowserManager, privacy?: ShopifyPrivacyService, mail?: CloudMailService) {
     this.#store = store; this.#runtimes = runtimes; this.#onFailure = onFailure;
     this.#browsers = browsers;
     this.#privacy = privacy;
@@ -48,11 +48,16 @@ export class ShopifyUninstallProcessor {
       if (receipt.lifecycle_revision !== null) await this.#runtimes.remove(receipt.shop);
       if (receipt.topic === "APP_UNINSTALLED") {
         if (receipt.lifecycle_revision !== null && this.#store.workspace(receipt.shop)) await this.#browsers?.closeShop(receipt.shop);
-      } else {
-        await this.#privacy!.process(receipt);
       }
+      if (receipt.lifecycle_revision !== null) await this.#mail?.revokeShop(receipt.shop);
+      if (receipt.topic !== "APP_UNINSTALLED") await this.#privacy!.process(receipt);
       this.#store.completeWebhook(receipt.webhook_id);
     }).then(() => { this.#scheduled.delete(receipt.webhook_id); }, error => {
+      if (error instanceof CloudHttpError && error.message === "cloud.mail_revocation_incomplete") {
+        this.#scheduled.delete(receipt.webhook_id);
+        console.error(JSON.stringify({ event: "cloud.webhook_processing_deferred", errorCode: error.message }));
+        return;
+      }
       if (this.#failure === undefined) { this.#failure = error; this.#onFailure(error); }
     });
   }
@@ -63,7 +68,7 @@ export class ShopifyUninstallProcessor {
     while (pending.length) {
       for (const receipt of pending) this.#schedule(receipt);
       await this.drain();
-      pending = this.#store.pendingWebhooks(100, this.#privacy ? undefined : "APP_UNINSTALLED");
+      pending = this.#store.pendingWebhooks(100, this.#privacy ? undefined : "APP_UNINSTALLED", pending[pending.length - 1]!.sequence);
     }
   }
 

@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-27T02:32:32.167Z",
+  "userDate": "2026-10-26",
+  "timezone": "America/Los_Angeles",
+  "repositories": [
+    {
+      "repository": "onecrew-access",
+      "branch": "onecrew",
+      "mergedCommit": "aa070646073be4e8f9f0d0c870158070fa3d227e",
+      "originalValidatedCommit": "71b49ca96173c7ad128e1cf935b871d7ce8d7046",
+      "tree": "bb5ccdd81a0918128d10511608b3fc9f622d55b2",
+      "completeTreeMatchesValidatedVersion": true,
+      "sourceCommitIsAncestor": true,
+      "mergeRequest": 30
+    },
+    {
+      "repository": "onecrew-admin",
+      "branch": "onecrew",
+      "mergedCommit": "150312c567e86e17fcc4e3f2860af12f57442c27",
+      "originalValidatedCommit": "0e80e44f41b12c311075a20972ab9c24ea5d161d",
+      "tree": "dbc4e1af03f53d6d0c35927d96dae079c3af183f",
+      "completeTreeMatchesValidatedVersion": true,
+      "sourceCommitIsAncestor": true,
+      "mergeRequest": 7
+    }
+  ],
+  "runtime": "Actual Access and Sync workers, Workerd, D1 and native service bindings",
+  "boundaryChecksPassed": 23,
+  "fakeServiceResponses": false,
+  "authenticatedApprovalRerun": false,
+  "authenticatedRevocationRerun": false,
+  "priorAuthenticatedEvidenceReusedForIdenticalSourceTrees": true,
+  "companySourceModified": false,
+  "databaseMigrationsAdded": 0,
+  "deploymentPerformed": false,
+  "productionDeploymentVerified": false,
+  "shopifyNetworkVerified": false,
+  "emailsSent": 0
+}

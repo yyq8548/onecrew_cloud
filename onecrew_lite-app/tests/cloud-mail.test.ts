@@ -29,6 +29,11 @@ test("mail pairing persists encrypted PKCE, consumes once and invalidates replac
     assert.throws(() => store.consume(replacement.state), /pairing_invalid/u);
     assert.equal((await readFile(path)).includes(Buffer.from(pending.bearer)), false);
     assert.equal((await readFile(path)).includes(Buffer.from(pending.verifier)), false);
+    assert.throws(() => store.begin(shop, member, 0), /revocation_incomplete/u);
+    store.disconnect(shop, member);
+    assert.equal(store.pendingPairings(shop, member).length, 1);
+    assert.throws(() => store.removeShop(shop), /revocation_incomplete/u);
+    store.forgetPairing(pending.id);
     const disconnected = store.begin(shop, member, 0);
     store.disconnect(shop, member);
     assert.throws(() => store.consume(disconnected.state), /pairing_invalid/u);

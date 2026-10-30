@@ -1,0 +1,33 @@
+{
+  "scoringVersion": "v23",
+  "cases": [
+    {
+      "role": "product_service",
+      "modelCreator": "confirmed",
+      "selection": "insufficient",
+      "quality": "insufficient",
+      "level": null,
+      "elapsedMs": 10865,
+      "modelCalls": 1,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true
+    },
+    {
+      "role": "own_shop_operations",
+      "modelCreator": "confirmed",
+      "selection": "insufficient",
+      "quality": "insufficient",
+      "level": null,
+      "elapsedMs": 12263,
+      "modelCalls": 1,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true
+    }
+  ],
+  "allChecksPassed": true,
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "independentHumanQualityAuditComplete": false
+}

@@ -4,13 +4,13 @@ import { readFileSync } from "node:fs";
 import { isAbsolute, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { z } from "zod";
-import { ShopifyInstallationStore, type ShopifyWorkspace } from "../shopify/installation-store.ts";
+import type { ShopifyWorkspace } from "../shopify/installation-store.ts";
+import { workspaceKeySchema as shopDomainSchema, type WorkspaceStore } from "./workspaces.ts";
 import { BrowserSnapshotStore, type BrowserSnapshotOwner } from "./browser-snapshot-store.ts";
 import { DockerBrowserClient, dockerCommand } from "./docker-browser-client.ts";
 import { cloudCreatorSearch, cloudPlatform } from "./platforms.ts";
 import { CloudHttpError } from "./http-error.ts";
-import { shopDomainSchema } from "./shop-runtime-registry.ts";
-import { cloudBrowserRead, type CloudBrowserRead, type CloudBrowserReadResult } from "./browser-operations.ts";
+import type { CloudBrowserRead, CloudBrowserReadResult } from "./browser-operations.ts";
 import type { VerifiedOpenCliPublicSource } from "../platforms/opencli/reader.ts";
 import { OpenCliError } from "../platforms/opencli/errors.ts";
 import { cloudSessionReceipt } from "../platforms/opencli/cloud-session.ts";
@@ -22,7 +22,7 @@ interface TaskSession { workspace: ShopifyWorkspace; revision: number; active: A
 
 export class ShopBrowserManager {
   readonly #config: ShopBrowserConfiguration;
-  readonly #store: ShopifyInstallationStore;
+  readonly #store: WorkspaceStore;
   readonly #snapshots: BrowserSnapshotStore;
   readonly #scope: string;
   readonly #active = new Map<string, Active>();
@@ -30,7 +30,7 @@ export class ShopBrowserManager {
   readonly #task = new AsyncLocalStorage<TaskSession>();
   #image: Promise<string> | undefined;
   #stopping = false;
-  constructor(config: ShopBrowserConfiguration, store: ShopifyInstallationStore, snapshots: BrowserSnapshotStore) {
+  constructor(config: ShopBrowserConfiguration, store: WorkspaceStore, snapshots: BrowserSnapshotStore) {
     if (!config.image || !isAbsolute(config.seccompProfile) || !isAbsolute(config.dataDirectory)) throw new Error("cloud.browser_configuration_invalid");
     if (createHash("sha256").update(readFileSync(config.seccompProfile)).digest("hex") !== "8009f0da5bb7a293a5fa7b34de074ec82b61c1e2f800573364d44c6a8c48ab48") throw new Error("cloud.browser_seccomp_not_approved");
     this.#config = config; this.#store = store; this.#snapshots = snapshots;
@@ -140,19 +140,27 @@ export class ShopBrowserManager {
     return this.#using(workspace, signal, (client, stopped) => client.search(input, stopped));
   }
   read<T extends CloudBrowserRead>(workspace: ShopifyWorkspace, request: T, signal: AbortSignal): Promise<CloudBrowserReadResult<T>> {
-    cloudBrowserRead.parse(request);
     return this.#using(workspace, signal, (client, stopped) => client.read(request, stopped));
   }
   async readPublicWeb(workspace: ShopifyWorkspace, source: VerifiedOpenCliPublicSource, signal: AbortSignal) {
     await source.assertApproved();
     return this.#using(workspace, signal, (client, stopped) => client.readPublicWeb(source, stopped));
   }
-  connect(workspace: ShopifyWorkspace, platform: unknown, signal: AbortSignal, viewer: (container: string, signal: AbortSignal) => Promise<void>): Promise<void> {
+  connect(workspace: ShopifyWorkspace, platform: unknown, signal: AbortSignal, viewer: (container: string, signal: AbortSignal) => Promise<boolean>) {
     const selected = cloudPlatform.parse(platform);
     return this.#using(workspace, signal, async (client, stopped) => {
       await client.request("POST", "/connect", { platform: selected });
       stopped.throwIfAborted();
-      await viewer(client.container, stopped);
+      const checkAuth = await viewer(client.container, stopped);
+      stopped.throwIfAborted();
+      if (!checkAuth) return { auth: null, check_error: null };
+      try {
+        const auth = await client.read({ method: "checkCreatorAuthStatus", args: [selected] }, stopped);
+        return { auth, check_error: null };
+      } catch (error) {
+        if (!(error instanceof OpenCliError)) throw error;
+        return { auth: null, check_error: error.code };
+      }
     });
   }
   disconnect(workspace: ShopifyWorkspace, platform: unknown, signal: AbortSignal) {

@@ -1,0 +1,19 @@
+{
+  "scoringVersion": "v21-with-instagram-merchant-and-promotion-only-guards",
+  "cases": [
+    { "role": "promotion_only", "selection": "insufficient", "quality": "insufficient", "level": null, "modelCalls": 0, "elapsedMs": 10 },
+    { "role": "individual_affiliate", "selection": "supported", "quality": "supported", "level": "medium", "modelCalls": 1, "elapsedMs": 29730 },
+    { "role": "retailer", "selection": "contradicted", "quality": "insufficient", "level": null, "modelCalls": 1, "elapsedMs": 9686 },
+    { "role": "review_media", "selection": "supported", "quality": "supported", "level": "good", "modelCalls": 1, "elapsedMs": 11201 }
+  ],
+  "regressionCasesAlsoUsedAsPromptExamples": ["individual_affiliate", "retailer"],
+  "regressionCaseUsedToDefineCodeRule": "promotion_only",
+  "heldOutCaseCount": 1,
+  "allChecksPassed": true,
+  "sourceExcerptVerified": true,
+  "originalMaterialUnchanged": true,
+  "noReviewCommitted": true,
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "independentHumanQualityAuditComplete": false
+}

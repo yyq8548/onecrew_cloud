@@ -1,0 +1,14 @@
+{
+  "event": "cloud.selected_contacts_verified",
+  "campaign": "d63913fa-76ed-4a44-852a-baea76ae2acb",
+  "candidate": "d82b3f02-bda3-4a85-b0b3-b54a903d3aa6",
+  "elapsedMs": 4275,
+  "pages_read": 2,
+  "has_more": true,
+  "otherCandidatesUnchanged": true,
+  "verdictsUnchanged": true,
+  "libraryPublished": true,
+  "emailSent": false,
+  "modelCallsAdded": 0,
+  "paidServicesUsed": false
+}

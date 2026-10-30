@@ -1,43 +1,29 @@
 # OneCrew Cloud
 
-面向 Shopify 后台的独立云端版本，继承 Lite 的创作者搜索、Campaign、证据评分和 Library。服务器运行浏览器与开源模型，商家无需安装客户端。Gmail 本地代码已接入，实际授权和发信仍依赖公司服务改动通过审批并发布，见 [Gmail 接入范围](development/cloud/ACCESS-CLOUD-APPROVAL.md)。
+OneCrew Cloud复用Lite的创作者搜索、Campaign、原文核实、Library和Gmail能力，提供Shopify内嵌界面及独立网页。非Shopify用户也可以登录OneCrew后手动填写商品。
 
-仓库：https://github.com/yyq8548/onecrew_cloud.git。导入来源为 Lite 提交 `1ac72b654eaf823df6c14ce512e34c6c43ddd8f2`，来源和进度见 [开发记录](development/CLOUD-IMPLEMENTATION.md)。目录和包标识保留 `onecrew_lite-*` 以便复用；本仓库不依赖相邻 Lite 源码或账号目录。
+- 使用入口：https://cloud.onecrewai.io/
+- 同事测试：[简单使用说明](development/cloud/TEAM-TESTING.md)
+- 当前进度：[Goal](development/handoff/GOAL.md)、[未完成事项](development/handoff/ISSUES.md)
+- 上架准备：[Shopify材料](development/cloud/SHOPIFY-SUBMISSION.md)，尚未提交审核
+- 换电脑开发：[交接入口](development/handoff/README.md)
 
-**换电脑开发先读 [交接入口](development/handoff/README.md)。** 其中保存 goal、原始总方案、当前有效范围、进度、问题与验收证据。当前优先完成[最简单版本的本地基础流程](development/cloud/BASIC-WORKFLOW.md)，线上环境暂缓；Git 不迁移 Codex 的运行状态。
+## 当前功能
 
-## 当前实现
+平台为YouTube、TikTok、Instagram。填写商品、选择平台和最低粉丝数后，目标寻找十位，新搜索不设最高限制；按频道分别计数，来源不足时可能少于十位。匹配使用免费Qwen3-4B：同类商品、其他品牌同类商品或直接配套均可，结果显示符合／不符合及真实原文，保留粉丝和身份核实。
 
-- 按店铺独立持有原 AccountContextService、AdmissionGate 和 ExecutionSupervisor，拒绝店铺共用存储归属。
-- 服务器语义客户端复用原 SemanticStructuredClient 合同，支持 JSON schema、证据输入、取消、输出大小限制与独立评分缓存身份。
-- 独立 Cloud HTTP 入口使用 Shopify 官方 SDK 验证会话、交换 token、验证 Webhook 和读取商品；SQLite 加密保存 offline session 与持久收件。
-- 私有持久目录、独占锁、显式初始化与关闭恢复，安装和卸载以事务版本检查处理并发。
-- 卸载持久收件驱动店铺任务取消和运行时排空，排空期间阻止重装，服务启动时恢复未完成的卸载处理。
-- 提供 OpenCLI 1.8.8、配套扩展、Chromium/Xvfb 的 Linux 容器构建入口。
-- Linux 浏览器入口复用目录锁并管理所属进程，真实验证了两套环境独立运行、正常重启和故障关闭。
-- 容器内四平台搜索入口复用原 OpenCliReader，通过私有 socket 接受任务、返回结果和取消排空；真实 YouTube 调用已通过。
-- 宿主服务按店铺分配浏览器，活动数据保存在容器内存目录，任务结束后保存加密快照并停止容器；两店铺搜索、重开恢复和卸载取消已实际验证。
-- 网页入口复用现有界面组件，接入商品、四平台搜索与 noVNC 登录窗口。远程连接使用短时单次凭据；实际 VNC 数据流和连接权限检查已通过，真实 Shopify 内嵌体验仍待验收。
+推荐表保存粉丝观察、匹配依据、来源和公开联系方式。Gmail复用OneCrew授权，支持选择联系人、编辑邮件、预览确认、批量逐封发送及回执。平台会话加密保存，个人与店铺工作区独立。
 
-云端平台范围为 YouTube、TikTok、Instagram、X。本地装配和部分验收已完成；真实 Shopify、四平台完整业务、人工批量质量与持续运行条件尚未全部验收，不能视为可上架。
+网站提供[使用与支持](https://cloud.onecrewai.io/support)和[隐私政策预览](https://cloud.onecrewai.io/privacy)。预览尚未生效；上架所需文件、步骤和缺少资料见[材料入口](development/cloud/SHOPIFY-SUBMISSION.md)与[一次清单](development/cloud/SHOPIFY-REQUIRED-INPUTS.md)。
 
-## 本地开发
+2026-10-29网站v49以默认最低2000粉丝且无上限完成两轮真实任务：纸巾十位、五个公开邮箱，306.139秒；Monster饮料十位、四个公开邮箱，344.942秒。两轮均选中三个平台，达到十位后停止，结果来自YouTube与TikTok；全部推荐均有主页链接，表格按粉丝数从高到低排序。商品词义、统计保存和继续搜索已修复，见[当前验收记录](development/cloud/SEARCH-MEANING-METRICS-2026-10-29.md)。不同平台、条件、候选和历史材料影响耗时，不承诺固定速度或任意商品都找满。
 
-使用 Node.js 26.7.0、pnpm 10.32.1 和根目录锁文件。
+Shopify真实安装、商品同步、卸载重装、第二店铺隔离及邮箱独立撤销已有证据；[离线令牌自然到期、刷新和失效后接口恢复](development/cloud/SHOPIFY-TOKEN-LIFECYCLE-2026-10-28.md)已验证。真实整店删除通知、新用户从零流程及最终上架检查仍有缺项，见当前进度。
 
-```sh
-pnpm install --frozen-lockfile
-pnpm build:tables
-pnpm typecheck
-pnpm check:contracts
-pnpm --filter onecrew-web build:cloud
-node --test --test-concurrency=4 onecrew_lite-app/tests/cloud-*.test.ts
-```
+## 运行与开发
 
-Cloud 启动方法与当前验证范围见 [Cloud HTTP 服务](development/cloud/SERVICE.md)。Linux 浏览器构建与边界见 [浏览器环境](development/cloud/browser/README.md)。继承代码的构建说明见 [development/README.md](development/README.md)，桌面安装内容不作为云端部署入口。
+当前部署在运营方这台Mac：已安装用户LaunchAgent，开机并登录后自动启动Docker、网站与免费4B，以及固定公网Tunnel。确认Metal模型就绪后开放网站，模型意外退出时自动恢复。服务期间Mac需保持唤醒联网。停止、重启及手动开发入口见[运行说明](development/cloud/STARTUP.md)；私人环境配置、模型权重、浏览器资料及密钥通过私有渠道保管。
 
-免费模型的固定权重、Linux CPU 配置、本机 Metal 验证和实际性能见 [模型验证](development/cloud/model/README.md)。待填写的 [Shopify 应用配置模板](development/cloud/shopify.app.toml.example)对应当前权限和 Webhook 路由，需真实开发应用与 HTTPS 地址后才能使用。Gmail 复用原授权、发送确认、持久记录与真实回执；公司补丁只在隔离本地目录准备，等待用户审批后由 River 合并。
+仓库：https://github.com/yyq8548/onecrew_cloud.git。导入自Lite提交`1ac72b654eaf823df6c14ce512e34c6c43ddd8f2`。包名保留`onecrew_lite-*`以便复用，本仓库不依赖相邻Lite源码或账号目录。
 
-不购买付费服务。账号凭据、浏览器会话、模型权重、数据库和依赖缓存不提交。第三方许可证保留在所属模块；当前项目没有整体开源授权声明。
-
-[Shopify 提交材料草稿](development/cloud/SHOPIFY-SUBMISSION.md)包含商店文案、英文审核步骤、截图与录屏范围、隐私说明的代码依据及待补材料。该文件尚未用于提交，真实业务和评分质量验收仍须完成。
+仅修改onecrew_cloud；公司Access、Sync、API后续源码或配置变更须先取得具体审批。合并发布遵循[工作区流程](docs/release/合并与部署流程.md)，不购买付费服务。

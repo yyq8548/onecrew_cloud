@@ -1,0 +1,50 @@
+{
+  "matchingVersion": "v30",
+  "cases": [
+    {
+      "role": "bottle_used_as_training_weight",
+      "matchesProduct": true,
+      "creator": "confirmed",
+      "selection": null,
+      "expectedMatch": false,
+      "passed": false,
+      "correctProductExcerptVerified": false,
+      "originalAuditPassed": false,
+      "originalMaterialUnchanged": false,
+      "modelCalls": 1,
+      "elapsedMs": null
+    },
+    {
+      "role": "filter_bottle_review",
+      "matchesProduct": true,
+      "creator": "confirmed",
+      "selection": null,
+      "expectedMatch": true,
+      "passed": false,
+      "correctProductExcerptVerified": false,
+      "originalAuditPassed": false,
+      "originalMaterialUnchanged": false,
+      "modelCalls": 1,
+      "elapsedMs": null
+    },
+    {
+      "role": "bottle_review_not_accessory_links",
+      "matchesProduct": true,
+      "creator": "confirmed",
+      "selection": "supported",
+      "expectedMatch": true,
+      "passed": true,
+      "correctProductExcerptVerified": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "modelCalls": 1,
+      "elapsedMs": 8291
+    }
+  ],
+  "allChecksPassed": false,
+  "modelCalls": 3,
+  "platformCalls": 0,
+  "emailsSent": 0,
+  "fullCampaignRerun": false,
+  "independentHumanQualityAuditComplete": false
+}

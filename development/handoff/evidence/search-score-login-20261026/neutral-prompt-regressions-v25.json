@@ -1,0 +1,46 @@
+{
+  "scoringVersion": "v25",
+  "internalVersionLabelsRemoved": true,
+  "scoringRulesUnchangedFromApprovedV24": true,
+  "cases": [
+    {
+      "role": "unrelated_recovery",
+      "modelCreator": "confirmed",
+      "modelRelation": "related_product_use_case",
+      "selection": "supported",
+      "quality": "supported",
+      "level": "medium",
+      "meaningfulKeywordMatches": 0,
+      "weakKeywordRuleActivated": false,
+      "modelCalls": 1,
+      "elapsedMs": 10848,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "expectedRecommendation": false,
+      "passed": false
+    },
+    {
+      "role": "related_bottle",
+      "modelCreator": "confirmed",
+      "modelRelation": "weak_content_connection",
+      "selection": "supported",
+      "quality": "supported",
+      "level": "low",
+      "meaningfulKeywordMatches": 1,
+      "weakKeywordRuleActivated": false,
+      "modelCalls": 1,
+      "elapsedMs": 7032,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true,
+      "expectedRecommendation": true,
+      "passed": true
+    }
+  ],
+  "allChecksPassed": false,
+  "modelCalls": 2,
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "independentHumanQualityAuditComplete": false
+}

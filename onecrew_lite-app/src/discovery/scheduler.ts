@@ -74,13 +74,13 @@ export class DiscoveryScheduler {
     const recommended = new Set(owned.repository.recommendedCandidateIds(input.campaign_id));
     let recommendationVersion = 0;
     let holdDiscovery = false;
-    const failedHits = new Set<string>();
+    const settledHits = new Set<string>();
     const unavailable = [...new Set([...input.excluded_platforms, ...INACTIVE_CREATOR_SOURCES, ...owned.repository.readStops(input.campaign_id).map(stop => stop.platform)])];
     const resumable = new Set(owned.repository.pendingScoreHits(input.campaign_id, input.expected_revision, unavailable));
     for (let index = restored.length - 1; index >= 0; index--) if (!resumable.has(restored[index]!.hit)) restored.splice(index, 1);
     const updatePipeline = () => {
       for (const stop of owned.repository.readStops(input.campaign_id)) if (!unavailable.includes(stop.platform)) unavailable.push(stop.platform);
-      const active = owned.repository.activePendingCount(input.campaign_id, input.expected_revision, unavailable, [...failedHits]);
+      const active = owned.repository.activePendingCount(input.campaign_id, input.expected_revision, unavailable, [...settledHits]);
       const next = discoveryShouldHold(holdDiscovery, active);
       if (next !== holdDiscovery) metrics.enqueue(input.campaign_id, next ? "pipeline.discovery_held" : "pipeline.discovery_resumed", 0);
       holdDiscovery = next;
@@ -114,7 +114,7 @@ export class DiscoveryScheduler {
     };
     const recordScore = (hit: string, outcome: ScoreOutcome): boolean => {
       const code = outcome.ok ? null : discoveryExecutionFailureCode(outcome.error), proceed = code === null || discoveryScoreDeferred(code);
-      if (outcome.ok) failedHits.delete(hit); else failedHits.add(hit);
+      if (!outcome.ok || outcome.saved) settledHits.add(hit); else settledHits.delete(hit);
       if (code !== null) metrics.enqueueFailure(input.campaign_id, { recorded_at: Date.now(), step: "score", platform: null, target_id: hit, call_number: null, code });
       owner.change(status => {
         if (outcome.ok) status.deferred_hits = status.deferred_hits.filter(item => item.search_hit_id !== hit);
@@ -127,8 +127,9 @@ export class DiscoveryScheduler {
     };
     const launch = () => {
       let active = jobs.filter(job => job.state === "running").length;
+      const capacity = Math.min(DISCOVERY_SCORE_CONCURRENCY, owned.repository.remainingSlots(input.campaign_id, unavailable));
       for (const job of jobs) {
-        if (active >= DISCOVERY_SCORE_CONCURRENCY || owner.signal.aborted) break;
+        if (active >= capacity || owner.signal.aborted) break;
         if (job.state !== "queued") continue; active++; job.state = "running";
         metrics.enqueue(input.campaign_id, "score.queue", elapsed(job.queuedAt), job.hit);
         job.task = (async (): Promise<ScoreOutcome> => {
@@ -162,7 +163,7 @@ export class DiscoveryScheduler {
       if (prepared.value.state !== "model") { await queueWork(() => queue.remove(hit)); return recordScore(hit, { ok: true, saved: prepared.value.state === "cached" }); }
       if (owner.signal.aborted) return true;
       if (attempted.has(prepared.value.prepared.evidenceKey)) { await queueWork(() => queue.remove(hit)); return true; }
-      attempted.add(prepared.value.prepared.evidenceKey); jobs.push({ hit, deferred, prepared: prepared.value.prepared, preparedAt, queuedAt: performance.now(), state: "queued" }); launch(); return true;
+      attempted.add(prepared.value.prepared.evidenceKey); settledHits.delete(hit); jobs.push({ hit, deferred, prepared: prepared.value.prepared, preparedAt, queuedAt: performance.now(), state: "queued" }); launch(); return true;
     };
     const work = await (async () => {
       while (!fatal) {
@@ -173,7 +174,10 @@ export class DiscoveryScheduler {
         updatePipeline();
         if (jobs.length || restored.length) {
           const capacity = discoveryScoreCapacity(owned.repository.remainingSlots(input.campaign_id, unavailable));
-          if (!capacity && !jobs.length) restored.length = 0;
+          if (!capacity) {
+            restored.length = 0;
+            if (jobs.every(job => job.state === "queued")) jobs.length = 0;
+          }
           if (jobs.length && (jobs.length >= capacity || readAhead >= DISCOVERY_READ_AHEAD)) { if (!await finishOne()) break; readAhead = 0; continue; }
         }
         const saved = restored.shift(); if (saved) { if (!await enqueue(saved.hit, saved.deferred_platforms)) break; continue; }
@@ -211,6 +215,10 @@ export class DiscoveryScheduler {
         }
         if (!advancing && hadScores) { if (!await finishOne()) break; readAhead = 0; continue; }
         if (!advancing) {
+          // 评分可能已经释放平台占用，结束前重新核对排队的旧 busy 结果。
+          if (result.step.kind === "busy" && owned.repository.planStepScoring(input.campaign_id, input.expected_revision, unavailable, [], [], { ...configuration.scheduling, holdDiscovery }).kind !== "busy") {
+            metrics.enqueue(input.campaign_id, "pipeline.busy_replanned", 0); continue;
+          }
           if (["search_exhausted", "needs_evidence"].includes(result.step.kind)
             && result.campaign.platform_runs.some(run => run.status === "completed" && !unavailable.includes(run.platform))) {
             if (!configuration.dependencies) throw new Error("discovery_dependency_unavailable");

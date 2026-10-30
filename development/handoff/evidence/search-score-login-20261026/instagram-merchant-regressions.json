@@ -1,0 +1,25 @@
+{
+  "scoringVersion": "v21-with-instagram-merchant-guard",
+  "cases": [
+    { "role": "category_brand", "selection": "insufficient", "quality": "insufficient", "level": null, "elapsedMs": 7479 },
+    { "role": "local_retail", "selection": "contradicted", "quality": "insufficient", "level": null, "elapsedMs": 7526 },
+    { "role": "explicit_retail", "selection": "insufficient", "quality": "insufficient", "level": null, "elapsedMs": 10639 },
+    { "role": "shipping_store", "selection": "insufficient", "quality": "insufficient", "level": null, "elapsedMs": 9212 },
+    { "role": "own_products", "selection": "insufficient", "quality": "insufficient", "level": null, "elapsedMs": 6568 },
+    { "role": "home_creator", "selection": "supported", "quality": "supported", "level": "good", "elapsedMs": 7017 },
+    { "role": "review_creator", "selection": "supported", "quality": "supported", "level": "medium", "elapsedMs": 8750 },
+    { "role": "digital_creator", "selection": "supported", "quality": "supported", "level": "medium", "elapsedMs": 8838 },
+    { "role": "parent_creator", "selection": "supported", "quality": "supported", "level": "good", "elapsedMs": 8608 }
+  ],
+  "realMerchantMaterials": 5,
+  "realCreatorMaterials": 4,
+  "modelCalls": 9,
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "allChecksPassed": true,
+  "originalAuditPassed": true,
+  "originalMaterialUnchanged": true,
+  "noReviewCommitted": true,
+  "casesUsedToDefineRules": true,
+  "independentHumanQualityAuditComplete": false
+}

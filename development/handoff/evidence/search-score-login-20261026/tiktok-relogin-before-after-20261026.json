@@ -1,0 +1,29 @@
+{
+  "userDate": "2026-10-26",
+  "timezone": "America/Los_Angeles",
+  "platform": "tiktok",
+  "beforeSave": {
+    "authenticated": true,
+    "authenticationRecords": 4,
+    "source": "Actual current remote page and existing account probe"
+  },
+  "saveReceipt": {
+    "at": "2026-10-27T02:58:55.184Z",
+    "status": "logged_in",
+    "issue": null,
+    "encryptedSnapshotSaved": true
+  },
+  "independentColdRestore": {
+    "checkedAt": 1793070107,
+    "verificationPageClosedBeforeCheck": true,
+    "status": "logged_in",
+    "issue": null,
+    "encryptedSnapshotSaved": true
+  },
+  "modelCalls": 0,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "previousCookieLossRootCauseConfirmed": false,
+  "taskEndPersistenceVerified": true,
+  "taskEndEvidence": "post-tiktok-workflow-auth-v29.json"
+}

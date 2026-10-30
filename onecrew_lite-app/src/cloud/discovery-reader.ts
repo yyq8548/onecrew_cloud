@@ -2,17 +2,17 @@ import PQueue from "p-queue";
 import type { AccountContext } from "../identity/account-context.ts";
 import { OpenCliError } from "../platforms/opencli/errors.ts";
 import type { OpenCliReaderApi, VerifiedOpenCliBrowserBinding, VerifiedOpenCliPublicSource } from "../platforms/opencli/reader.ts";
-import type { ShopifyWorkspace } from "../shopify/installation-store.ts";
+import type { CloudWorkspace } from "./workspaces.ts";
 import type { CloudBrowserRead, CloudBrowserReadResult } from "./browser-operations.ts";
 import { cloudPlatform } from "./platforms.ts";
 import type { ShopData } from "./shop-data.ts";
 import { ShopBrowserManager } from "./shop-browser-manager.ts";
 
-interface Configuration { readonly data: ShopData; readonly workspace: ShopifyWorkspace; readonly browsers: ShopBrowserManager }
+interface Configuration { readonly data: ShopData; readonly workspace: CloudWorkspace; readonly browsers: ShopBrowserManager }
 interface Shared { readonly queue: PQueue; readonly bindings: WeakSet<VerifiedOpenCliBrowserBinding> }
 const unavailable = async (..._args: unknown[]): Promise<never> => { throw new OpenCliError("opencli_read_command_unavailable"); };
 
-// 业务代码使用店铺签发的逻辑 profile；worker 再映射到真实且唯一的扩展 profile。
+// 业务代码使用工作区签发的逻辑 profile；worker 再映射到真实且唯一的扩展 profile。
 export class CloudDiscoveryReader implements OpenCliReaderApi {
   readonly version = "1.8.8";
   readonly #config: Configuration;
@@ -22,7 +22,8 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
   constructor(config: Configuration, shared: Shared = { queue: new PQueue({ concurrency: 1 }), bindings: new WeakSet() }, onFailure?: (error: OpenCliError) => void) {
     config.data.assertCurrent();
     const principal = config.data.runtime.context.principal;
-    if (principal.source !== "shopify" || principal.shop !== config.workspace.shop || principal.tenantId !== config.workspace.tenant_id || principal.baseId !== config.workspace.base_id) throw new Error("cloud.browser_owner_mismatch");
+    const ownerMatches = "user" in config.workspace ? principal.source === "access" && principal.user.id === config.workspace.user.id : principal.source === "shopify" && principal.shop === config.workspace.shop;
+    if (!ownerMatches || principal.tenantId !== config.workspace.tenant_id || principal.baseId !== config.workspace.base_id) throw new Error("cloud.browser_owner_mismatch");
     this.#config = config;
     this.#shared = shared;
     this.#onFailure = onFailure;
@@ -48,11 +49,10 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
   async #run<T>(binding: VerifiedOpenCliBrowserBinding | undefined, work: (signal: AbortSignal) => Promise<T>): Promise<T> {
     const { data } = this.#config;
     const assertCurrent = async () => {
-      data.assertCurrent();
       if (binding) {
         if (!this.#shared.bindings.has(binding)) throw new OpenCliError("opencli_profile_unavailable");
         await binding.assertCurrent();
-      }
+      } else data.assertCurrent();
     };
     await assertCurrent();
     const signal = binding ? AbortSignal.any([binding.signal, data.runtime.context.signal]) : data.runtime.context.signal;
@@ -91,7 +91,7 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
     return this.#read(binding, { method: "checkCreatorAuthStatus", args: [selected.data] });
   }
   creatorProfileEvidence(binding: VerifiedOpenCliBrowserBinding, site: string, authorId: string, authorUrl: string) {
-    if (site !== "tiktok" && site !== "instagram" && site !== "twitter") throw new OpenCliError("opencli_read_command_unavailable");
+    if (site !== "tiktok" && site !== "instagram") throw new OpenCliError("opencli_read_command_unavailable");
     return this.#read(binding, { method: "creatorProfileEvidence", args: [site, authorId, authorUrl] });
   }
   youtubeSearch(binding: VerifiedOpenCliBrowserBinding, query: string, limit: number) { return this.#read(binding, { method: "youtubeSearch", args: [query, limit] }); }
@@ -114,15 +114,15 @@ export class CloudDiscoveryReader implements OpenCliReaderApi {
   instagramPublicProfile(binding: VerifiedOpenCliBrowserBinding, username: string, authorId: string) { return this.#read(binding, { method: "instagramPublicProfile", args: [username, authorId] }); }
   instagramRecentOriginalPosts(binding: VerifiedOpenCliBrowserBinding, username: string, authorId: string, query = "", sourceUrl?: string) { return this.#read(binding, { method: "instagramRecentOriginalPosts", args: sourceUrl === undefined ? [username, authorId, query] : [username, authorId, query, sourceUrl] }); }
   instagramCommentLanguageEvidence(binding: VerifiedOpenCliBrowserBinding, username: string, source: string) { return this.#read(binding, { method: "instagramCommentLanguageEvidence", args: [username, source] }); }
-  twitterPublicProfile(binding: VerifiedOpenCliBrowserBinding, handle: string) { return this.#read(binding, { method: "twitterPublicProfile", args: [handle] }); }
-  twitterIdentityProfile(binding: VerifiedOpenCliBrowserBinding, handle: string) { return this.#read(binding, { method: "twitterIdentityProfile", args: [handle] }); }
-  twitterPostIdentity(binding: VerifiedOpenCliBrowserBinding, handle: string, postId: string) { return this.#read(binding, { method: "twitterPostIdentity", args: [handle, postId] }); }
-  twitterPostEvidence(binding: VerifiedOpenCliBrowserBinding, handle: string, postId: string) { return this.#read(binding, { method: "twitterPostEvidence", args: [handle, postId] }); }
-  twitterPostContent(binding: VerifiedOpenCliBrowserBinding, handle: string, postId: string, accountId: string) { return this.#read(binding, { method: "twitterPostContent", args: [handle, postId, accountId] }); }
-  twitterLanguageSample(binding: VerifiedOpenCliBrowserBinding, handle: string, postId: string, accountId: string) { return this.#read(binding, { method: "twitterLanguageSample", args: [handle, postId, accountId] }); }
-  twitterRecentContent(binding: VerifiedOpenCliBrowserBinding, handle: string) { return this.#read(binding, { method: "twitterRecentContent", args: [handle] }); }
   readPublicWeb(binding: VerifiedOpenCliBrowserBinding, source: VerifiedOpenCliPublicSource) { return this.#run(binding, signal => this.#config.browsers.readPublicWeb(this.#config.workspace, source, signal)); }
 
+  readonly twitterPublicProfile = unavailable;
+  readonly twitterIdentityProfile = unavailable;
+  readonly twitterPostIdentity = unavailable;
+  readonly twitterPostEvidence = unavailable;
+  readonly twitterPostContent = unavailable;
+  readonly twitterLanguageSample = unavailable;
+  readonly twitterRecentContent = unavailable;
   readonly bilibiliPublicProfile = unavailable;
   readonly bilibiliSourceVideoEvidence = unavailable;
   readonly bilibiliVideoEvidence = unavailable;

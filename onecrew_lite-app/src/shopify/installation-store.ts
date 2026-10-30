@@ -8,6 +8,7 @@ import { decryptVaultEnvelope } from "../storage/vault-reader.ts";
 import { shopDomainSchema } from "../cloud/shop-runtime-registry.ts";
 import { CloudHttpError } from "../cloud/http-error.ts";
 import type { BrowserSnapshotOwner } from "../cloud/browser-snapshot-store.ts";
+import { initializeWorkspaceRegistry } from "../cloud/workspaces.ts";
 import { parseCustomerDataRequest, parseCustomerRedaction, parseShopifyPrivacyBody, type ShopifyPrivacyCustomer } from "./privacy-contracts.ts";
 
 const workspace = z.strictObject({ shop: shopDomainSchema, tenant_id: z.string().uuid(), base_id: z.string().uuid(), installed_at: z.number().int(), uninstalled_at: z.number().int().nullable() });
@@ -62,6 +63,7 @@ export class ShopifyInstallationStore {
         subject_keys TEXT NOT NULL CHECK(json_valid(subject_keys)), encrypted_report BLOB NOT NULL,
         created_at INTEGER NOT NULL, delivered_at INTEGER
       ) STRICT;`);
+    initializeWorkspaceRegistry(database);
   }
 
   #assertOpen(): void { if (this.#closed) throw new Error("shopify.store_closed"); }
@@ -196,10 +198,11 @@ export class ShopifyInstallationStore {
     return saved;
   }
 
-  pendingWebhooks(limit = 100, topic?: z.infer<typeof shopifyWebhookTopic>): ShopifyWebhookReceipt[] {
+  pendingWebhooks(limit = 100, topic?: z.infer<typeof shopifyWebhookTopic>, afterSequence = 0): ShopifyWebhookReceipt[] {
     this.#assertOpen(); z.number().int().min(1).max(1000).parse(limit);
     if (topic !== undefined) shopifyWebhookTopic.parse(topic);
-    return this.#database.prepare(`SELECT ${receiptColumns} FROM shopify_webhook_inbox WHERE completed_at IS NULL AND (? IS NULL OR topic=?) ORDER BY sequence LIMIT ?`).all(topic ?? null, topic ?? null, limit).map(row => receipt.parse(row));
+    z.number().int().nonnegative().parse(afterSequence);
+    return this.#database.prepare(`SELECT ${receiptColumns} FROM shopify_webhook_inbox WHERE completed_at IS NULL AND sequence>? AND (? IS NULL OR topic=?) ORDER BY sequence LIMIT ?`).all(afterSequence, topic ?? null, topic ?? null, limit).map(row => receipt.parse(row));
   }
 
   webhookBody(webhookId: string): Buffer {

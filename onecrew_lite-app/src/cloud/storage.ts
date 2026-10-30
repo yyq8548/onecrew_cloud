@@ -11,6 +11,8 @@ import { BrowserSnapshotStore } from "./browser-snapshot-store.ts";
 import { CampaignJobStore } from "./campaign-jobs.ts";
 import { CampaignTemplateStore } from "./campaign-templates.ts";
 import { CloudMailStore } from "./mail-store.ts";
+import { CloudWorkspaceRegistry } from "./workspaces.ts";
+import { CloudAccountStore } from "./account-store.ts";
 
 export async function openCloudStorage(directory: string, initialize = false) {
   if (!isAbsolute(directory)) throw new Error("cloud.absolute_data_directory_required");
@@ -38,6 +40,9 @@ export async function openCloudStorage(directory: string, initialize = false) {
   opening.defer(() => database.close());
   database.exec("PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;");
   const installations = new ShopifyInstallationStore(database, key);
+  const workspaces = new CloudWorkspaceRegistry(database, installations);
+  const accounts = new CloudAccountStore(database, key);
+  opening.defer(() => accounts.close());
   opening.defer(() => installations.close());
   const browserSnapshots = new BrowserSnapshotStore(lease, key);
   opening.defer(() => browserSnapshots.close());
@@ -46,5 +51,5 @@ export async function openCloudStorage(directory: string, initialize = false) {
   const mail = new CloudMailStore(database, key);
   opening.defer(() => mail.close());
   const ownership = opening.move();
-  return { lease, installations, browserSnapshots, campaignJobs, campaignTemplates, mail, close: () => ownership.disposeAsync() };
+  return { lease, installations, workspaces, accounts, browserSnapshots, campaignJobs, campaignTemplates, mail, close: () => ownership.disposeAsync() };
 }

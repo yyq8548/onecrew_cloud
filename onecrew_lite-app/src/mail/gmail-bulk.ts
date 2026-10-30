@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 
 export class GmailBulkInputError extends Error {
   readonly code = "gmail_bulk_invalid_input";
+  readonly status = 400;
   constructor(message: string) { super(message); this.name = "GmailBulkInputError"; }
 }
 

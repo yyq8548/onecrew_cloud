@@ -1,7 +1,7 @@
 import { AccountDatabases } from "../identity/account-databases.ts";
 import type { DiscoveryRepository } from "../discovery/repository.ts";
 import type { InstanceLease } from "../service/instance-lock.ts";
-import { ShopifyInstallationStore } from "../shopify/installation-store.ts";
+import type { WorkspaceStore } from "./workspaces.ts";
 import { CloudHttpError } from "./http-error.ts";
 import { ShopRuntimeRegistry, type ShopRuntime } from "./shop-runtime-registry.ts";
 import { discoveryCandidatePageInput } from "../discovery/candidate-repository.ts";
@@ -15,11 +15,11 @@ export interface ShopData {
 // Shopify 成员由 HTTP 层验证；数据库归属固定为店铺，不伪造 OneCrew Access 用户。
 export class ShopDataService {
   readonly #lease: InstanceLease;
-  readonly #installations: ShopifyInstallationStore;
+  readonly #installations: WorkspaceStore;
   readonly #runtimes: ShopRuntimeRegistry;
   readonly #data = new WeakMap<ShopRuntime, Promise<ShopData>>();
 
-  constructor(lease: InstanceLease, installations: ShopifyInstallationStore, runtimes: ShopRuntimeRegistry) {
+  constructor(lease: InstanceLease, installations: WorkspaceStore, runtimes: ShopRuntimeRegistry) {
     lease.assertOwned();
     this.#lease = lease;
     this.#installations = installations;
@@ -30,7 +30,10 @@ export class ShopDataService {
     const workspace = this.#installations.workspace(shop);
     if (!workspace || workspace.uninstalled_at !== null) throw new CloudHttpError("shopify.installation_required", 409);
     const revision = this.#installations.lifecycleRevision(shop);
-    const runtime = this.#runtimes.resolve(shop, {
+    const runtime = this.#runtimes.resolve(shop, "user" in workspace ? {
+      user: workspace.user, tenantId: workspace.tenant_id, baseId: workspace.base_id,
+      deviceId: `cloud:${shop}`, source: "access",
+    } : {
       user: { id: workspace.tenant_id }, tenantId: workspace.tenant_id, baseId: workspace.base_id,
       deviceId: `shopify:${shop}`, source: "shopify", shop,
     });
@@ -39,6 +42,7 @@ export class ShopDataService {
       runtime.accounts.assertCurrent(runtime.context);
       const current = this.#installations.workspace(shop);
       if (!current || current.uninstalled_at !== null || current.tenant_id !== workspace.tenant_id || current.base_id !== workspace.base_id || this.#installations.lifecycleRevision(shop) !== revision) throw new CloudHttpError("shopify.installation_changed", 409);
+      if (("user" in current ? current.user.id : current.tenant_id) !== runtime.context.principal.user.id) throw new CloudHttpError("cloud.workspace_changed", 409);
     };
     let ready = this.#data.get(runtime);
     if (!ready) {
@@ -54,7 +58,6 @@ export class ShopDataService {
     }
     const data = await ready;
     data.assertCurrent();
-    assertCurrent();
     return data;
   }
 

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { DiscoveryReviewMaterial } from '@onecrew/runtime-contracts/discovery';
 
-export function PublicPageReceipt({ read }: { read: DiscoveryReviewMaterial['public_pages'][number] }) {
+export function PublicPageReceipt({ read, compact = false }: { read: DiscoveryReviewMaterial['public_pages'][number]; compact?: boolean }) {
   const { t } = useTranslation('shell');
   const status = read.status === 'reading' ? t('opencliPilot.publicPageStatus.reading') : read.status === 'completed' ? t('opencliPilot.publicPageStatus.completed') : read.status === 'failed' ? t('opencliPilot.publicPageStatus.failed') : read.status;
   return <div className="space-y-1 break-words text-xs">
@@ -15,11 +15,11 @@ export function PublicPageReceipt({ read }: { read: DiscoveryReviewMaterial['pub
       <p className="max-h-64 overflow-y-auto whitespace-pre-wrap">{read.markdown_excerpt}</p>
       {read.truncated && <p>{t('opencliPilot.publicPageTruncated')}</p>}
     </>}
-    <p className="text-muted-foreground">{t('opencliPilot.publicPageLimit')}</p>
+    {!compact && <p className="text-muted-foreground">{t('opencliPilot.publicPageLimit')}</p>}
   </div>;
 }
 
-export function ReviewMaterialContent({ material }: { material: DiscoveryReviewMaterial }) {
+export function ReviewMaterialContent({ material, compact = false }: { material: DiscoveryReviewMaterial; compact?: boolean }) {
   const { t, i18n } = useTranslation('shell');
   const transcript = material.transcript;
   const criteria = material.criteria && typeof material.criteria === 'object' ? material.criteria as Record<string, unknown> : {};
@@ -28,11 +28,12 @@ export function ReviewMaterialContent({ material }: { material: DiscoveryReviewM
   const native = rawNative && typeof rawNative === 'object' ? rawNative : null;
   const transcriptStatus = !transcript ? '' : transcript.status === 'reading' ? t('opencliPilot.reviewStatus.reading') : transcript.status === 'completed' ? t('opencliPilot.reviewStatus.completed') : transcript.status === 'failed' ? t('opencliPilot.reviewStatus.failed') : transcript.status === 'unavailable' ? t('opencliPilot.reviewStatus.unavailable') : transcript.status;
   return <div className="space-y-4 break-words text-sm">
-    <p className="text-muted-foreground">{t('opencliPilot.reviewLimit')}</p>
+    {!compact && <p className="text-muted-foreground">{t('opencliPilot.reviewLimit')}</p>}
+    {compact && material.video_title && <h3 className="font-medium">{material.video_title}</h3>}
     <p className="break-all">{material.hit.source_url}</p>
-    <p>{t('opencliPilot.reviewAuthor', { id: material.native_author_id })}</p>
-    <p>{t('opencliPilot.reviewRevision', { revision: material.criteria_revision })}</p>
-    {requirements.length > 0 && <ul className="list-disc pl-5">{requirements.map((requirement, index) => <li key={index}>
+    {!compact && <p>{t('opencliPilot.reviewAuthor', { id: material.native_author_id })}</p>}
+    {!compact && <p>{t('opencliPilot.reviewRevision', { revision: material.criteria_revision })}</p>}
+    {!compact && requirements.length > 0 && <ul className="list-disc pl-5">{requirements.map((requirement, index) => <li key={index}>
       {typeof requirement === 'object' && requirement !== null && 'excerpt' in requirement && typeof requirement.excerpt === 'string' ? requirement.excerpt : t('opencliPilot.additionalConditions')}
     </li>)}</ul>}
     {material.native_followers != null && <p>{t('opencliPilot.reviewNativeFollowers', { value: String(material.native_followers) })}</p>}
@@ -47,9 +48,9 @@ export function ReviewMaterialContent({ material }: { material: DiscoveryReviewM
       <p>{t('opencliPilot.reviewCaptured', { time: new Date(material.native_profile.observed_at * 1000).toLocaleString(i18n.resolvedLanguage) })}</p>
       {material.native_profile.bio && <p className="whitespace-pre-wrap">{material.native_profile.bio}</p>}
       {material.native_profile.self_declared_location && <p>{t('opencliPilot.reviewSelfDeclaredLocation', { location: material.native_profile.self_declared_location })}</p>}
-      <p className="text-muted-foreground">{t('opencliPilot.reviewNativeProfileLimit')}</p>
+      {!compact && <p className="text-muted-foreground">{t('opencliPilot.reviewNativeProfileLimit')}</p>}
     </div>}
-    <p className="break-all text-xs">{t('opencliPilot.reviewHash', { hash: material.material_hash })}</p>
+    {!compact && <p className="break-all text-xs">{t('opencliPilot.reviewHash', { hash: material.material_hash })}</p>}
     {native && 'text' in native && typeof native.text === 'string' && <>
       <h3 className="font-medium">{t('opencliPilot.reviewNativeContent')}</h3>
       <p className="whitespace-pre-wrap">{native.text}</p>
@@ -63,12 +64,12 @@ export function ReviewMaterialContent({ material }: { material: DiscoveryReviewM
     {material.hit.platform === 'tiktok' && <>
       <h3 className="font-medium">{t('opencliPilot.reviewSearchCaption')}</h3>
       <p className="whitespace-pre-wrap">{material.hit.title}</p>
-      <p className="text-muted-foreground">{t('opencliPilot.reviewSearchCaptionLimit')}</p>
+      {!compact && <p className="text-muted-foreground">{t('opencliPilot.reviewSearchCaptionLimit')}</p>}
     </>}
     {material.hit.platform === 'youtube' && <>
-      <h3 className="font-medium">{t('opencliPilot.reviewDescription')}</h3>
-      <p className="whitespace-pre-wrap">{material.video_description ?? t('opencliPilot.reviewMissing')}</p>
-      <h3 className="font-medium">{t('opencliPilot.reviewTranscript')}</h3>
+      {(!compact || material.video_description) && <><h3 className="font-medium">{t('opencliPilot.reviewDescription')}</h3>
+      <p className="whitespace-pre-wrap">{material.video_description ?? t('opencliPilot.reviewMissing')}</p></>}
+      {(!compact || transcript) && <><h3 className="font-medium">{t('opencliPilot.reviewTranscript')}</h3>
       {!transcript ? <p>{t('opencliPilot.reviewMissing')}</p> : <>
         <p>{transcriptStatus}{transcript.stop_code ? ` · ${transcript.stop_code}` : ''}</p>
         <p>{t('opencliPilot.reviewCaptured', { time: new Date(transcript.captured_at * 1000).toLocaleString(i18n.resolvedLanguage) })}</p>
@@ -76,9 +77,9 @@ export function ReviewMaterialContent({ material }: { material: DiscoveryReviewM
           {transcript.segments.map((line, index) => <p className="whitespace-pre-wrap" key={index}><span className="font-mono">{line.timestamp}</span> {line.speaker} {line.text}</p>)}
           {transcript.truncated && <p>{t('opencliPilot.reviewTruncated')}</p>}
         </>}
-      </>}
+      </>}</>}
     </>}
-    <h3 className="font-medium">{t('opencliPilot.reviewPages')}</h3>
-    {material.public_pages.length === 0 ? <p>{t('opencliPilot.reviewMissing')}</p> : material.public_pages.map(page => <PublicPageReceipt key={page.requested_url} read={page} />)}
+    {(!compact || material.public_pages.length > 0) && <><h3 className="font-medium">{t('opencliPilot.reviewPages')}</h3>
+    {material.public_pages.length === 0 ? <p>{t('opencliPilot.reviewMissing')}</p> : material.public_pages.map(page => <PublicPageReceipt key={page.requested_url} read={page} compact={compact} />)}</>}
   </div>;
 }

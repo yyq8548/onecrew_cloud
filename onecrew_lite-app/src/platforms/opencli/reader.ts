@@ -7,7 +7,7 @@ import { OpenCliRegistry, parseConnectedOpenCliProfiles, parseOpenCliBridgeStatu
 import { OPENCLI_PROBE_TIMEOUT, OPENCLI_READ_TIMEOUT, runTrustedOpenCliProcess } from "./process.ts";
 import type { TrustedOpenCliProcess } from "./process.ts";
 import { resolveOpenCliInstallation, VERIFIED_OPENCLI_VERSION } from "./installation.ts";
-import { OpenCliAddons } from "./addons.ts";
+import { OpenCliAddons, type OpenCliAddonId } from "./addons.ts";
 import { ambiguousCreatorSearchEmpty, CREATOR_SEARCH_SOURCES, creatorSearchArguments, creatorSearchSource } from "./sources.ts";
 import { decodeCreatorSearch } from "./search-results.ts";
 import type { CreatorSearchHit } from "./search-results.ts";
@@ -46,40 +46,46 @@ export interface VerifiedOpenCliPublicSource { readonly url: string; assertAppro
 export interface OpenCliReaderApi extends Omit<OpenCliReader, "withDiagnostics" | "inventory" | "connectedProfiles" | "bridgeStatus" | "openCreatorLoginPage" | "disconnectCloudPlatform" | "recoverLocalBridge" | "recoverBridge"> {
   withDiagnostics(onFailure: (error: OpenCliError) => void): OpenCliReaderApi;
 }
-interface ReaderConfiguration { readonly installation: TrustedOpenCliProcess; readonly addons: OpenCliAddons; readonly onFailure?: (error: OpenCliError) => void }
+interface ReaderConfiguration { readonly installation: TrustedOpenCliProcess; readonly addons: OpenCliAddons; readonly verifiedAddons?: ReadonlySet<OpenCliAddonId>; readonly verifiedProfiles?: Set<string>; readonly onFailure?: (error: OpenCliError) => void }
 let recovery: Promise<unknown> = Promise.resolve();
 
 export class OpenCliReader {
   readonly #installation: TrustedOpenCliProcess;
   readonly #addons: OpenCliAddons;
   readonly #registry: OpenCliRegistry;
+  readonly #verifiedAddons: ReaderConfiguration["verifiedAddons"];
   readonly #onFailure: ReaderConfiguration["onFailure"];
+  readonly #verifiedProfiles: Set<string>;
   readonly version: string;
   private constructor(configuration: ReaderConfiguration, version: string, registry: OpenCliRegistry) {
-    this.#installation = Object.freeze({ ...configuration.installation }); this.#addons = configuration.addons; this.version = version; this.#registry = registry; this.#onFailure = configuration.onFailure;
+    this.#installation = Object.freeze({ ...configuration.installation }); this.#addons = configuration.addons; this.version = version; this.#registry = registry; this.#onFailure = configuration.onFailure; this.#verifiedAddons = configuration.verifiedAddons;
+    this.#verifiedProfiles = configuration.verifiedProfiles ?? new Set();
   }
   withDiagnostics(onFailure: (error: OpenCliError) => void): OpenCliReader {
-    return new OpenCliReader({ installation: this.#installation, addons: this.#addons, onFailure }, this.version, this.#registry);
+    return new OpenCliReader({ installation: this.#installation, addons: this.#addons, ...(this.#verifiedAddons ? { verifiedAddons: this.#verifiedAddons } : {}), verifiedProfiles: this.#verifiedProfiles, onFailure }, this.version, this.#registry);
   }
-  static async inspect(addons: OpenCliAddons, installation?: TrustedOpenCliProcess, signal?: AbortSignal): Promise<OpenCliReader> {
+  static async inspect(addons: OpenCliAddons, installation?: TrustedOpenCliProcess, signal?: AbortSignal, immutableInstallation = false): Promise<OpenCliReader> {
     const selected = installation ?? await resolveOpenCliInstallation();
     const options = { deadlineMs: OPENCLI_PROBE_TIMEOUT, configurationDirectory: addons.configurationDirectory, ...(signal ? { signal } : {}) };
     const version = parseOpenCliVersion((await runTrustedOpenCliProcess(selected, ["--version"], options)).stdout);
     if (version !== VERIFIED_OPENCLI_VERSION) throw new OpenCliError("opencli_version_changed");
     const commands = (await runTrustedOpenCliProcess(selected, ["list", "-f", "json"], options)).stdout;
     const registry = new OpenCliRegistry(await parseOpenCliJson(commands));
-    return new OpenCliReader({ installation: selected, addons }, version, registry);
+    // 仅 Cloud 固定镜像使用；浏览器关闭后销毁 reader，重开时重新检查。
+    const inspected = immutableInstallation ? await addons.status() : undefined;
+    if (inspected?.some(addon => addon.state !== "ready")) throw new OpenCliError("opencli_read_command_unavailable");
+    return new OpenCliReader({ installation: selected, addons, ...(inspected ? { verifiedAddons: new Set(inspected.map(addon => addon.id)) } : {}) }, version, registry);
   }
   inventory() { return this.#registry.inventory(this.version); }
   async openCreatorLoginPage(binding: VerifiedOpenCliBrowserBinding, platform: string) {
     const url = openCliLoginPage(platform); await this.checkBrowserProfile(binding);
-    const receipt = await parseOpenCliJson((await this.#run(["--profile", binding.profile, "browser", "onecrew-login", "tab", "new", url], OPENCLI_READ_TIMEOUT, binding)).stdout);
+    const receipt = await parseOpenCliJson((await this.#run(["--profile", binding.profile, "browser", "onecrew-login", "tab", "new", url], OPENCLI_READ_TIMEOUT, binding, false, true)).stdout);
     if (!receipt || typeof receipt !== "object" || !("url" in receipt) || receipt.url !== url || !("page" in receipt) || typeof receipt.page !== "string" || !receipt.page) throw new OpenCliError("opencli_invalid_output");
     await binding.assertCurrent(); return { profile: binding.profile, platform, opened: true as const };
   }
   async disconnectCloudPlatform(binding: VerifiedOpenCliBrowserBinding, platform: string) {
     const args = disconnectCloudSessionArguments(binding.profile, platform);
-    await this.#addons.requireReady("onecrew-cloud-session");
+    await this.#requireAddon("onecrew-cloud-session");
     await this.checkBrowserProfile(binding);
     const output = await parseOpenCliJson((await this.#run(args, OPENCLI_READ_TIMEOUT, binding)).stdout);
     const result = cloudSessionReceipt.parse(Array.isArray(output) && output.length === 1 ? output[0] : null);
@@ -102,7 +108,7 @@ export class OpenCliReader {
     const probe = creatorAuthProbe(platform);
     await this.checkBrowserProfile(binding);
     const observed = (status: OpenCliAuthObservation["status"], method: OpenCliAuthObservation["method"], issue: string | null): OpenCliAuthObservation => ({ platform, profile_ref: binding.profile, checked_at: Math.floor(Date.now() / 1000), status, method, issue });
-    if (probe.addon && await this.#addons.state("onecrew-site-auth") !== "ready") return observed("unknown", "skipped", "auth_addon_required");
+    if (probe.addon && !this.#verifiedAddons?.has("onecrew-site-auth") && await this.#addons.state("onecrew-site-auth") !== "ready") return observed("unknown", "skipped", "auth_addon_required");
     if (!this.#registry.hasBrowserRead(probe.site, "whoami")) return observed("unknown", "skipped", "auth_probe_unavailable");
     const method = probe.full ? "full" : "quick";
     const args = creatorAuthArguments(platform, binding.profile);
@@ -112,7 +118,7 @@ export class OpenCliReader {
       if (output.error instanceof OpenCliError && output.error.code === "opencli_risk_control") return observed("error", method, "auth_probe_rate_limited");
       throw output.error;
     }
-    if (probe.addon) await this.#addons.requireReady("onecrew-site-auth");
+    if (probe.addon) await this.#requireAddon("onecrew-site-auth");
     const value = await parseOpenCliJson(output.value.stdout);
     const result = decodeCreatorAuthStatus(value, probe.site);
     if (result.method !== "skipped" && result.method !== method) throw new OpenCliError("opencli_invalid_output");
@@ -134,6 +140,7 @@ export class OpenCliReader {
   async #run(args: readonly string[], deadlineMs: number, binding?: VerifiedOpenCliBrowserBinding, webDiagnostics = false, foregroundBrowser = false) {
     if (binding) { binding.signal.throwIfAborted(); await binding.assertCurrent(); await this.#requireContextRoute(binding.profile); binding.signal.throwIfAborted(); }
     const output = await runTrustedOpenCliProcess(this.#installation, args, { deadlineMs, webDiagnostics, foregroundBrowser, configurationDirectory: this.#addons.configurationDirectory, ...(binding ? { signal: binding.signal } : {}) }).then(value => ({ value }), error => ({ error }));
+    if ("error" in output) this.#verifiedProfiles.clear();
     if ("error" in output && output.error instanceof OpenCliError) this.#onFailure?.(output.error);
     if ("error" in output && output.error instanceof OpenCliError && output.error.code === "opencli_cancel_pending") throw output.error;
     if (binding) { binding.signal.throwIfAborted(); await binding.assertCurrent(); await this.#requireContextRoute(binding.profile); binding.signal.throwIfAborted(); }
@@ -152,8 +159,12 @@ export class OpenCliReader {
     if (aliases && Object.hasOwn(aliases, contextId) && (aliases as Record<string, unknown>)[contextId] !== contextId) throw new OpenCliError("opencli_profile_unavailable");
   }
   async #requireVersion(binding?: VerifiedOpenCliBrowserBinding): Promise<void> {
+    if (this.#verifiedAddons) return;
     const actual = parseOpenCliVersion((await this.#run(["--version"], OPENCLI_PROBE_TIMEOUT, binding)).stdout);
     if (actual !== this.version) throw new OpenCliError("opencli_version_changed");
+  }
+  async #requireAddon(id: OpenCliAddonId): Promise<void> {
+    if (!this.#verifiedAddons?.has(id)) await this.#addons.requireReady(id);
   }
   async connectedProfiles() {
     await this.#requireVersion();
@@ -165,6 +176,7 @@ export class OpenCliReader {
   }
   async checkBrowserProfile(binding: VerifiedOpenCliBrowserBinding): Promise<void> {
     validateOpenCliProfile(binding.profile);
+    this.#verifiedProfiles.delete(binding.profile);
     const [, bridge, inventory] = await Promise.all([
       this.#requireVersion(binding),
       this.#run(["daemon", "status"], OPENCLI_PROBE_TIMEOUT, binding),
@@ -175,24 +187,29 @@ export class OpenCliReader {
     if (!status.extension_connected) throw new OpenCliError("opencli_extension_unavailable");
     const profiles = parseConnectedOpenCliProfiles(inventory.stdout);
     if (!profiles.some(profile => profile.context_id === binding.profile)) throw new OpenCliError("opencli_profile_unavailable");
+    if (this.#verifiedAddons) this.#verifiedProfiles.add(binding.profile);
+  }
+  async #requireBrowserProfile(binding: VerifiedOpenCliBrowserBinding): Promise<void> {
+    if (this.#verifiedAddons && this.#verifiedProfiles.has(binding.profile)) { await binding.assertCurrent(); binding.signal.throwIfAborted(); return; }
+    await this.checkBrowserProfile(binding);
   }
   async creatorSearchCapabilities(inspectedAddons?: Awaited<ReturnType<OpenCliAddons["status"]>>) {
     await this.#requireVersion();
-    const addons = inspectedAddons ?? await this.#addons.status();
+    const addons = inspectedAddons ?? (this.#verifiedAddons ? [...this.#verifiedAddons].map(id => ({ id, state: "ready" as const })) : await this.#addons.status());
     return Object.entries(CREATOR_SEARCH_SOURCES).filter(([, source]) => source.discovery).map(([platform, source]) => ({ platform, command: `${source.site}/${source.name}`, browser_required: true, registered: this.#registry.hasBrowserRead(source.site, source.name), addon: source.addon })).filter(source => source.registered && (source.addon === null || addons.some(addon => addon.id === source.addon && addon.state === "ready"))).map(({ addon: _addon, ...source }) => source);
   }
   async creatorSearch(binding: VerifiedOpenCliBrowserBinding, platform: string, query: string, limit: number): Promise<CreatorSearchHit[]> {
     const args = creatorSearchArguments(binding.profile, platform, query, limit);
     const source = creatorSearchSource(platform);
     if (!this.#registry.hasBrowserRead(source.site, source.name)) throw new OpenCliError("opencli_read_command_unavailable");
-    if (source.addon) await this.#addons.requireReady(source.addon);
-    await this.checkBrowserProfile(binding);
+    if (source.addon) await this.#requireAddon(source.addon);
+    await this.#requireBrowserProfile(binding);
     const output = await this.#run(args, OPENCLI_READ_TIMEOUT, binding).then(value => value, error => {
       if (error instanceof OpenCliError && error.code === "opencli_command_failed" && error.exitCode === 66 && !["bilibili", "tiktok"].includes(platform) && !ambiguousCreatorSearchEmpty(platform)) return null;
       throw error;
     });
     if (output === null) return [];
-    if (source.addon) await this.#addons.requireReady(source.addon);
+    if (source.addon) await this.#requireAddon(source.addon);
     await binding.assertCurrent(); binding.signal.throwIfAborted();
     return this.#decode(output, `${source.site}/${source.name}:decode`, async () => decodeCreatorSearch(platform, await parseOpenCliJson(output.stdout), limit));
   }
@@ -206,8 +223,8 @@ export class OpenCliReader {
   async #native<T>(binding: VerifiedOpenCliBrowserBinding, plan: ReviewedOpenCliRead<T>): Promise<T> {
     validateOpenCliProfile(binding.profile);
     if (plan.public ? !this.#registry.hasPublicRead(plan.site, plan.name) : !this.#registry.hasBrowserRead(plan.site, plan.name)) throw new OpenCliError("opencli_read_command_unavailable");
-    await Promise.all(plan.addons.map(addon => this.#addons.requireReady(addon)));
-    if (plan.public) await this.#requireVersion(binding); else await this.checkBrowserProfile(binding);
+    await Promise.all(plan.addons.map(addon => this.#requireAddon(addon)));
+    if (plan.public) await this.#requireVersion(binding); else await this.#requireBrowserProfile(binding);
     const args = ["--profile", binding.profile, plan.site, plan.name, ...plan.args];
     const output = await this.#run(args, OPENCLI_READ_TIMEOUT, binding, false, plan.foregroundBrowser).then(value => value, error => {
       if (plan.emptyOn66 && error instanceof OpenCliError && error.code === "opencli_command_failed" && error.exitCode === 66) return null;
@@ -215,7 +232,7 @@ export class OpenCliReader {
     });
     if (output === null) return plan.emptyOn66!();
     await this.#requireVersion(binding);
-    await Promise.all(plan.addons.map(addon => this.#addons.requireReady(addon)));
+    await Promise.all(plan.addons.map(addon => this.#requireAddon(addon)));
     if (plan.maximumBytes !== undefined && Buffer.byteLength(output.stdout) > plan.maximumBytes) throw new OpenCliError("opencli_output_too_large");
     return this.#decode(output, `${plan.site}/${plan.name}:decode`, async () => plan.decode(await parseOpenCliJson(output.stdout)));
   }
@@ -226,7 +243,7 @@ export class OpenCliReader {
   youtubeLanguageSample(binding: VerifiedOpenCliBrowserBinding, channel: string, video: string) { return this.#native(binding, youtubeLanguagePlan(channel, video)); }
   youtubeRecentLanguageUrls(binding: VerifiedOpenCliBrowserBinding, channel: string) { return this.#native(binding, youtubeRecentLanguagePlan(channel)); }
   async checkYoutubeEvidenceProfile(binding: VerifiedOpenCliBrowserBinding): Promise<void> {
-    await this.#addons.requireReady("onecrew-youtube");
+    await this.#requireAddon("onecrew-youtube");
     if (!this.#registry.hasBrowserRead("onecrew-youtube", "video-evidence")) throw new OpenCliError("opencli_read_command_unavailable");
     await this.checkBrowserProfile(binding);
   }

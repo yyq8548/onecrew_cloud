@@ -1,0 +1,15 @@
+{
+  "scoringVersion": "v23",
+  "role": "explicit_wholesale_profile",
+  "actualArchivedReview": true,
+  "originalSelection": "supported",
+  "currentSelection": "insufficient",
+  "currentQuality": "insufficient",
+  "currentLevel": null,
+  "ruleActivated": true,
+  "originalAuditPassed": true,
+  "originalRecordsReadOnly": true,
+  "modelCalls": 0,
+  "platformCalls": 0,
+  "allChecksPassed": true
+}

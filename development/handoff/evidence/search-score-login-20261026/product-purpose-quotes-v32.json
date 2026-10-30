@@ -1,0 +1,24 @@
+{
+  "matchingVersion": "v32",
+  "cases": [
+    {
+      "role": "bottle_used_as_training_weight",
+      "productDecision": "符合",
+      "creator": "confirmed",
+      "selection": null,
+      "expectedMatch": false,
+      "passed": false,
+      "correctProductExcerptVerified": false,
+      "originalAuditPassed": false,
+      "originalMaterialUnchanged": false,
+      "modelCalls": 1,
+      "elapsedMs": null
+    }
+  ],
+  "allChecksPassed": false,
+  "modelCalls": 1,
+  "platformCalls": 0,
+  "emailsSent": 0,
+  "fullCampaignRerun": false,
+  "independentHumanQualityAuditComplete": false
+}

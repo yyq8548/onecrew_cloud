@@ -1,0 +1,26 @@
+{
+  "matchingVersion": "v27",
+  "cases": [
+    {
+      "role": "personal_affiliate_review",
+      "selection": "supported",
+      "noNumericScore": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "modelCalls": 0,
+      "realSavedResponseReplay": true
+    },
+    {
+      "role": "instagram_product_content",
+      "selection": "supported",
+      "noNumericScore": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "modelCalls": 0,
+      "realSavedResponseReplay": true
+    }
+  ],
+  "allChecksPassed": true,
+  "modelCalls": 0,
+  "platformCalls": 0
+}

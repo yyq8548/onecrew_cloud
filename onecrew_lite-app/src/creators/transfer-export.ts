@@ -8,7 +8,7 @@ import { creatorOutput, platform, sourceKind, text, trim } from "./contracts.ts"
 import { transferFollowers } from "./transfer-contracts.ts";
 import { parseStoredJson } from "../contracts/stored-json.ts";
 import { buildBundle, canonicalCreator, digest, type TransferCreator } from "./transfer-contracts.ts";
-import { encodeWorkbook, type WorkbookDisplay } from "./workbook.ts";
+import type { WorkbookDisplay } from "./workbook.ts";
 
 export const exportInput = z.object({ format: z.literal("xlsx") }).strict();
 let desktopWrites = 0;
@@ -54,6 +54,7 @@ export function exportSnapshot(db: DatabaseSync) {
 }
 export async function writeDesktopExport(snapshot: ReturnType<typeof exportSnapshot>, getDirectory: (() => Promise<string>) | undefined) {
   if (!getDirectory) throw new Error("the operating system Desktop directory is unavailable for Creator export");
+  const { encodeWorkbook } = await import("./workbook.ts");
   const directory = await getDirectory(), bytes = await encodeWorkbook(snapshot.bundle, snapshot.display), release = await acquireDesktopWrite();
   try { return await persistDesktopExport(directory, bytes, snapshot.bundle); } finally { release(); }
 }

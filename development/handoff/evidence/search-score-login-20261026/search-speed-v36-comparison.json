@@ -1,0 +1,386 @@
+{
+  "checkedAt": "2026-10-27T06:48:01.040Z",
+  "baseline": {
+    "campaign": "18b6299f-09be-4df2-9f1e-5988a4e4a1d9",
+    "conditions": {
+      "productId": "gid://shopify/Product/5541111988383",
+      "platforms": [
+        "youtube",
+        "tiktok",
+        "instagram"
+      ],
+      "minimum": 10000,
+      "maximum": 1000000
+    },
+    "totalMs": 293431,
+    "state": "completed",
+    "phase": "contacts_incomplete",
+    "counts": {
+      "qualified": 10,
+      "pending": 4,
+      "rejected": 27
+    },
+    "phases": {
+      "pipeline.score_wait": {
+        "calls": 2,
+        "elapsed_ms": 17685
+      },
+      "pipeline.started": {
+        "calls": 1,
+        "elapsed_ms": 0
+      },
+      "pipeline.wall": {
+        "calls": 1,
+        "elapsed_ms": 217609
+      },
+      "read": {
+        "calls": 56,
+        "elapsed_ms": 370469
+      },
+      "read.language": {
+        "calls": 2,
+        "elapsed_ms": 35138
+      },
+      "read.platform_search": {
+        "calls": 11,
+        "elapsed_ms": 203727
+      },
+      "read.profile": {
+        "calls": 17,
+        "elapsed_ms": 46311
+      },
+      "read.video": {
+        "calls": 20,
+        "elapsed_ms": 24952
+      },
+      "read.web_source": {
+        "calls": 6,
+        "elapsed_ms": 60349
+      },
+      "recommendation.changed": {
+        "calls": 10,
+        "elapsed_ms": 0
+      },
+      "score": {
+        "calls": 17,
+        "elapsed_ms": 144802
+      },
+      "score.prepare": {
+        "calls": 45,
+        "elapsed_ms": 1093
+      },
+      "score.queue": {
+        "calls": 17,
+        "elapsed_ms": 1358
+      },
+      "score.semantic.commit": {
+        "calls": 17,
+        "elapsed_ms": 1112
+      },
+      "score.semantic.exec": {
+        "calls": 13,
+        "elapsed_ms": 137712
+      },
+      "sync": {
+        "calls": 11,
+        "elapsed_ms": 20714
+      }
+    },
+    "sourceFailureCount": 1,
+    "contacts": [
+      {
+        "creator": "Prudent Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCxpxBlLEJzk2Ucu7YJunVHg",
+        "followers": 315000,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Critical Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCaNLlytdpsDYJxwr9HFvE8Q",
+        "followers": 14000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Amalia Stehle",
+        "platform": "tiktok",
+        "profile": "https://www.tiktok.com/@amalia.stehle",
+        "followers": 25100,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Dan Bernstein: Travel Guides | Hiking | California",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/outdoorwiseliving/",
+        "followers": 524675,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "BottlePro",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCl6bLbuEZ3EAr-D93R-7TZQ",
+        "followers": 20000,
+        "hasPublicEmail": true,
+        "hasOtherContact": false,
+        "profileOnly": false
+      },
+      {
+        "creator": "Pack Hacker",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UC_rI3y1DzDULTr-UIvshiwg",
+        "followers": 347000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Jessica Ciraulo ⚡️",
+        "platform": "tiktok",
+        "profile": "https://www.tiktok.com/@jessicaciraulo",
+        "followers": 96800,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Pack Hacker Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCa9O7ulUbt4axNo6h1c-JTQ",
+        "followers": 142000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Micah Giberson | Hiking & Backpacking",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/micah.hikes/",
+        "followers": 15290,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "BritHack Hub",
+        "platform": "tiktok",
+        "profile": "https://www.tiktok.com/@laughnext",
+        "followers": 41200,
+        "hasPublicEmail": false,
+        "hasOtherContact": false,
+        "profileOnly": true
+      }
+    ],
+    "creatorsWithPublicEmail": 5,
+    "creatorsWithOtherContactOnly": 4,
+    "profileOnly": 1
+  },
+  "optimized": {
+    "campaign": "59ed9380-e685-4842-826a-5759cefba7c2",
+    "conditions": {
+      "productId": "gid://shopify/Product/5541111988383",
+      "platforms": [
+        "youtube",
+        "tiktok",
+        "instagram"
+      ],
+      "minimum": 10000,
+      "maximum": 1000000
+    },
+    "totalMs": 238748,
+    "state": "completed",
+    "phase": "finished",
+    "counts": {
+      "qualified": 10,
+      "pending": 9,
+      "rejected": 28
+    },
+    "phases": {
+      "pipeline.score_wait": {
+        "calls": 11,
+        "elapsed_ms": 46394
+      },
+      "pipeline.started": {
+        "calls": 1,
+        "elapsed_ms": 0
+      },
+      "pipeline.wall": {
+        "calls": 1,
+        "elapsed_ms": 188955
+      },
+      "read": {
+        "calls": 58,
+        "elapsed_ms": 227281
+      },
+      "read.language": {
+        "calls": 1,
+        "elapsed_ms": 18852
+      },
+      "read.platform_search": {
+        "calls": 8,
+        "elapsed_ms": 166983
+      },
+      "read.profile": {
+        "calls": 13,
+        "elapsed_ms": 5275
+      },
+      "read.video": {
+        "calls": 19,
+        "elapsed_ms": 18390
+      },
+      "read.web_source": {
+        "calls": 17,
+        "elapsed_ms": 17782
+      },
+      "recommendation.changed": {
+        "calls": 10,
+        "elapsed_ms": 0
+      },
+      "score": {
+        "calls": 20,
+        "elapsed_ms": 137758
+      },
+      "score.prepare": {
+        "calls": 50,
+        "elapsed_ms": 1349
+      },
+      "score.queue": {
+        "calls": 20,
+        "elapsed_ms": 1687
+      },
+      "score.semantic.commit": {
+        "calls": 20,
+        "elapsed_ms": 1390
+      },
+      "score.semantic.exec": {
+        "calls": 11,
+        "elapsed_ms": 127291
+      },
+      "sync": {
+        "calls": 11,
+        "elapsed_ms": 17070
+      }
+    },
+    "sourceFailureCount": 1,
+    "contacts": [
+      {
+        "creator": "Prudent Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCxpxBlLEJzk2Ucu7YJunVHg",
+        "followers": 315000,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Kitan",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/kitan.isawumi/",
+        "followers": 11481,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Rachel | Finds for Moms",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/viral.mom.finds/",
+        "followers": 48051,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Critical Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCaNLlytdpsDYJxwr9HFvE8Q",
+        "followers": 14000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "BottlePro",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCl6bLbuEZ3EAr-D93R-7TZQ",
+        "followers": 20000,
+        "hasPublicEmail": true,
+        "hasOtherContact": false,
+        "profileOnly": false
+      },
+      {
+        "creator": "Heaven Raven",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/heavenravenofficial/",
+        "followers": 812163,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Pack Hacker",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UC_rI3y1DzDULTr-UIvshiwg",
+        "followers": 347000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Jessica Ciraulo ⚡️",
+        "platform": "tiktok",
+        "profile": "https://www.tiktok.com/@jessicaciraulo",
+        "followers": 96800,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Pack Hacker Reviews",
+        "platform": "youtube",
+        "profile": "https://www.youtube.com/channel/UCa9O7ulUbt4axNo6h1c-JTQ",
+        "followers": 142000,
+        "hasPublicEmail": false,
+        "hasOtherContact": true,
+        "profileOnly": false
+      },
+      {
+        "creator": "Chantly Caree Dixon",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/chantlycaree/",
+        "followers": 31161,
+        "hasPublicEmail": true,
+        "hasOtherContact": true,
+        "profileOnly": false
+      }
+    ],
+    "creatorsWithPublicEmail": 5,
+    "creatorsWithOtherContactOnly": 5,
+    "profileOnly": 0
+  },
+  "totalMsSaved": 54683,
+  "totalPercentSaved": 18.635726968179913,
+  "realPlatformSearch": true,
+  "model": "Qwen3-4B-Q4_K_M macos-metal 8192",
+  "notes": [
+    "相同商品、平台和粉丝条件；真实搜索结果与平台响应时间可能变化。",
+    "阶段累计耗时包含并行重叠，不能直接相加为总耗时。",
+    "基准联系表单故障在本轮开始前已修复，端到端差异不能全部归因于本次四项优化。"
+  ],
+  "accuracy": {
+    "passed": true,
+    "programRecommendations": 10,
+    "agentAccepted": 10
+  },
+  "independentHumanQualityAuditComplete": false,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false
+}

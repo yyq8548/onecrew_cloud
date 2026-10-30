@@ -1,0 +1,17 @@
+{
+  "userDate": "2026-10-26",
+  "timezone": "America/Los_Angeles",
+  "sourceCampaign": "ecffdef0-7cf0-4c7b-9084-a479cf0ae401",
+  "afterCompleteWorkflow": true,
+  "separateColdRestorePerPlatform": true,
+  "platforms": [
+    { "platform": "tiktok", "checkedAt": 1793070847, "status": "logged_in", "issue": null, "encryptedSnapshotSaved": true },
+    { "platform": "youtube", "checkedAt": 1793070860, "status": "logged_in", "issue": null, "encryptedSnapshotSaved": true },
+    { "platform": "instagram", "checkedAt": 1793070873, "status": "logged_in", "issue": null, "encryptedSnapshotSaved": true }
+  ],
+  "allCheckedPlatformsLoggedIn": true,
+  "modelCalls": 0,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "previousCookieLossRootCauseConfirmed": false
+}

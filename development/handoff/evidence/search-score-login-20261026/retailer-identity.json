@@ -1,0 +1,53 @@
+{
+  "scoringVersion": "v20",
+  "cases": [
+    {
+      "role": "retailer",
+      "creator": "not_creator",
+      "selection": "contradicted",
+      "quality": "insufficient",
+      "level": null,
+      "elapsedMs": 12858,
+      "modelCalls": 1,
+      "sourceExcerptVerified": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true
+    },
+    {
+      "role": "individual_affiliate",
+      "creator": "confirmed",
+      "selection": "supported",
+      "quality": "supported",
+      "level": "medium",
+      "elapsedMs": 6394,
+      "modelCalls": 1,
+      "sourceExcerptVerified": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true
+    },
+    {
+      "role": "review_media",
+      "creator": "confirmed",
+      "selection": "supported",
+      "quality": "supported",
+      "level": "good",
+      "elapsedMs": 12157,
+      "modelCalls": 1,
+      "sourceExcerptVerified": true,
+      "originalMaterialUnchanged": true,
+      "noReviewCommitted": true
+    }
+  ],
+  "platformCalls": 0,
+  "productionCallsAdded": 0,
+  "allChecksPassed": true,
+  "originalTaskChanged": false,
+  "regressionCasesAlsoUsedAsPromptExamples": [
+    "retailer",
+    "individual_affiliate"
+  ],
+  "heldOutCaseCount": 1,
+  "independentHumanQualityAuditComplete": false,
+  "priorValidationRunsWithFailures": 4,
+  "priorValidationModelCalls": 6
+}

@@ -11,7 +11,9 @@ test("cloud model contract retains schema, rules and saved evidence", async () =
   const payload = serverSemanticPayload({ prompt: "Evaluate saved evidence", scoringContext: "Use only provided evidence", savedEvidence: [{ id: "source-1", citation: { url: "https://example.com" } }], schema, decode, planning: false, signal: new AbortController().signal, assertCurrent: async () => {} }, config);
   assert.deepEqual(payload.response_format.json_schema.schema, schema);
   assert.equal(payload.messages[0]!.content, "Use only provided evidence");
-  assert.deepEqual(JSON.parse(payload.messages[1]!.content).saved_evidence, [{ id: "source-1", citation: { url: "https://example.com" } }]);
+  const [prompt, evidence] = payload.messages[1]!.content.split("\nUNTRUSTED_SAVED_EVIDENCE:\n");
+  assert.equal(prompt, "Evaluate saved evidence");
+  assert.deepEqual(JSON.parse(evidence!), [{ id: "source-1", citation: { url: "https://example.com" } }]);
   const first = await new ServerSemanticClient(config).scoringIdentity();
   const changed = await new ServerSemanticClient({ ...config, revision: "weights-and-prompt-v2" }).scoringIdentity();
   assert.notEqual(first, changed);

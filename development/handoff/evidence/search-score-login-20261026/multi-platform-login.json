@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-26T22:38:59.899Z",
+  "saved": [
+    {
+      "platform": "tiktok",
+      "status": "logged_in",
+      "issue": null,
+      "encryptedSnapshotSaved": true,
+      "at": "2026-10-26T22:35:36.377Z"
+    },
+    {
+      "platform": "instagram",
+      "status": "logged_in",
+      "issue": null,
+      "encryptedSnapshotSaved": true,
+      "at": "2026-10-26T22:36:43.057Z"
+    }
+  ],
+  "coldRestores": [
+    {
+      "event": "cloud.restored_login_checked",
+      "platform": "youtube",
+      "status": "logged_in",
+      "issue": null,
+      "checkedAt": 1793054249,
+      "encryptedSnapshotSaved": true,
+      "modelCalls": 0,
+      "shopifyNetworkVerified": false
+    },
+    {
+      "event": "cloud.restored_login_checked",
+      "platform": "tiktok",
+      "status": "logged_in",
+      "issue": null,
+      "checkedAt": 1793054263,
+      "encryptedSnapshotSaved": true,
+      "modelCalls": 0,
+      "shopifyNetworkVerified": false
+    },
+    {
+      "event": "cloud.restored_login_checked",
+      "platform": "instagram",
+      "status": "logged_in",
+      "issue": null,
+      "checkedAt": 1793054276,
+      "encryptedSnapshotSaved": true,
+      "modelCalls": 0,
+      "shopifyNetworkVerified": false
+    }
+  ],
+  "verificationPage": {
+    "uniqueSessionAddress": true,
+    "explicitUnauthorizedMessage": true,
+    "actualTikTokConnectionCheckedViaAccessibility": true,
+    "authenticationBoundaryUnchanged": true
+  },
+  "cookieValuesExported": false,
+  "accountIdentifiersExported": false,
+  "modelCalls": 0,
+  "shopifyNetworkVerified": false
+}

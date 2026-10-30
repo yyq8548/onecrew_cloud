@@ -7,9 +7,9 @@ import { pipeline } from "node:stream/promises";
 import { z } from "zod";
 import type { InstanceLease } from "../service/instance-lock.ts";
 import { createPrivateDirectory, verifyPrivateDirectory, verifyPrivateFile } from "../storage/private-backup.ts";
-import { shopDomainSchema } from "./shop-runtime-registry.ts";
+import { workspaceKeySchema } from "./workspaces.ts";
 
-const ownerSchema = z.strictObject({ shop: shopDomainSchema, tenant_id: z.uuid(), base_id: z.uuid() });
+const ownerSchema = z.strictObject({ shop: workspaceKeySchema, tenant_id: z.string().min(1), base_id: z.string().min(1) });
 export type BrowserSnapshotOwner = z.infer<typeof ownerSchema>;
 export interface BrowserSnapshot { readonly id: string; readonly encryptedBytes: number }
 const context = Buffer.from("onecrew-cloud-browser-snapshot-v1");

@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
-import { lstat, open, readFile, rename } from "node:fs/promises";
+import { constants } from "node:fs";
+import { lstat, open, rename } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
 import { creatorU64 } from "@onecrew/runtime-contracts/creators";
@@ -49,12 +50,15 @@ export class FileDiscoveryExecutionMetrics {
   }
   #name(campaign: string): string { return createHash("sha256").update(campaign).digest("hex"); }
   async #load(folder: string, campaign: string) {
-    const path = join(folder, `${this.#name(campaign)}.json`), exists = await lstat(path).then(() => true, error => { if (missing(error)) return false; throw error; });
-    if (!exists) return metricsSchema.parse({ campaign_id: campaign, phases: {} });
-    await verifyPrivateFile(path); const info = await lstat(path, { bigint: true });
-    if (info.nlink !== 1n || info.size > 16n * 1024n * 1024n) throw new Error("discovery_metrics_file_invalid");
-    const bytes = await readFile(path), after = await lstat(path, { bigint: true });
-    if (info.dev !== after.dev || info.ino !== after.ino || info.mtimeNs !== after.mtimeNs || info.ctimeNs !== after.ctimeNs) throw new Error("discovery_metrics_file_changed");
+    const path = join(folder, `${this.#name(campaign)}.json`);
+    await using file = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW).then(value => value, error => { if (missing(error)) return null; throw error; });
+    if (file === null) return metricsSchema.parse({ campaign_id: campaign, phases: {} });
+    if (process.platform === "win32") await verifyPrivateFile(path);
+    const info = await file.stat({ bigint: true });
+    if (!info.isFile() || info.nlink > 1n || info.size > 16n * 1024n * 1024n || process.platform !== "win32" && (!process.getuid || info.uid !== BigInt(process.getuid()) || (info.mode & 0o077n) !== 0n)) throw new Error("discovery_metrics_file_invalid");
+    // 原子替换只改变路径指向；同一个已打开文件仍是完整快照。
+    const bytes = await file.readFile(), after = await file.stat({ bigint: true });
+    if (info.size !== after.size || info.mtimeNs !== after.mtimeNs) throw new Error("discovery_metrics_file_changed");
     return metricsSchema.parse(parseApplicationJson(bytes));
   }
   async failureCount(campaign: string): Promise<number | bigint> {
@@ -104,7 +108,10 @@ export class FileDiscoveryExecutionMetrics {
       return work.finally(() => { if (writers.get(key) === work) writers.delete(key); });
     }));
     const errors = results.filter((item): item is PromiseRejectedResult => item.status === "rejected").map(item => item.reason as unknown);
-    if (errors.length) throw new AggregateError(errors, "discovery_metrics_flush_failed");
+    if (errors.length) {
+      console.error("discovery_metrics_flush_failed", ...errors);
+      throw new AggregateError(errors, "discovery_metrics_flush_failed");
+    }
   }
 }
 

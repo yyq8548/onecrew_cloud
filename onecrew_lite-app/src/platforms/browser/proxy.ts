@@ -1,6 +1,4 @@
 import { isIP } from "node:net";
-import { Server } from "proxy-chain";
-import { createSession } from "wreq-js";
 import { z } from "zod";
 import { parseApplicationJson } from "../../contracts/application-json.ts";
 
@@ -14,6 +12,7 @@ export function proxyUrl(value: ProxyConfig): string {
   return url.href;
 }
 export async function createBrowserProxy(value: ProxyConfig) {
+  const { Server } = await import("proxy-chain");
   const upstream = proxyUrl(value), server = new Server({ host: "127.0.0.1", port: 0, verbose: false, prepareRequestFunction: () => ({ upstreamProxyUrl: upstream }) });
   await server.listen();
   const address = server.server.address();
@@ -29,6 +28,7 @@ function language(country: string): string | null {
 }
 export async function probeProxy(value: ProxyConfig, signal: AbortSignal) {
   const proxy = proxyConfigSchema.parse(value); signal.throwIfAborted();
+  const { createSession } = await import("wreq-js");
   const session = await createSession({ browser: "chrome_149", os: process.platform === "win32" ? "windows" : "macos", proxy: proxyUrl(proxy) });
   const failures: string[] = [];
   try {

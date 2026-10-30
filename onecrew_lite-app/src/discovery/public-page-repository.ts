@@ -50,7 +50,7 @@ export class DiscoveryPublicPageRepository {
   }
   next(campaign: string, excludedPlatforms: readonly string[] = [], requiredOnly = false, candidate: string | null = null): DiscoveryPublicPageInput | null {
     return this.#transaction(false, () => {
-      const rows = this.#db.prepare(`SELECT c.id,c.source_profile_ref,c.criteria_revision,l.value,json_extract(c.evidence_json,'$.video_description') AS description,c.verdict
+      const rows = this.#db.prepare(`SELECT c.id,c.source_profile_ref,c.criteria_revision,l.value,json_extract(c.evidence_json,'$.video_description') AS description
         FROM discovery_candidates c JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id
         JOIN discovery_campaign_revisions a ON a.discovery_campaign_id=d.id AND a.revision=d.current_revision
         JOIN discovery_platform_runs p ON p.discovery_campaign_id=d.id AND p.platform=c.platform AND p.profile_ref=c.source_profile_ref
@@ -61,19 +61,15 @@ export class DiscoveryPublicPageRepository {
         WHERE d.id=? AND d.phase='active' AND a.approved_at IS NOT NULL AND c.criteria_revision=d.current_revision
           AND (? IS NULL OR c.id=?)
           AND NOT EXISTS(SELECT 1 FROM json_each(?) excluded WHERE excluded.value=c.platform)
-          AND ((c.verdict='pending' AND (COALESCE(json_extract(a.criteria_json,'$.requires_public_tool_url'),1)=1 OR json_extract(a.criteria_json,'$.region')='中国大陆以外'
-            OR (json_array_length(json_extract(a.criteria_json,'$.requirements'))>0 AND (SELECT COUNT(*) FROM discovery_public_page_reads page WHERE page.candidate_id=c.id)<2)))
-            OR(c.verdict='qualified' AND EXISTS(SELECT 1 FROM discovery_recommendation_policies policy WHERE policy.discovery_campaign_id=d.id AND policy.criteria_revision=d.current_revision AND policy.policy='score_and_contact_v1')
-              AND NOT EXISTS(SELECT 1 FROM discovery_contact_observations contact WHERE contact.candidate_id=c.id AND contact.criteria_revision=c.criteria_revision AND (COALESCE(json_extract(a.criteria_json,'$.contact_preference'),'')!='public_email_first' OR contact.kind='email'))
-              AND (COALESCE(json_extract(a.criteria_json,'$.contact_preference'),'')!='public_email_first' OR NOT EXISTS(SELECT 1 FROM discovery_public_page_reads page WHERE page.candidate_id=c.id))))
+          AND c.verdict='pending' AND (COALESCE(json_extract(a.criteria_json,'$.requires_public_tool_url'),1)=1 OR json_extract(a.criteria_json,'$.region')='中国大陆以外'
+            OR (json_array_length(json_extract(a.criteria_json,'$.requirements'))>0 AND (SELECT COUNT(*) FROM discovery_public_page_reads page WHERE page.candidate_id=c.id)<2))
           AND json_type(c.evidence_json,'$.video_description')='text' AND l.type='text'
           AND NOT ${discoveryReadBusySql(this.#db, campaign, "c.platform")}
           AND ((p.status='completed' AND NOT EXISTS(SELECT 1 FROM discovery_public_page_reads r WHERE r.candidate_id=c.id AND r.requested_url=l.value))
             OR(p.status='technical_stop' AND p.stop_code='interrupted_public_page_read' AND EXISTS(SELECT 1 FROM discovery_public_page_reads r WHERE r.candidate_id=c.id AND r.requested_url=l.value AND r.status='reading' AND r.search_hit_id=h.id AND r.source_excerpt=json_extract(c.evidence_json,'$.video_description') AND p.active_query='page:'||c.id||':'||r.call_number)))
         ORDER BY c.id,l.key`).all(campaign, candidate, candidate, stringifyApplicationJson(excludedPlatforms));
       for (const raw of rows) {
-        const row = z.object({ id: text, source_profile_ref: text, criteria_revision: u32, value: text, description: text, verdict: text }).parse(raw);
-        if (row.verdict === "qualified") continue;
+        const row = z.object({ id: text, source_profile_ref: text, criteria_revision: u32, value: text, description: text }).parse(raw);
         const input = { campaign_id: campaign, expected_revision: row.criteria_revision, profile_ref: row.source_profile_ref, candidate_id: row.id, requested_url: row.value };
         if (Buffer.byteLength(row.value) <= 2048 && row.value.startsWith("https://") && !discoveryCommunityInvite(row.value) && discoveryObservesLink(row.description, row.value) && this.#scoreValid(input)) return input;
       }

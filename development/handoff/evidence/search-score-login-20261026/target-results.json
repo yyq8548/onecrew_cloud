@@ -1,0 +1,181 @@
+{
+  "checkedAt": "2026-10-26T22:11:04.878Z",
+  "campaign": "8009a7cf-32c3-4914-8cb3-d9f179740f87",
+  "counts": {
+    "qualified": 10,
+    "pending": 2,
+    "rejected": 16
+  },
+  "target": 10,
+  "savedSources": 80,
+  "recommendations": 10,
+  "assessments": [
+    {
+      "creator": "Prudent Reviews",
+      "profile": "https://www.youtube.com/channel/UCxpxBlLEJzk2Ucu7YJunVHg",
+      "verdict": "qualified",
+      "followers": 315000,
+      "source": "https://www.youtube.com/watch?v=KwFKrI50Hws&pp=ygUdZnJlZSBzaXAgd2F0ZXIgYm90dGxlIHJldmlld3M%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Hoang Pham",
+      "profile": "https://www.youtube.com/channel/UC9DGJC34IUmci93Dgh3aiVg",
+      "verdict": "qualified",
+      "followers": 44200,
+      "source": "https://www.youtube.com/watch?v=KcVAknsmraE&pp=ygUmd2F0ZXIgYm90dGxlIGZvciBkcmlua2luZyBhbmQgc3dpZ2dpbmfSBwkJMAwBhyohjO8%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Pack Hacker",
+      "profile": "https://www.youtube.com/channel/UC_rI3y1DzDULTr-UIvshiwg",
+      "verdict": "qualified",
+      "followers": 347000,
+      "source": "https://www.youtube.com/watch?v=ZUl9hQ8gCfE&t=93s&pp=ygUmd2F0ZXIgYm90dGxlIGZvciBkcmlua2luZyBhbmQgc3dpZ2dpbmc%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "BottlePro",
+      "profile": "https://www.youtube.com/channel/UCl6bLbuEZ3EAr-D93R-7TZQ",
+      "verdict": "qualified",
+      "followers": 20000,
+      "source": "https://www.youtube.com/watch?v=qGOk6wH6yS8&pp=ygUdZnJlZSBzaXAgd2F0ZXIgYm90dGxlIHJldmlld3M%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "TheOutdoorGearReview",
+      "profile": "https://www.youtube.com/channel/UCpmbA7yNOl7aTj_ffkaWWag",
+      "verdict": "qualified",
+      "followers": 771000,
+      "source": "https://www.youtube.com/watch?v=2n7sosIX4ig&pp=ygUmd2F0ZXIgYm90dGxlIHdpdGggc3RyYXcgYW5kIHdpZGUgbW91dGg%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Poppins Approved",
+      "profile": "https://www.youtube.com/channel/UCTtOVUATo3c9kg7RZqYIlNQ",
+      "verdict": "qualified",
+      "followers": 11200,
+      "source": "https://www.youtube.com/watch?v=OTIM4h6t_aQ&pp=ygUdZnJlZSBzaXAgd2F0ZXIgYm90dGxlIHJldmlld3M%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Justin Dorff",
+      "profile": "https://www.youtube.com/channel/UCzNboS4xv0CekKBs_K3CLGw",
+      "verdict": "qualified",
+      "followers": 117000,
+      "source": "https://www.youtube.com/watch?v=VGQD8ToBf0o&pp=ygUmd2F0ZXIgYm90dGxlIGZvciBkcmlua2luZyBhbmQgc3dpZ2dpbmfSBwkJMAwBhyohjO8%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Pack Hacker Reviews",
+      "profile": "https://www.youtube.com/channel/UCa9O7ulUbt4axNo6h1c-JTQ",
+      "verdict": "qualified",
+      "followers": 142000,
+      "source": "https://www.youtube.com/watch?v=2079DK0B2sg&pp=ygUdZnJlZSBzaXAgd2F0ZXIgYm90dGxlIHJldmlld3M%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "wugene",
+      "profile": "https://www.youtube.com/channel/UCzp3zi_o-dNuXlgWXTb2a7g",
+      "verdict": "qualified",
+      "followers": 26600,
+      "source": "https://www.youtube.com/watch?v=JtbAl_P_C88&pp=ygUmd2F0ZXIgYm90dGxlIGZvciBkcmlua2luZyBhbmQgc3dpZ2dpbmc%3D",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Owala",
+      "profile": "https://www.youtube.com/channel/UCV8kZKGmOK5NRljhibxPcTg",
+      "verdict": "pending",
+      "followers": 29700,
+      "source": "https://www.youtube.com/watch?v=wCuE6sIPTG4&pp=ygUhZnJlZSBzaXAgd2F0ZXIgYm90dGxlIGNvbXBhcmlzb25z",
+      "savedMaterialAuthorVerified": true
+    },
+    {
+      "creator": "Miranda Goes Outside!!",
+      "profile": "https://www.youtube.com/channel/UCGEDbg1EKT7HCqbT7OAsLKA",
+      "verdict": "pending",
+      "followers": 201000,
+      "source": "https://www.youtube.com/watch?v=wezuCqo-vNc&t=1070s&pp=ygUmd2F0ZXIgYm90dGxlIGZvciBkcmlua2luZyBhbmQgc3dpZ2dpbmc%3D",
+      "savedMaterialAuthorVerified": true
+    }
+  ],
+  "contacts": [
+    {
+      "creator": "Prudent Reviews",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 4,
+      "profileOnly": false
+    },
+    {
+      "creator": "wugene",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "TheOutdoorGearReview",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 6,
+      "profileOnly": false
+    },
+    {
+      "creator": "Hoang Pham",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "Justin Dorff",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 2,
+      "otherPublishedContactCount": 3,
+      "profileOnly": false
+    },
+    {
+      "creator": "BottlePro",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 1,
+      "profileOnly": false
+    },
+    {
+      "creator": "Pack Hacker",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 6,
+      "profileOnly": false
+    },
+    {
+      "creator": "Pack Hacker Reviews",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 0,
+      "otherPublishedContactCount": 5,
+      "profileOnly": false
+    },
+    {
+      "creator": "Poppins Approved",
+      "verifiedFollowerCountAvailable": true,
+      "publicEmailCount": 1,
+      "otherPublishedContactCount": 2,
+      "profileOnly": false
+    }
+  ],
+  "platformCallsAdded": 0,
+  "modelCallsAdded": 0,
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "independentHumanQualityAuditComplete": false,
+  "qualityAudit": {
+    "creatorIdentityQualityPassed": false,
+    "knownRetailerMisclassificationCount": 1,
+    "scoringChangeApproved": true,
+    "approvalDocument": "development/cloud/RETAILER-IDENTITY-PROMPT-APPROVAL.md",
+    "programVerdictsOnly": true,
+    "knownRetailerOmittedFromPublishedRows": true,
+    "scoringVersion": "v19"
+  }
+}

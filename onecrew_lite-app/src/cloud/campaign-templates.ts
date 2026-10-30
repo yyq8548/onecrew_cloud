@@ -3,9 +3,9 @@ import type { DatabaseSync } from "node:sqlite";
 import { z } from "zod";
 import { parseApplicationJson, stringifyApplicationJson } from "../contracts/application-json.ts";
 import { discoveryPlanInput } from "../discovery/contracts.ts";
-import { shopifyProductId } from "./campaign-jobs.ts";
+import { campaignProductChoice } from "./campaign-jobs.ts";
 import { CloudHttpError } from "./http-error.ts";
-import { shopDomainSchema } from "./shop-runtime-registry.ts";
+import { workspaceKeySchema as shopDomainSchema, workspaceTable } from "./workspaces.ts";
 import { cloudCampaignConditions, cloudConditionsFromPlan } from "./campaign-parameters.ts";
 
 export const PRODUCT_TITLE_PARAMETER = "{{product.title}}";
@@ -14,7 +14,7 @@ export const saveCampaignTemplate = z.strictObject({
   id: z.uuid(), name: z.string().trim().min(1).refine(value => value.isWellFormed() && [...value].length <= 120 && !/\p{Cc}/u.test(value)),
   campaign_id: z.string().regex(/^[A-Za-z\d_-]{1,128}$/u), expected_revision: z.number().int().positive().max(4294967295),
 });
-export const generateFromTemplate = z.strictObject({ id: z.uuid(), product_id: shopifyProductId });
+export const generateFromTemplate = z.union(campaignProductChoice.options.map(option => option.extend({ id: z.uuid() })));
 const summary = z.strictObject({ id: z.uuid(), shop: shopDomainSchema, name: z.string(), campaign_id: z.string(), expected_revision: z.number().int().positive(), rules, conditions: cloudCampaignConditions.nullable(), created_at: z.number().int() });
 const template = summary.extend({ reference_plan: discoveryPlanInput });
 export type CampaignTemplate = z.infer<typeof template>;
@@ -25,8 +25,8 @@ export class CampaignTemplateStore {
   readonly #db: DatabaseSync;
   constructor(database: DatabaseSync) {
     this.#db = database;
-    database.exec(`CREATE TABLE IF NOT EXISTS cloud_campaign_templates (
-      id TEXT NOT NULL, shop TEXT NOT NULL REFERENCES shopify_installations(shop), name TEXT NOT NULL,
+    workspaceTable(database, "cloud_campaign_templates", `CREATE TABLE IF NOT EXISTS cloud_campaign_templates (
+      id TEXT NOT NULL, shop TEXT NOT NULL REFERENCES cloud_workspaces(key), name TEXT NOT NULL,
       campaign_id TEXT NOT NULL, expected_revision INTEGER NOT NULL, rules TEXT NOT NULL,
       reference_plan_json TEXT NOT NULL CHECK(json_valid(reference_plan_json)), input_sha256 TEXT NOT NULL,
       created_at INTEGER NOT NULL, PRIMARY KEY(shop,id)
@@ -58,7 +58,7 @@ export class CampaignTemplateStore {
     const previous = this.reuse(shop, input);
     if (previous) return previous;
     const inserted = this.#db.prepare(`INSERT INTO cloud_campaign_templates (id,shop,name,campaign_id,expected_revision,rules,reference_plan_json,input_sha256,created_at)
-      SELECT ?,shop,?,?,?,?,?,?,? FROM shopify_installations WHERE shop=? AND uninstalled_at IS NULL`).run(input.id, input.name, input.campaign_id, input.expected_revision, `商品：${PRODUCT_TITLE_PARAMETER}；平台：${conditions.platforms.join("、")}；粉丝范围：${conditions.min_followers}–${conditions.max_followers}；目标：${conditions.target_count} 位 KOL。`, stringifyApplicationJson(plan), this.#hash(input), Date.now(), shop);
+      SELECT ?,key,?,?,?,?,?,?,? FROM cloud_active_workspaces WHERE key=?`).run(input.id, input.name, input.campaign_id, input.expected_revision, `商品：${PRODUCT_TITLE_PARAMETER}；平台：${conditions.platforms.join("、")}；粉丝范围：${conditions.min_followers}–${conditions.max_followers}；目标：${conditions.target_count} 位 KOL。`, stringifyApplicationJson(plan), this.#hash(input), Date.now(), shop);
     if (inserted.changes !== 1) throw new CloudHttpError("shopify.installation_required", 409);
     return this.get(shop, input.id)!;
   }

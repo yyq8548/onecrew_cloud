@@ -4,7 +4,7 @@ import {readInstagramSearch} from './instagram-search.mjs';
 import {withOwnedSearchPage} from './owned-page.mjs';
 cli({site:'onecrew-search-instagram',name:'search',access:'read',browser:true,
   domain:'www.instagram.com',strategy:Strategy.COOKIE,navigateBefore:false,
-  description:'Search Instagram keyword posts through OpenCLI DOM and verify their authors',
+  description:'Read up to the requested limit (maximum 20) of Instagram keyword posts and verify their authors',
   args:[{name:'query',positional:true,required:true},{name:'limit',type:'int',default:20}],
   columns:['username','name','url'],func:async(page,args)=>{
     try{return await readInstagramSearch(page,args,withOwnedSearchPage);}

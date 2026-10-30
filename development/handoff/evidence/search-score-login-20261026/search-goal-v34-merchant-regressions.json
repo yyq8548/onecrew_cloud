@@ -1,0 +1,98 @@
+{
+  "sourceCampaign": "629f2fa0-cfe0-4096-9e93-57e43a0dee0b",
+  "cases": [
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "retailer",
+      "before": "supported",
+      "after": "insufficient",
+      "passed": true,
+      "modelSkippedForRetailer": true,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "retailer",
+      "before": "supported",
+      "after": "insufficient",
+      "passed": true,
+      "modelSkippedForRetailer": true,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    },
+    {
+      "role": "other_creator",
+      "before": "supported",
+      "after": "supported",
+      "passed": true,
+      "modelSkippedForRetailer": null,
+      "originalAuditPassed": true
+    }
+  ],
+  "allChecksPassed": true,
+  "modelCalls": 0,
+  "platformCalls": 0,
+  "emailsSent": 0,
+  "originalStoredReviewsUnchanged": true
+}

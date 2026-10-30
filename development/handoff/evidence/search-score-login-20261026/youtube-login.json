@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-26T21:47:25.172Z",
+  "realUserLogin": true,
+  "beforeSave": {
+    "authenticated": true,
+    "authenticationRecordCount": 18
+  },
+  "saveAndCheck": {
+    "status": "logged_in",
+    "checkedAt": 1793050924,
+    "encryptedSnapshotSaved": true
+  },
+  "independentColdRestore": {
+    "event": "cloud.restored_login_checked",
+    "platform": "youtube",
+    "status": "logged_in",
+    "issue": null,
+    "checkedAt": 1793050983,
+    "encryptedSnapshotSaved": true,
+    "modelCalls": 0,
+    "shopifyNetworkVerified": false
+  },
+  "initialFailedAttemptCauseConfirmed": false,
+  "cookieValuesExported": false
+}

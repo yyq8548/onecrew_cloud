@@ -83,6 +83,12 @@ SELECT EXISTS(
      (json_extract(f.value,'$.criterion')='content_language' AND json_extract(v.criteria_json,'$.language') IS NOT NULL
        OR h.platform='tiktok' AND json_extract(f.value,'$.criterion') IN ('match_fit','selection_fit'))
      AND json_extract(f.value,'$.outcome')='insufficient')
+   -- Cloud 已有原生商家依据时，补读正文无法改变身份结论；有语言要求仍照常读取。
+   AND NOT (h.platform='tiktok' AND json_extract(v.criteria_json,'$.language') IS NULL
+     AND EXISTS(SELECT 1 FROM json_each(review.findings_json) f
+       WHERE json_extract(f.value,'$.criterion')='selection_fit'
+         AND json_extract(f.value,'$.outcome')='insufficient'
+         AND json_extract(f.value,'$.rationale') LIKE '原生资料包含商家线索，身份待核验，暂不推荐；原文：%'))
    AND coalesce(json_array_length(review.material_json,'$.language_samples'),0) = (SELECT COUNT(*) FROM discovery_language_samples s WHERE s.candidate_id=c.id AND s.criteria_revision=d.current_revision AND s.status='completed')
    AND (SELECT COUNT(*) FROM discovery_language_samples s WHERE s.candidate_id=c.id AND s.criteria_revision=d.current_revision)<1
    AND (h.platform NOT IN ('instagram','weibo','bluesky','zhihu','hackernews') OR NOT EXISTS(SELECT 1 FROM discovery_language_samples s WHERE s.candidate_id=c.id AND s.criteria_revision=d.current_revision))

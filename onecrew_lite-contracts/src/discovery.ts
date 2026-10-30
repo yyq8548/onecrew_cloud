@@ -17,7 +17,19 @@ const signedTimestamp = z.number().int().safe();
 const u32 = z.number().int().min(0).max(4_294_967_295);
 const nullableText = text.nullable();
 const observation = z.object({ source_url: text, text }).strict();
-const languageSample = z.object({ author_id: text, source_url: text, text, comments: z.array(observation) }).strict();
+const observedCount = z.number().int().nonnegative().safe();
+export const nativeContentObservations = z.strictObject({
+  published_at: z.string().min(1).max(120).nullable().optional(),
+  view_count: observedCount.nullable().optional(),
+  like_count: observedCount.nullable().optional(),
+  comment_count: observedCount.nullable().optional(),
+  share_count: observedCount.nullable().optional(),
+  save_count: observedCount.nullable().optional(),
+  score: z.number().int().safe().nullable().optional(),
+  duration_seconds: z.number().nonnegative().finite().nullable().optional(),
+  text_completeness: z.enum(["complete", "truncated", "unknown"]).optional(),
+});
+const languageSample = z.object({ author_id: text, source_url: text, text, comments: z.array(observation), observations: nativeContentObservations.optional() }).strict();
 export const discoveryHit = z.object({ id: text, campaign_id: text, platform: text, profile_ref: text, search_keyword: text, source_url: text, title: text, author_label: text, captured_at: signedTimestamp, author_id: nullableText, author_url: nullableText, author_observed_at: signedTimestamp.nullable() }).passthrough();
 const claim = z.object({ campaign_id: text, expected_revision: u32, search_hit_id: text, platform: text, profile_ref: text, author_id: text, source_url: text, call_number: u32 }).passthrough();
 const capture = { candidate_id: text, search_hit_id: text, profile_ref: text, platform_account_id: text, call_number: u32, status: text, stop_code: nullableText, captured_at: signedTimestamp };
@@ -27,7 +39,7 @@ export const discoveryReviewMaterial = z.object({
   format_version: u32, campaign_id: text, criteria_revision: u32, criteria: z.unknown(),
   approved_scopes: z.array(z.object({ platform: text, profile_ref: text, keywords: strings }).passthrough()), approved_at: signedTimestamp,
   hit: discoveryHit, candidate_id: text, native_author_id: text, candidate_evidence_hash: text,
-  video_description: nullableText, transcript: transcript.nullable(), public_pages: z.array(publicPage), material_hash: text,
+  video_description: nullableText, video_title: nullableText.optional(), transcript: transcript.nullable(), public_pages: z.array(publicPage), material_hash: text,
   language_samples: z.array(languageSample).optional(),
   native_content: z.object({ claim, status: text, native_content: z.unknown(), stop_code: nullableText, captured_at: signedTimestamp, language_sample: languageSample.nullish() }).passthrough().nullish(),
   native_follower_estimate: z.object({ display: text, lower: creatorU64, nominal: creatorU64, upper: creatorU64 }).passthrough().nullish(),

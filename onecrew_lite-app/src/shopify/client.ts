@@ -1,5 +1,5 @@
 import "@shopify/shopify-api/adapters/web-api";
-import { shopifyApi, ApiVersion, RequestedTokenType, LogSeverity, AuthScopes, type Session } from "@shopify/shopify-api";
+import { shopifyApi, ApiVersion, RequestedTokenType, LogSeverity, AuthScopes, HttpResponseError, type Session } from "@shopify/shopify-api";
 import { z } from "zod";
 import { shopDomainSchema } from "../cloud/shop-runtime-registry.ts";
 import { CloudHttpError } from "../cloud/http-error.ts";
@@ -12,6 +12,11 @@ export interface VerifiedShopifySession { readonly shop: string; readonly userId
 
 export function assertShopifyStoreOwner(session: Session): void {
   if (!session.isOnline || session.onlineAccessInfo?.associated_user.account_owner !== true) throw new CloudHttpError("shopify.privacy_owner_required", 403);
+}
+
+function offlineSession(session: Session, shop: string): Session {
+  if (session.shop !== shop || session.isOnline || !session.isActive("read_products") || !session.expires || !session.refreshToken || !session.refreshTokenExpires || session.refreshTokenExpires.getTime() <= Date.now()) throw new Error("shopify.offline_session_invalid");
+  return session;
 }
 
 export function createShopifyClient(configuration: ShopifyConfiguration) {
@@ -43,14 +48,18 @@ export function createShopifyClient(configuration: ShopifyConfiguration) {
       if (!shop.success || !(await api.utils.validateHmac(url.searchParams).then(value => value, () => false))) throw new CloudHttpError("shopify.document_invalid", 401);
       return shop.data;
     },
-    async exchangeOfflineSession(authorization: string): Promise<Session> {
-      const verified = await authenticate(authorization);
+    async exchangeOfflineSession(authorization: string, verified: VerifiedShopifySession): Promise<Session> {
       const result = await api.auth.tokenExchange({ shop: verified.shop, sessionToken: authorization.slice(7), requestedTokenType: RequestedTokenType.OfflineAccessToken, expiring: true });
-      if (result.session.shop !== verified.shop || result.session.isOnline || !result.session.accessToken) throw new Error("shopify.offline_session_invalid");
-      return result.session;
+      return offlineSession(result.session, verified.shop);
     },
-    async exchangeOnlineSession(authorization: string): Promise<Session> {
-      const verified = await authenticate(authorization);
+    async refreshOfflineSession(session: Session): Promise<Session | null> {
+      const result = await api.auth.refreshToken({ shop: session.shop, refreshToken: session.refreshToken! }).then(value => value, error => {
+        if (error instanceof HttpResponseError && error.response.code === 401 && error.response.body?.error === "invalid_request") return null;
+        throw new CloudHttpError("shopify.token_refresh_failed", 503);
+      });
+      return result ? offlineSession(result.session, session.shop) : null;
+    },
+    async exchangeOnlineSession(authorization: string, verified: VerifiedShopifySession): Promise<Session> {
       const result = await api.auth.tokenExchange({ shop: verified.shop, sessionToken: authorization.slice(7), requestedTokenType: RequestedTokenType.OnlineAccessToken });
       const session = result.session;
       const user = session.onlineAccessInfo;

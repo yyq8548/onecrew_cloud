@@ -1,0 +1,22 @@
+name = "OneCrew Cloud"
+client_id = "35ad73da3befddf1699bed73bad9edf7"
+application_url = "https://cloud.onecrewai.io/"
+embedded = true
+
+[access_scopes]
+scopes = "read_products"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = ["https://cloud.onecrewai.io/"]
+
+[webhooks]
+api_version = "2026-10"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+uri = "/webhooks/shopify"
+
+[build]
+automatically_update_urls_on_dev = false

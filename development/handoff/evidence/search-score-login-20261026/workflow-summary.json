@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-26T22:12:51.962Z",
+  "campaign": "8009a7cf-32c3-4914-8cb3-d9f179740f87",
+  "product": {
+    "title": "FreeSip®",
+    "source": "https://checkout.owalalife.com/products/freesip"
+  },
+  "programVerdictCounts": {
+    "qualified": 10,
+    "pending": 2,
+    "rejected": 16
+  },
+  "target": 10,
+  "savedSources": 80,
+  "keywordRequests": 1,
+  "platformSearches": 4,
+  "maximumSearchesPerPlatform": 6,
+  "unusedReserveQueries": 2,
+  "stoppedAtProgramTarget": true,
+  "elapsedMs": 466546,
+  "contactPageAttempts": 12,
+  "maximumContactPagesPerAuthor": 2,
+  "contactPageFailures": 0,
+  "programRecommendationsWithPublishedEmail": 5,
+  "contactsComplete": true,
+  "persistedAfterReopen": true,
+  "templateAndIdempotencyVerified": true,
+  "creatorIdentityQualityPassed": false,
+  "knownRetailerMisclassificationCount": 1,
+  "scoringChangeApprovalRequired": false,
+  "progressDisplayNote": "联系阶段提示保留修复在本次运行后通过类型和现有服务检查；搜索、评分及联系行为未改。",
+  "emailsSent": 0,
+  "shopifyNetworkVerified": false,
+  "scoringVersion": "v19",
+  "scoringChangeApproved": true,
+  "correctedVersionWorkflowVerified": "v20",
+  "currentWorkflowEvidence": "v20-workflow-summary.json"
+}

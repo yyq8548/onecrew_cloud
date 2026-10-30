@@ -155,7 +155,7 @@ function compactScoringRules(rules: string): string {
 }
 export type DiscoveryScoreInstructions = (material: DiscoveryReviewMaterial) => string | null;
 export type DiscoveryScoreFinalizer = (material: DiscoveryReviewMaterial, count: number | bigint | null, proposal: z.infer<typeof discoveryMatchProposal>) => z.infer<typeof discoveryMatchProposal>;
-export type DiscoveryScoreTransport = (material: DiscoveryReviewMaterial, bundle: ScoreEvidenceBundle) => { decode: z.ZodType; prompt?: string; savedEvidence?: ScoreEvidenceBundle["evidence"]; expand(raw: unknown): z.infer<typeof discoveryMatchProposal> } | null;
+export type DiscoveryScoreTransport = (material: DiscoveryReviewMaterial, bundle: ScoreEvidenceBundle) => { decode: z.ZodType; prompt?: string; savedEvidence?: ScoreEvidenceBundle["evidence"]; immediateResult?: z.infer<typeof discoveryMatchProposal>; expand(raw: unknown): z.infer<typeof discoveryMatchProposal> } | null;
 function scoreRequest(objective: string, material: DiscoveryReviewMaterial, rubric: string, prepared: ReturnType<typeof prepareScoreEvidence>, instructions: string | null = null) {
   const { raw, bundle } = prepared;
   let rules = instructions;
@@ -186,7 +186,7 @@ export function discoveryRequiredCountFindings(material: DiscoveryReviewMaterial
 }
 export interface PreparedSemanticDiscoveryMatch { readonly evidenceKey: string }
 export type DiscoveryMatchPreparation = { state: "skipped" } | { state: "cached"; receipt: DiscoveryReviewReceipt } | { state: "model"; prepared: PreparedSemanticDiscoveryMatch };
-interface MatchPayload { context: AccountContext; owned: OwnedDiscoveryRepository; input: { campaign_id: string; expected_revision: number; search_hit_id: string }; material: DiscoveryReviewMaterial; prompt: string; scoringContext: string; bundle: ScoreEvidenceBundle; savedEvidence: ScoreEvidenceBundle["evidence"]; modelIdentity: string; objective: string; observationKey: string }
+interface MatchPayload { context: AccountContext; owned: OwnedDiscoveryRepository; input: { campaign_id: string; expected_revision: number; search_hit_id: string }; material: DiscoveryReviewMaterial; prompt: string; scoringContext: string; bundle: ScoreEvidenceBundle; savedEvidence: ScoreEvidenceBundle["evidence"]; transport: ReturnType<DiscoveryScoreTransport>; customInstructions: boolean; modelIdentity: string; objective: string; observationKey: string }
 
 export class DiscoverySemanticMatcher {
   readonly #accounts: AccountContextService; readonly #repositories: DiscoveryRepositoryResolver; readonly #client: SemanticStructuredClient; readonly #rubric: string; readonly #scoreInstructions: DiscoveryScoreInstructions | undefined; readonly #finalizeScore: DiscoveryScoreFinalizer | undefined;
@@ -227,8 +227,8 @@ export class DiscoverySemanticMatcher {
     }
     const prepared = Object.freeze({ evidenceKey: key });
     const request = scoreRequest(campaign.brief, material, this.#rubric, evidence, instructions);
-    const transport = this.#scoreTransport?.(material, request.bundle);
-    this.#prepared.set(prepared, { context, owned, input, material, modelIdentity, objective: campaign.brief, observationKey: reassess ? matchEvidenceKey(material, this.#rubric, false, modelIdentity, evidence.digest) : key, ...request, prompt: transport?.prompt ?? request.prompt, savedEvidence: transport?.savedEvidence ?? request.savedEvidence });
+    const transport = this.#scoreTransport?.(material, request.bundle) ?? null;
+    this.#prepared.set(prepared, { context, owned, input, material, modelIdentity, transport, customInstructions: instructions !== null, objective: campaign.brief, observationKey: reassess ? matchEvidenceKey(material, this.#rubric, false, modelIdentity, evidence.digest) : key, ...request, prompt: transport?.prompt ?? request.prompt, savedEvidence: transport?.savedEvidence ?? request.savedEvidence });
     return { state: "model", prepared };
   }
   async evaluate(context: AccountContext, prepared: PreparedSemanticDiscoveryMatch, onTiming?: (phase: SemanticTimingPhase | "commit" | "professional_review", elapsedMs: number) => void, onCorrection?: (code: string) => void, onUsage?: (usage: SemanticTokenUsage) => void, cancellation?: AbortSignal): Promise<DiscoveryReviewReceipt | null> {
@@ -238,16 +238,19 @@ export class DiscoverySemanticMatcher {
     const author = stringifyApplicationJson([context.principal.user.id, payload.input.campaign_id, payload.input.expected_revision, payload.material.native_platform ?? payload.material.hit.platform, payload.material.native_author_id]);
     const permit = this.#gate.acquire(author);
     try {
-      const scoreProposal = this.#scoreInstructions?.(payload.material) ? compactScoreProposalForEvidence(payload.bundle.evidence, object(payload.material.criteria).requirements ?? []) : compactScoreProposal;
-      const transport = this.#scoreTransport?.(payload.material, payload.bundle);
+      const scoreProposal = payload.customInstructions ? compactScoreProposalForEvidence(payload.bundle.evidence, object(payload.material.criteria).requirements ?? []) : compactScoreProposal;
+      const transport = payload.transport;
       let correction: { prompt: string; previous: z.infer<typeof discoveryMatchProposal>; scope: "requirements" | "selection_quality" | "all" } | undefined;
       let professionalReview: z.infer<typeof discoveryProfessionalReview> | undefined;
       for (let attempt = 0; attempt < 2; attempt++) {
       const signal = cancellation ? AbortSignal.any([context.signal, cancellation]) : context.signal;
+      signal.throwIfAborted();
       const hostScope = { kind: "score" as const, campaign_id: payload.input.campaign_id, revision: payload.input.expected_revision, search_hit_id: payload.input.search_hit_id };
       const options = { prompt: correction?.prompt ?? payload.prompt, scoringContext: payload.scoringContext, savedEvidence: payload.savedEvidence, scope: hostScope, planning: false, signal, ...(onTiming ? { onTiming } : {}), ...(onUsage ? { onUsage } : {}), assertCurrent: async () => { this.#assert(context, payload.owned); signal.throwIfAborted(); } };
       let proposal: z.infer<typeof discoveryMatchProposal>;
-      if (transport) {
+      if (transport?.immediateResult) {
+        proposal = transport.immediateResult;
+      } else if (transport) {
         const output = await this.#client.structured({ ...options, schema: structuredSemanticSchema(transport.decode), decode: transport.decode }).then(value => value, error => { throw discoveryMatchFailure(error); });
         const expanded = transport.expand(output);
         proposal = correction?.scope === "requirements" ? { ...correction.previous, requirement_findings: expanded.requirement_findings }

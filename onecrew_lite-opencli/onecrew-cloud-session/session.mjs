@@ -5,7 +5,6 @@ export const sessionSites = Object.freeze({
   youtube: { domain: 'www.youtube.com', domains: ['youtube.com', 'google.com'], origins: ['https://www.youtube.com', 'https://youtube.com', 'https://accounts.google.com', 'https://www.google.com', 'https://myaccount.google.com', 'https://consent.youtube.com', 'https://consent.google.com'] },
   tiktok: { domain: 'www.tiktok.com', domains: ['tiktok.com'], origins: ['https://www.tiktok.com', 'https://tiktok.com', 'https://m.tiktok.com'] },
   instagram: { domain: 'www.instagram.com', domains: ['instagram.com', 'facebook.com'], origins: ['https://www.instagram.com', 'https://instagram.com', 'https://www.facebook.com', 'https://m.facebook.com', 'https://accountscenter.instagram.com', 'https://accountscenter.facebook.com'] },
-  twitter: { domain: 'x.com', domains: ['x.com', 'twitter.com'], origins: ['https://x.com', 'https://www.x.com', 'https://twitter.com', 'https://www.twitter.com', 'https://mobile.twitter.com'] },
 });
 
 export async function disconnectSession(page, platform) {

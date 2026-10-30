@@ -13,14 +13,20 @@ import { assessDiscoveryProfile, discoveryScale, parseDiscoverySubscribers } fro
 test("keyword generation accepts the complete real product snapshot passed by Campaign service", async () => {
   // 官方商店公开商品的真实快照，仅验证本地参数传递。
   const product = shopifyProductSnapshot.parse(JSON.parse(readFileSync(new URL("./fixtures/cloud/freesip-product.json", import.meta.url), "utf8")));
-  const conditions = cloudCampaignConditions.parse({ platforms: ["youtube"], min_followers: 10000, max_followers: 1000000 });
+  const conditions = cloudCampaignConditions.parse({ platforms: ["youtube", "tiktok", "instagram"], min_followers: 10000, max_followers: 1000000 });
   const request = cloudKeywordRequest(product, conditions, new AbortController().signal, async () => {});
   assert.ok(request.prompt.includes(product.title));
   assert.ok(request.prompt.includes(product.description));
   assert.equal(request.prompt.includes(product.id), false);
   assert.equal(request.prompt.includes(product.onlineStoreUrl!), false);
-  assert.equal(request.decode.safeParse({ queries: [{ platform: "youtube", keywords: ["water bottle reviews"] }] }).success, true);
-  const plan = cloudKolPlan(randomUUID(), product, conditions, { queries: [{ platform: "youtube", keywords: ["FreeSip® water bottle reviews", "FreeSip® water bottle usage", "FreeSip® water bottle features"] }] });
+  assert.equal(request.decode.safeParse({ queries: [{ platform: "youtube", keywords: ["water bottle reviews"] }] }).success, false);
+  const keywords = ["FreeSip water bottle review", "Owala FreeSip comparison", "insulated water bottle", "reusable water bottle daily carry", "water bottle for hiking", "leakproof bottle test"];
+  const product_meaning = { category: "Reusable water bottle", use: "Carrying drinking water", definition: "A reusable bottle for carrying and drinking water." };
+  const generated = request.decode.parse({ product_meaning, product_name_queries: ["FreeSip water bottle", "Owala FreeSip"], category_use_queries: keywords.slice(2) });
+  assert.deepEqual(generated, { product_meaning, queries: conditions.platforms.map(platform => ({ platform, keywords })) });
+  const plan = cloudKolPlan(randomUUID(), product, conditions, generated);
+  assert.equal(plan.scopes[0]!.keywords.length, 6);
+  assert.ok(plan.brief.includes(product_meaning.category) && plan.brief.includes(product_meaning.use));
   const restored = { criteria: discoveryJsonValue(plan.criteria), approved_scopes: plan.scopes };
   assert.ok(cloudCampaignScoreInstructions(restored), '真实仓储的规范化条件必须继续采用 Cloud 评分');
 });
@@ -35,7 +41,7 @@ test("keyword output cannot change fixed KOL conditions or add a platform", () =
   // 手工合同输入，不代表 Shopify 商品读取或模型成功响应。
   const product = { id: "gid://shopify/Product/1", title: "保温水杯", description: "用于户外携带饮水。", onlineStoreUrl: null, updatedAt: "2026-10-23T00:00:00.000Z", captured_at: 1 };
   const conditions = cloudCampaignConditions.parse({ platforms: ["youtube"], min_followers: 10000, max_followers: 100000 });
-  const keywords = { queries: [{ platform: "youtube", keywords: ["保温水杯测评"] }] };
+  const keywords = { queries: [{ platform: "youtube", keywords: ["保温水杯测评", "户外水杯", "便携水瓶", "通勤水杯", "防漏水杯", "不锈钢水瓶"] }] };
   const plan = cloudKolPlan(randomUUID(), product, conditions, keywords);
   assert.equal(plan.target_count, 10);
   assert.equal(plan.criteria.min_subscribers, 10000);
@@ -53,10 +59,10 @@ test("keyword output cannot change fixed KOL conditions or add a platform", () =
   assert.equal(cloudCampaignScoreInstructions({ ...scoreInput, criteria: { ...plan.criteria, language: "英语" } }), null);
   assert.equal(cloudCampaignScoreInstructions({ ...scoreInput, approved_scopes: [{ ...plan.scopes[0]!, profile_ref: "other" }] }), null);
   assert.equal(cloudCampaignScoreInstructions({ ...scoreInput, approved_scopes: [{ ...plan.scopes[0]!, platform: "facebook" }] }), null);
-  assert.deepEqual(plan.scopes, [{ platform: "youtube", profile_ref: "cloud", keywords: ["保温水杯测评"] }]);
+  assert.deepEqual(plan.scopes, [{ platform: "youtube", profile_ref: "cloud", keywords: keywords.queries[0]!.keywords }]);
   assert.throws(() => cloudKolPlan(randomUUID(), product, conditions, { queries: [{ platform: "instagram", keywords: ["保温水杯"] }] }));
   assert.throws(() => cloudKolPlan(randomUUID(), product, conditions, { ...keywords, target_count: 1 }));
-  assert.throws(() => cloudKolPlan(randomUUID(), product, conditions, { queries: [{ platform: "youtube", keywords: ["Review", "review"] }] }));
+  assert.throws(() => cloudKolPlan(randomUUID(), product, conditions, { queries: [{ platform: "youtube", keywords: ["Review", "review", "户外水杯", "便携水瓶", "通勤水杯", "防漏水杯"] }] }));
 });
 
 test("follower ranges reject definite excess and retain uncertainty at rounded boundaries", () => {

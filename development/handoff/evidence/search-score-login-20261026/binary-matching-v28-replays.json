@@ -1,0 +1,106 @@
+{
+  "matchingVersion": "v28",
+  "cases": [
+    {
+      "role": "merchant_larq",
+      "selection": "insufficient",
+      "noNumericScore": true,
+      "immediateResult": true,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": false,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": false,
+      "passed": true
+    },
+    {
+      "role": "merchant_mardele",
+      "selection": "insufficient",
+      "noNumericScore": true,
+      "immediateResult": true,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": false,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": false,
+      "passed": true
+    },
+    {
+      "role": "unrelated_recovery",
+      "selection": "insufficient",
+      "noNumericScore": true,
+      "immediateResult": true,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": false,
+      "passed": true
+    },
+    {
+      "role": "unrelated_mocktail",
+      "selection": "insufficient",
+      "noNumericScore": true,
+      "immediateResult": true,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": false,
+      "passed": true
+    },
+    {
+      "role": "retailer_inventory",
+      "selection": "contradicted",
+      "noNumericScore": true,
+      "immediateResult": false,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": false,
+      "passed": true
+    },
+    {
+      "role": "personal_affiliate_review",
+      "selection": "supported",
+      "noNumericScore": true,
+      "immediateResult": false,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": true,
+      "passed": true
+    },
+    {
+      "role": "review_media",
+      "selection": "supported",
+      "noNumericScore": true,
+      "immediateResult": false,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": true,
+      "passed": true
+    },
+    {
+      "role": "instagram_product_content",
+      "selection": "insufficient",
+      "noNumericScore": true,
+      "immediateResult": true,
+      "modelCalls": 0,
+      "realSavedResponseAvailable": true,
+      "originalAuditPassed": true,
+      "originalMaterialUnchanged": true,
+      "expectedRecommendation": true,
+      "passed": false
+    }
+  ],
+  "allChecksPassed": false,
+  "modelCalls": 0,
+  "platformCalls": 0,
+  "emailsSent": 0,
+  "independentHumanQualityAuditComplete": false
+}

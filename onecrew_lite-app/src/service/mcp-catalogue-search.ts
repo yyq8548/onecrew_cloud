@@ -1,15 +1,10 @@
 import MiniSearch from "minisearch";
-import { newStemmer } from "snowball-stemmers";
+import { mcpEnglishSearchTerms, tokenize, processTerm } from "./english-search-terms.ts";
+export { mcpEnglishSearchTerms } from "./english-search-terms.ts";
 import { mcpToolSearchInput } from "./mcp-contracts.ts";
 import type { McpSurface } from "./mcp-sessions.ts";
 import { McpCatalogue, type McpCatalogueData, type McpOperationEntry, type McpPlaybookEntry } from "./mcp-catalogue.ts";
 
-// 原 Tantivy 0.26.1 English StopWordFilter 的 Lucene 列表。
-const stopWords = new Set(["a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"]);
-const stemmer = newStemmer("english");
-const tokenize = (text: string) => text.split(/[^\p{Alphabetic}\p{Number}]+/u).filter(Boolean);
-function processTerm(term: string): string | null { if (Buffer.byteLength(term) >= 40) return null; const lower = term.toLowerCase(); return stopWords.has(lower) ? null : stemmer.stem(lower); }
-export function mcpEnglishSearchTerms(text: string): string[] { return [...new Set(tokenize(text).map(processTerm).filter((term): term is string => term !== null))].sort(); }
 const compareId = (left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right));
 type SearchInput = ReturnType<typeof mcpToolSearchInput.parse>;
 type Document = { id: string; title: string; summary: string; aliases: string; use_case: string; linked_titles: string; steps: string; pitfalls: string };

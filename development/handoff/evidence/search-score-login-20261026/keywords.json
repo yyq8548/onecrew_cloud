@@ -1,0 +1,71 @@
+{
+  "event": "cloud.short_keywords_verified",
+  "runtime": "macos-metal",
+  "revision": "Qwen-bc640142-Q4_K_M:7485fe6f:llama-c7fc509-macos-metal",
+  "elapsedMs": 37071,
+  "usage": [
+    {
+      "input": 270,
+      "cached_input": 0,
+      "output": 267,
+      "reasoning_output": 0
+    }
+  ],
+  "platforms": [
+    "youtube",
+    "tiktok",
+    "instagram",
+    "twitter"
+  ],
+  "output": {
+    "queries": [
+      {
+        "platform": "youtube",
+        "keywords": [
+          "FreeSip® water bottle reviews",
+          "FreeSip® water bottle unboxing",
+          "FreeSip® water bottle usage tips",
+          "FreeSip® water bottle features",
+          "FreeSip® water bottle comparisons",
+          "FreeSip® water bottle innovation"
+        ]
+      },
+      {
+        "platform": "tiktok",
+        "keywords": [
+          "FreeSip® water bottle trends",
+          "FreeSip® water bottle hacks",
+          "FreeSip® water bottle challenges",
+          "FreeSip® water bottle lifestyle",
+          "FreeSip® water bottle design",
+          "FreeSip® water bottle vlogs"
+        ]
+      },
+      {
+        "platform": "instagram",
+        "keywords": [
+          "FreeSip® water bottle lifestyle",
+          "FreeSip® water bottle trends",
+          "FreeSip® water bottle reviews",
+          "FreeSip® water bottle usage",
+          "FreeSip® water bottle features",
+          "FreeSip® water bottle innovation"
+        ]
+      },
+      {
+        "platform": "twitter",
+        "keywords": [
+          "FreeSip® water bottle trends",
+          "FreeSip® water bottle reviews",
+          "FreeSip® water bottle usage",
+          "FreeSip® water bottle features",
+          "FreeSip® water bottle innovation",
+          "FreeSip® water bottle comparisons"
+        ]
+      }
+    ]
+  },
+  "modelCalls": 1,
+  "window": 8192,
+  "fullCampaignVerified": false
+}

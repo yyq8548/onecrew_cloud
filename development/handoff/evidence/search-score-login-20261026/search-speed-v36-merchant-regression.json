@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "creator": "選貨店｜球鞋代購、品牌服飾",
+      "outcome": "insufficient",
+      "immediate": true,
+      "modelOutput": null,
+      "knownMerchantQuotes": 0,
+      "elapsedMs": 1,
+      "auditPassed": true
+    },
+    {
+      "creator": "Sip&Go Egypt",
+      "outcome": "insufficient",
+      "immediate": true,
+      "modelOutput": null,
+      "knownMerchantQuotes": 2,
+      "elapsedMs": 0,
+      "auditPassed": true
+    },
+    {
+      "creator": "Jessica Ciraulo ⚡️",
+      "outcome": "supported",
+      "immediate": false,
+      "modelOutput": {
+        "matches_product": "符合",
+        "paragraph_id": "p1",
+        "creator": "confirmed",
+        "creator_paragraph_id": "i1"
+      },
+      "knownMerchantQuotes": 0,
+      "elapsedMs": 9660,
+      "auditPassed": true
+    }
+  ],
+  "passed": true,
+  "originalReviewsUnchanged": true,
+  "platformCalls": 0
+}

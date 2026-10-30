@@ -4,7 +4,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { CreatorSearchHit } from "../platforms/opencli/search-results.ts";
 import { parseApplicationJson, stringifyApplicationJson } from "../contracts/application-json.ts";
-import { browserJobInput, browserJobResult, cloudBrowserRead, cloudPublicSourceGrant, type CloudBrowserRead, type CloudBrowserReadResult } from "./browser-operations.ts";
+import { browserJobInput, browserJobResult, cloudPublicSourceGrant, type CloudBrowserRead, type CloudBrowserReadResult } from "./browser-operations.ts";
 import { OpenCliError } from "../platforms/opencli/errors.ts";
 import { cloudCreatorSearch } from "./platforms.ts";
 import { CloudHttpError } from "./http-error.ts";
@@ -68,13 +68,13 @@ export class DockerBrowserClient {
     return terminal;
   }
   async search(input: z.infer<typeof cloudCreatorSearch>, signal: AbortSignal): Promise<CreatorSearchHit[]> {
-    const terminal = await this.#job(cloudCreatorSearch.parse(input), signal);
+    const terminal = await this.#job(input, signal);
     if (!("hits" in terminal)) throw new CloudHttpError("cloud.worker_job_conflict", 502);
     return terminal.hits.map(({ material, ...entry }) => material === undefined ? entry : { ...entry, material });
   }
   async read<T extends CloudBrowserRead>(input: T, signal: AbortSignal): Promise<CloudBrowserReadResult<T>> {
-    const request = cloudBrowserRead.parse(input), terminal = await this.#job({ read: request }, signal);
-    if (!("read" in terminal) || terminal.read.method !== request.method) throw new CloudHttpError("cloud.worker_job_conflict", 502);
+    const terminal = await this.#job({ read: input }, signal);
+    if (!("read" in terminal) || terminal.read.method !== input.method) throw new CloudHttpError("cloud.worker_job_conflict", 502);
     // 结果由同版本 worker 中的原 Reader 解码，主进程只接收对应任务和方法的结果。
     return terminal.read.data as CloudBrowserReadResult<T>;
   }

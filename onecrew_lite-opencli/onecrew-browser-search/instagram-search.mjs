@@ -98,7 +98,7 @@ export async function readInstagramKeywordSearch(owned,query,limit) {
   if(state?.stop) throw new Error('ONECREW_INSTAGRAM_SEARCH_'+state.stop.toUpperCase());
   if(!Array.isArray(state?.urls)) throw new Error('ONECREW_INSTAGRAM_SEARCH_INVALID');
   const rows=[];
-  for(const source of state.urls.slice(0,5)) {
+  for(const source of state.urls.slice(0,limit)) {
     await owned.goto(source,{settleMs:0});
     const author=unwrap(await owned.evaluate(`(${observeInstagramSearchPostAuthor.toString()})(${JSON.stringify(source)})`));
     if(author?.stop) throw new Error('ONECREW_INSTAGRAM_SEARCH_'+author.stop.toUpperCase());

@@ -2,9 +2,9 @@ import { z } from "zod";
 import { cloudPlatform } from "./platforms.ts";
 
 export const cloudCampaignConditions = z.strictObject({
-  platforms: z.array(cloudPlatform).min(1).max(4).refine(values => new Set(values).size === values.length),
+  platforms: z.array(cloudPlatform).min(1).max(cloudPlatform.options.length).refine(values => new Set(values).size === values.length),
   min_followers: z.number().int().safe().nonnegative(),
-  max_followers: z.number().int().safe().nonnegative(),
+  max_followers: z.number().int().safe().nonnegative().default(Number.MAX_SAFE_INTEGER),
   target_count: z.literal(10).default(10),
 }).refine(value => value.max_followers >= value.min_followers, { path: ["max_followers"], message: "cloud.invalid_follower_range" });
 export type CloudCampaignConditions = z.output<typeof cloudCampaignConditions>;

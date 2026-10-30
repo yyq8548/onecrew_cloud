@@ -28,6 +28,9 @@ import type { DiscoveryContentClaim } from "./content-result.ts";
 import { DiscoveryPublicPageRepository, type DiscoveryPublicPageClaim, type FinishDiscoveryPublicPageInput } from "./public-page-repository.ts";
 import type { DiscoveryPublicPageInput } from "./contact-native.ts";
 import { loadDiscoveryNativeContactMaterial } from "./contact-native.ts";
+import { loadDiscoveryRecommendationContacts } from "./contact-repository.ts";
+import { discoveryReviewFinding } from "./initial-match.ts";
+import { SELECTION_QUALITY_POLICY } from "./quality-policy.ts";
 import { recordYoutubeContactObservation, youtubeContactObservation } from "./youtube-contact-observation.ts";
 import { DiscoveryLanguageRepository } from "./language-repository.ts";
 import type { DiscoveryLanguageClaim, DiscoveryLanguageSample } from "./language-contracts.ts";
@@ -98,6 +101,27 @@ export class DiscoveryRepository {
     });
   }
   candidateIsQualified(campaign: string, candidate: string): boolean { return this.#db.prepare("SELECT EXISTS(SELECT 1 FROM discovery_candidates c JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id WHERE c.id=?1 AND d.id=?2 AND c.criteria_revision=d.current_revision AND c.verdict='qualified') qualified").get(candidate, campaign)!.qualified === 1; }
+  candidateHasEmail(campaign: string, revision: number, candidate: string): boolean {
+    return this.#transaction(() => {
+      const source = this.#db.prepare(`SELECT c.platform_account_id AS author,h.id AS hit FROM discovery_candidates c
+        JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id AND d.current_revision=c.criteria_revision
+        JOIN discovery_search_hits h ON h.discovery_campaign_id=c.discovery_campaign_id AND h.platform=c.source_platform AND h.profile_ref=c.source_profile_ref AND h.source_url=json_extract(c.evidence_json,'$.source_urls[0]')
+        WHERE c.id=?1 AND d.id=?2 AND c.criteria_revision=?3 AND c.verdict='qualified'`).get(candidate, campaign, revision);
+      if (!source) throw new Error("cloud.qualified_candidate_missing");
+      return loadDiscoveryRecommendationContacts(this.#db, campaign, revision, candidate, z.string().parse(source.author), z.string().parse(source.hit)).some(contact => contact.kind === "email" && contact.attribution === "author_published");
+    }, true);
+  }
+  knownMerchantQuotes(platform: string, author: string): string[] {
+    const rows = this.#db.prepare(`SELECT f.value AS finding_json FROM discovery_evidence_reviews r,json_each(r.findings_json) f
+      WHERE r.native_author_id=?1 AND json_extract(r.material_json,'$.native_author_id')=?1
+        AND COALESCE(json_extract(r.material_json,'$.native_platform'),json_extract(r.material_json,'$.hit.platform'))=?2
+        AND r.policy_version=?3 AND json_extract(f.value,'$.criterion')='selection_fit' AND json_extract(f.value,'$.outcome')='insufficient'
+        AND (json_extract(f.value,'$.rationale') LIKE '所选原文含私信下单信息%'
+          OR json_extract(f.value,'$.rationale') LIKE '原生资料包含商家线索%')
+        AND NOT EXISTS(SELECT 1 FROM json_each(r.material_json,'$.approved_scopes') scope WHERE json_extract(scope.value,'$.profile_ref')!='cloud')
+      ORDER BY r.created_at DESC,r.rowid DESC LIMIT 20`).all(author, platform, SELECTION_QUALITY_POLICY);
+    return [...new Set(rows.flatMap(row => discoveryReviewFinding.parse(parseApplicationJson(z.string().parse(row.finding_json))).citations.filter(citation => ["native_profile", "native_content", "description", "search_caption"].includes(citation.kind)).map(citation => citation.quote)))];
+  }
   recommendedCandidateIds(campaign: string): string[] {
     return this.#db.prepare(`SELECT c.id FROM discovery_candidates c JOIN discovery_campaigns d ON d.id=c.discovery_campaign_id
       WHERE d.id=?1 AND c.criteria_revision=d.current_revision AND c.verdict='qualified' ORDER BY c.id`).all(campaign).map(row => z.string().parse(row.id));
@@ -186,12 +210,16 @@ export class DiscoveryRepository {
     for (const [hit, source] of bases) {
       const rows = this.#db.prepare(`SELECT h.id FROM discovery_search_hits h LEFT JOIN discovery_search_authors a ON a.search_hit_id=h.id LEFT JOIN discovery_search_authors held ON held.search_hit_id=?2 LEFT JOIN discovery_identity_reads i ON i.search_hit_id=h.id
         WHERE h.discovery_campaign_id=?1 AND(h.platform!=?3 OR h.id=?2 OR a.author_id=held.author_id OR a.author_id=?4 OR i.account_id=?4
-        OR EXISTS(SELECT 1 FROM discovery_video_identity_bindings b WHERE b.search_hit_id=h.id AND b.native_author_id=?4) OR h.source_url IN(SELECT source_url FROM discovery_search_hits WHERE id=?2))`).all(campaign, hit, platform, source.native_author_id);
+        OR EXISTS(SELECT 1 FROM discovery_video_identity_bindings b WHERE b.search_hit_id=h.id AND b.native_author_id=?4) OR h.source_url IN(SELECT source_url FROM discovery_search_hits WHERE id=?2)
+        OR (a.author_id IS NULL AND h.author_label=(SELECT author_label FROM discovery_search_hits WHERE id=?2)))`).all(campaign, hit, platform, source.native_author_id);
       for (const row of rows) held.add(z.string().parse(row.id));
     }
     const excludedHits = [...held].sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right)));
     if (platform === "youtube") {
-      const language = this.nextLanguage(campaign, platform, excludedHits); return language ? { kind: "read_content", search_hit_id: language } : null;
+      const language = this.nextLanguage(campaign, platform, excludedHits);
+      if (language) return { kind: "read_content", search_hit_id: language };
+      const video = !policy.holdDiscovery && this.nextVideoHit(campaign, excludedHits);
+      return video ? { kind: "read_video", profile_ref: video.profile_ref, search_hit_id: video.id } : null;
     }
     const content = this.nextContentHit(campaign, platform, excludedHits); if (content) return { kind: "read_content", search_hit_id: content };
     if (platform === "linkedin" && !policy.holdDiscovery) {

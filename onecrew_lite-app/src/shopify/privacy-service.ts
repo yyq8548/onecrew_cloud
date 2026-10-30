@@ -31,6 +31,7 @@ export class ShopifyPrivacyService {
     if (receipt.topic === "CUSTOMERS_REDACT") { installations.redactCustomer(receipt); return; }
     if (receipt.topic !== "SHOP_REDACT") throw new Error("shopify.privacy_topic_invalid");
     if (receipt.lifecycle_revision === null) { installations.completeWebhook(receipt.webhook_id, true); return; }
+    mail?.store.assertShopRevoked(receipt.shop);
     const workspace = installations.workspace(receipt.shop);
     if (workspace) {
       if (browsers) await browsers.removeShop(receipt.shop);

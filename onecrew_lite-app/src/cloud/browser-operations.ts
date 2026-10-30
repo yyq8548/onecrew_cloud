@@ -12,7 +12,7 @@ export const cloudBrowserRead = z.discriminatedUnion("method", [
   z.strictObject({ method: z.literal("checkYoutubeEvidenceProfile"), args: z.tuple([]) }),
   z.strictObject({ method: z.literal("creatorSearchCapabilities"), args: z.tuple([]) }),
   z.strictObject({ method: z.literal("checkCreatorAuthStatus"), args: z.tuple([cloudPlatform]) }),
-  z.strictObject({ method: z.literal("creatorProfileEvidence"), args: z.tuple([z.enum(["tiktok", "instagram", "twitter"]), text, text]) }),
+  z.strictObject({ method: z.literal("creatorProfileEvidence"), args: z.tuple([z.enum(["tiktok", "instagram"]), text, text]) }),
   z.strictObject({ method: z.literal("youtubeChannel"), args: z.tuple([text]) }),
   z.strictObject({ method: z.literal("youtubeSearch"), args: z.tuple([text, z.number().int().min(0).max(255)]) }),
   z.strictObject({ method: z.literal("youtubeVideo"), args: z.tuple([text]) }),
@@ -30,13 +30,6 @@ export const cloudBrowserRead = z.discriminatedUnion("method", [
   z.strictObject({ method: z.literal("instagramPublicProfile"), args: z.tuple([text, text]) }),
   z.strictObject({ method: z.literal("instagramRecentOriginalPosts"), args: z.tuple([text, text, z.string().max(4096), text.optional()]) }),
   z.strictObject({ method: z.literal("instagramCommentLanguageEvidence"), args: z.tuple([text, text]) }),
-  z.strictObject({ method: z.literal("twitterPublicProfile"), args: z.tuple([text]) }),
-  z.strictObject({ method: z.literal("twitterIdentityProfile"), args: z.tuple([text]) }),
-  z.strictObject({ method: z.literal("twitterPostIdentity"), args: z.tuple([text, text]) }),
-  z.strictObject({ method: z.literal("twitterPostEvidence"), args: z.tuple([text, text]) }),
-  z.strictObject({ method: z.literal("twitterPostContent"), args: z.tuple([text, text, text]) }),
-  z.strictObject({ method: z.literal("twitterLanguageSample"), args: z.tuple([text, text, text]) }),
-  z.strictObject({ method: z.literal("twitterRecentContent"), args: z.tuple([text]) }),
 ]);
 export type CloudBrowserRead = z.infer<typeof cloudBrowserRead>;
 export type CloudBrowserReadResult<T extends CloudBrowserRead> = T extends { method: "checkBrowserProfile" | "checkYoutubeEvidenceProfile" } ? null : Awaited<ReturnType<OpenCliReader[T["method"]]>>;
@@ -67,13 +60,6 @@ export async function performCloudBrowserRead(reader: OpenCliReader, binding: Ve
     case "instagramPublicProfile": return reader.instagramPublicProfile(binding, ...input.args);
     case "instagramRecentOriginalPosts": return reader.instagramRecentOriginalPosts(binding, ...input.args);
     case "instagramCommentLanguageEvidence": return reader.instagramCommentLanguageEvidence(binding, ...input.args);
-    case "twitterPublicProfile": return reader.twitterPublicProfile(binding, ...input.args);
-    case "twitterIdentityProfile": return reader.twitterIdentityProfile(binding, ...input.args);
-    case "twitterPostIdentity": return reader.twitterPostIdentity(binding, ...input.args);
-    case "twitterPostEvidence": return reader.twitterPostEvidence(binding, ...input.args);
-    case "twitterPostContent": return reader.twitterPostContent(binding, ...input.args);
-    case "twitterLanguageSample": return reader.twitterLanguageSample(binding, ...input.args);
-    case "twitterRecentContent": return reader.twitterRecentContent(binding, ...input.args);
   }
 }
 

@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { chmod, lstat, unlink } from "node:fs/promises";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { getRequestListener } from "@hono/node-server";
 import { Hono } from "hono";
 import { bodyLimit } from "hono/body-limit";
@@ -14,6 +15,7 @@ import { stringifyApplicationJson } from "../contracts/application-json.ts";
 import { browserJobInput, performCloudBrowserRead, type BrowserJobInput, type BrowserJobResult } from "./browser-operations.ts";
 import { startLinuxBrowserEnvironment, type LinuxBrowserConfiguration } from "./linux-browser-host.ts";
 import { CloudHttpError } from "./http-error.ts";
+import { cloudLoginInput, fillBrowserLogin } from "./login-form.ts";
 
 interface Job { input: BrowserJobInput; cancel: AbortController; finished: boolean; result: Promise<BrowserJobResult> }
 
@@ -28,11 +30,12 @@ export async function startBrowserWorker(config: LinuxBrowserConfiguration, sign
   const failed = Promise.withResolvers<Error>();
   let closing = false;
   let pausing = false;
+  let inputFinished: Promise<void> | undefined;
   let current: Job | undefined;
   async function open(signal: AbortSignal) {
     const browser = await startLinuxBrowserEnvironment(config, signal, lease);
     const prepared = await (async () => {
-      const reader = await OpenCliReader.inspect(new OpenCliAddons(config.addonsDirectory, config.dataDirectory), { executable: process.execPath, script: config.openCliScript }, signal);
+      const reader = await OpenCliReader.inspect(new OpenCliAddons(config.addonsDirectory, config.dataDirectory), { executable: process.execPath, script: config.openCliScript }, signal, true);
       const profiles = await reader.connectedProfiles();
       if (profiles.length !== 1) throw new Error("cloud.worker_single_profile_required");
       return { browser, reader, profile: profiles[0]!.context_id };
@@ -91,6 +94,7 @@ export async function startBrowserWorker(config: LinuxBrowserConfiguration, sign
   app.use("*", bodyLimit({ maxSize: 16384, onError: context => context.json({ error: "request.too_large" }, 413) }));
   app.get("/status", context => context.json({ version: "1.8.8", platforms: CLOUD_PLATFORMS, cold: group === undefined, profile: group?.profile ?? null, active_job: current && !current.finished ? current.input.id : null }));
   app.post("/pause", async context => {
+    await inputFinished;
     if (pausing || current && !current.finished) throw new CloudHttpError("cloud.worker_busy", 409);
     pausing = true;
     try { await group?.browser.close(); group = undefined; return context.json({ state: "paused" }); }
@@ -105,8 +109,23 @@ export async function startBrowserWorker(config: LinuxBrowserConfiguration, sign
       const owned = group;
       const binding = { profile: owned.profile, signal: stopped, async assertCurrent() { lease.assertOwned(); owned.browser.assertRunning(); stopped.throwIfAborted(); } };
       await owned.reader.openCreatorLoginPage(binding, platform);
+      // 复用镜像内固定版本 SDK，使底层会话覆盖网关既有的十五分钟登录窗口。
+      const { Page } = await import(new URL("./browser/page.js", pathToFileURL(config.openCliScript)).href) as { Page: new (session: string, idleTimeout: number, contextId: string, windowMode: string) => { tabs(): Promise<unknown> } };
+      await new Page("onecrew-login", 900, owned.profile, "foreground").tabs();
+      await binding.assertCurrent();
       return context.json({ opened: true });
     } finally { pausing = false; }
+  });
+  app.post("/login/fill", async context => {
+    const input = cloudLoginInput.parse(await context.req.json());
+    if (pausing || !group || current && !current.finished) throw new CloudHttpError("cloud.worker_busy", 409);
+    pausing = true;
+    const settled = Promise.withResolvers<void>(); inputFinished = settled.promise;
+    try {
+      lease.assertOwned(); group.browser.assertRunning();
+      const { Page } = await import(new URL("./browser/page.js", pathToFileURL(config.openCliScript)).href) as { Page: new (session: string, idleTimeout: number, contextId: string, windowMode: string) => Parameters<typeof fillBrowserLogin>[0] };
+      return context.json(await fillBrowserLogin(new Page("onecrew-login", 900, group.profile, "foreground"), input));
+    } finally { pausing = false; inputFinished = undefined; settled.resolve(); }
   });
   app.post("/disconnect", async context => {
     const { platform } = z.strictObject({ platform: cloudPlatform }).parse(await context.req.json());

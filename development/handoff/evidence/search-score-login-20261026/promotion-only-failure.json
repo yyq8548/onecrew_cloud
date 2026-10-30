@@ -1,0 +1,31 @@
+{
+  "scoringVersion": "v21-prompt-only",
+  "role": "promotion_only",
+  "observedModelOutput": {
+    "creator": "confirmed",
+    "creator_paragraph_id": "i1",
+    "relation": "weak_content_connection",
+    "paragraph_id": "p1"
+  },
+  "selectedText": "USE CODE: 501QBHSH for 50% off #water #waterbottle #HowIBathAndBodyWorks #ChimeHasYourBack #amazon #amazonmusthaves #amazondiscounts #onlineshopping",
+  "usage": [
+    {
+      "input": 1411,
+      "cached_input": 0,
+      "output": 38,
+      "reasoning_output": 0
+    }
+  ],
+  "elapsedMs": 20652,
+  "expectedUnderExistingStandard": "商品证据不足、无分数，保留创作者身份",
+  "passed": false,
+  "originalTaskChanged": false,
+  "modelCalls": 1,
+  "platformCalls": 0,
+  "codeRuleApproved": true,
+  "currentRealResponseReplayPassed": true,
+  "currentReplayModelCalls": 0,
+  "currentSelection": "insufficient",
+  "currentQuality": "insufficient",
+  "currentLevel": null
+}

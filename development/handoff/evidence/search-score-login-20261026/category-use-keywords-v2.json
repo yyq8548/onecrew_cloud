@@ -1,0 +1,22 @@
+{
+  "output": {
+    "queries": [{
+      "platform": "instagram",
+      "keywords": [
+        "FreeSip bottle reviews",
+        "FreeSip water bottle comparisons",
+        "water bottle for outdoor activities",
+        "water bottle for fitness routines",
+        "water bottle for travel",
+        "water bottle for office use"
+      ]
+    }]
+  },
+  "usage": [{ "input": 381, "cached_input": 0, "output": 87, "reasoning_output": 0 }],
+  "elapsedMs": 7487,
+  "modelCalls": 1,
+  "realProductInputMatchesWorkflow": true,
+  "productSource": "https://checkout.owalalife.com/products/freesip",
+  "searchesAddedByThisCheck": 0,
+  "conditionsAndSixQueryContractUnchanged": true
+}

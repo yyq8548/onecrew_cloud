@@ -1,0 +1,13 @@
+{
+  "analysisBeforeImplementation": true,
+  "actualArchivedReviews": true,
+  "cases": [
+    { "role": "unrelated_recovery", "originalLevel": "low", "currentKeywordMatches": 0, "proposedMeaningfulMatches": [] },
+    { "role": "unrelated_promotion", "originalLevel": "low", "currentKeywordMatches": 0, "proposedMeaningfulMatches": [] },
+    { "role": "related_bottle", "originalLevel": "low", "currentKeywordMatches": 0, "proposedMeaningfulMatches": ["bottl"] }
+  ],
+  "reusedFunction": "onecrew_lite-app/src/service/mcp-catalogue-search.ts:mcpEnglishSearchTerms",
+  "productionChangedByAnalysis": false,
+  "modelCalls": 0,
+  "platformCalls": 0
+}
